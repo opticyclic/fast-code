@@ -1,0 +1,16 @@
+<!ELEMENT result-formats (result-format)*>
+
+<!ELEMENT result-format (format)>
+<!ATTLIST result-format applies-to (CDATA) #REQUIRED>
+<!--type (CDATA)-->
+
+<!ELEMENT format (options)>
+<!ATTLIST format return-type (CDATA) #REQUIRED>
+
+<!ELEMENT options (option)+>
+
+<!ELEMENT option (#PCDATA)>
+<!ATTLIST option
+name CDATA #REQUIRED
+require-value (true|false) "true"
+value-type CDATA #IMPLIED>

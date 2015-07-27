@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+
+	<element-proposal proposal="field" prefix="field -"
+		description="  " offset="0" basic="true">
+		<function-proposal proposal="name" prefix="field -"
+			description=" name " offset="0" basic="false"></function-proposal>
+		<function-proposal proposal="type" prefix="field -"
+			description=" type " offset="0" basic="false">
+			<function-proposal proposal="name" prefix="field -"
+				description=" name of type " offset="0" basic="false"></function-proposal>
+		</function-proposal>
+
+		<function-proposal proposal="getSQLFunction()"
+			prefix="field -" description=" sql function " offset="0" basic="false">
+			<function-proposal proposal="getName()" prefix="field -"
+				description=" name of sql function " offset="0" basic="false"></function-proposal>
+			<function-proposal proposal="getCount()" prefix="field -"
+				description=" count of sql function " offset="0" basic="false"></function-proposal>
+			<function-proposal proposal="getReturnType()"
+				prefix="field -" description=" return type of sql function " offset="0"
+				basic="false"></function-proposal>
+		</function-proposal>
+		<function-proposal proposal="whereQualifier" prefix="field -"
+			description=" where qualifier " offset="0" basic="false">
+			<function-proposal proposal="getCount()" prefix="field -"
+				description=" count of where qualifier " offset="0" basic="false"></function-proposal>
+			<function-proposal proposal="sign" prefix="field -"
+				description=" sign of where qualifier " offset="0" basic="false"></function-proposal>
+		</function-proposal>
+
+		<function-proposal proposal="fastCodeDataBaseField"
+			prefix="field -" description=" fastcode field " offset="0" basic="false"></function-proposal>
+
+	</element-proposal>
+	<element-proposal proposal="tableName" prefix="field -"
+		description=" table name " offset="0" basic="true"></element-proposal>
+
+	<element-proposal proposal="fields" prefix="fields -"
+		description="  " offset="0" basic="true">
+		<function-proposal proposal="size()" prefix="fields -"
+			description="size " offset="0" basic="true"></function-proposal>
+	</element-proposal>
+
+	<element-proposal proposal="where_fields" prefix="where fields -"
+		description="  " offset="0" basic="true">
+		<function-proposal proposal="size()" prefix="where fields -"
+			description=" size " offset="0" basic="true"></function-proposal>
+
+	</element-proposal>
+
+	<element-proposal proposal="instance" prefix="instance -"
+		description="  " offset="0" basic="true"></element-proposal>
+
+	<element-proposal proposal="schema" prefix="schema -"
+		description="  " offset="0" basic="true"></element-proposal>
+
+	<element-proposal proposal="table" prefix="table -"
+		description="  " offset="0" basic="true"></element-proposal>
+
+	<element-proposal proposal="group_by_fields" prefix="group fields -"
+		description="  " offset="0" basic="true">
+		<function-proposal proposal="size()" prefix="group fields - size"
+			description="  " offset="0" basic="true"></function-proposal>
+
+	</element-proposal>
+
+	<element-proposal proposal="order_by_fields" prefix="order fields -"
+		description="  " offset="0" basic="true">
+		<function-proposal proposal="size()" prefix="order fields - size"
+			description="  " offset="0" basic="true"></function-proposal>
+
+	</element-proposal>
+
+	<element-proposal proposal="join_fields" prefix="join fields -"
+		description="  " offset="0" basic="true"></element-proposal>
+
+	<element-proposal proposal="MethodFieldMap.get()"
+		prefix="MethodFieldMap.get()" description="  " offset="0" basic="true"></element-proposal>
+
+	<element-proposal proposal="GetMethodFieldMap.get()"
+		prefix="GetMethodFieldMap.get()" description="  " offset="0" basic="true"></element-proposal>
+	<element-proposal proposal="MethodWhereFieldMap.get()"
+		prefix="MethodWhereFieldMap.get()" description="  " offset="0" basic="true"></element-proposal>
+
+</root>
+

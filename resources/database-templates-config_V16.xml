@@ -1,0 +1,1605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE templates PUBLIC "//UNKNOWN/" "http://fast-code.sourceforge.net/dtd/template.dtd">
+
+<templates>
+	<template name="INSERT_SIMPLE">
+		<description>Used to Insert Statement</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new insert statement\n
+				#set($vsnpt = "")
+				#foreach ($field in ${fields})
+					#if ($vsnpt == "")
+						#set ($vsnpt = "${field.name}")
+					#else
+						#set ($vsnpt = "${vsnpt}, ${field.name}")
+					#end
+				#end
+				#set($snpt = "")
+				#foreach ($field in ${fields})
+					#if ($snpt == "")
+						#set ($snpt = "?")
+					#else
+						#set ($snpt = "${snpt}, ?")
+					#end
+				#end
+				String sql = "insert into ${table} (${vsnpt}) values (${snpt})";
+				PreparedStatement ps = con.prepareStatement(sql);
+				#foreach ($field in ${fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					ps.${MethodFieldMap.get(${field.type.toLowerCase()})}(${velocityCount}, ${field.value});
+				#end
+				ps.executeUpdate();
+			]]>
+		</template-body>
+	</template>
+
+	<template name="INSERT_WITH_NAMED_PARAMETER">
+		<description>Used to Insert Statement</description>
+		<variation>named-parameter</variation>
+		<allowed-file-names>*.java </allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new insert statement\n#set($vsnpt = "")#foreach ($field in ${fields})
+					#if ($vsnpt == "")
+						#set ($vsnpt = "${field.name}")
+					#else
+						#set ($vsnpt = "${vsnpt}, ${field.name}")
+					#end
+				#end
+				#set($snpt = "")
+				#foreach ($field in ${fields})
+					#if ($snpt == "")
+						#set ($snpt = ":${field.name}")
+					#else
+						#set ($snpt = "${snpt}, :${field.name}")
+					#end
+				#end
+				String sqlQuery = "insert into ${table} (${vsnpt}) values (${snpt})";
+				Map namedParameters = new HashMap();
+				#foreach ($field in ${fields})
+					namedParameters.put("${field.name}", ${field.value});
+				#end
+				namedParameterJdbcTemplate.update(sqlQuery, namedParameters);
+			]]>
+		</template-body>
+	</template>
+
+	<template name="INSERT_WITH_NAMED_QUERY">
+		<description>Used to Insert Statement</description>
+		<variation>named-query</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new insert statement\n
+				#set ($Qt = '"')
+				#set($vsnpt = "")
+				#foreach ($field in ${fields})
+					#if ($vsnpt == "")
+						#set ($vsnpt = "${field.name}")
+					#else
+						#set ($vsnpt = "${vsnpt}, ${field.name}")
+					#end
+				#end
+				#set($snpt = "")
+				#foreach ($field in ${fields})
+					#if ($snpt == "")
+						#set ($snpt = "?")
+					#else
+						#set ($snpt = "${snpt}, ?")
+					#end
+				#end
+				##String sql = "insert into ${table} (${vsnpt}) values (${snpt})";
+				EntityManager em = ...
+				Query q = em.createNamedQuery(${Qt}${queryName}${Qt}).execute();
+			#if(!${useExistingNamedQuery})
+				<fc:xml parent="entity-mappings" node="sql-query" target="${target}">
+					#set($vsnpt = "")
+				#foreach ($field in ${fields})
+					#if ($vsnpt == "")
+						#set ($vsnpt = "${field.name}")
+					#else
+						#set ($vsnpt = "${vsnpt}, ${field.name}")
+					#end
+				#end
+				#set($snpt = "")
+				#foreach ($field in ${fields})
+					#if ($snpt == "")
+						#set ($snpt = "?")
+					#else
+						#set ($snpt = "${snpt}, ?")
+					#end
+				#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+						insert into ${table} (${vsnpt}) values (${snpt})
+					]]&gt;
+      			</query>
+   				</sql-query>
+				</fc:xml>
+			#end	
+			]]>
+		</template-body>
+	</template>
+
+	<template name="INSERT_WITH_NAMED_QUERY_ANNOTATION">
+		<description>Used to Insert Statement</description>
+		<variation>named-query-annotation</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new insert statement\n
+				#set ($Qt = '"')
+				#set($vsnpt = "")
+				#foreach ($field in ${fields})
+					#if ($vsnpt == "")
+						#set ($vsnpt = "${field.name}")
+					#else
+						#set ($vsnpt = "${vsnpt}, ${field.name}")
+					#end
+				#end
+				#set($snpt = "")
+				#foreach ($field in ${fields})
+					#if ($snpt == "")
+						#set ($snpt = "?")
+					#else
+						#set ($snpt = "${snpt}, ?")
+					#end
+				#end
+				##String sql = "insert into ${table} (${vsnpt}) values (${snpt})";
+				EntityManager em = ...
+				Query q = em.createNamedQuery(${Qt}${queryName}${Qt}).execute();
+				
+			#if(!${useExistingNamedQuery})
+				<fc:xml parent="entity-mappings" node="sql-query" target="${target}">
+					#set($vsnpt = "")
+				#foreach ($field in ${fields})
+					#if ($vsnpt == "")
+						#set ($vsnpt = "${field.name}")
+					#else
+						#set ($vsnpt = "${vsnpt}, ${field.name}")
+					#end
+				#end
+				#set($snpt = "")
+				#foreach ($field in ${fields})
+					#if ($snpt == "")
+						#set ($snpt = "?")
+					#else
+						#set ($snpt = "${snpt}, ?")
+					#end
+				#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+						insert into ${table} (${vsnpt}) values (${snpt})
+					]]&gt;
+      			</query>
+   				</sql-query>
+				</fc:xml>
+			#end	
+			]]>
+		</template-body>
+	</template>
+
+	<template name="UPDATE_SIMPLE">
+		<description>Used to create Update Statement</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new update statement\n#set($update_part = "")#foreach ($field in ${fields})
+					#set($update_part = "${update_part} ${field.name} = ?")
+					#if (${velocityCount} < ${fields.size()})
+						#set($update_part = "${update_part}, ")
+					#end
+				#end
+				#set($wh_snpt = '')
+				#foreach ($field in ${where_fields})
+					#if(${field.whereQualifier.count}==0) 
+						#set ($where_part= "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+					#elseif(${field.whereQualifier.count}==2) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ( ? AND ? )") 
+						#set($count=${count}+1) 
+						#set($betweenset="${field.name}")
+					#elseif(${field.whereQualifier.count}==1 ) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ? ") 
+					#end 
+				        #if (${velocityCount} < ${where_fields.size()})
+							#set ($wh_snpt = "${wh_snpt} ${where_separator} ")
+					#end
+				#end
+				String sql = "update ${table} set ${update_part} where (${wh_snpt})";
+				PreparedStatement ps = con.prepareStatement(sql);
+				#set($velCount = 0)
+				#foreach ($field in ${fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					ps.${MethodFieldMap.get(${field.type.toLowerCase()})}(${velocityCount}, ${field.value});
+					#set($velCount = ${velocityCount})
+				#end
+				#foreach ($field in ${where_fields})
+				<fc:import>${field.javaTypeName}</fc:import>
+					#set($velCount = ${velCount}+1)
+					ps.${MethodWhereFieldMap.get(${field.type.toLowerCase()})}(${velCount}, ${field.value});
+				#end
+				ps.executeUpdate();
+			]]>
+		</template-body>
+	</template>
+
+	<template name="UPDATE_WITH_NAMED_PARAMETER">
+		<description>Used to create update Statement</description>
+		<variation>named-parameter</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new update statement\n
+				#set($update_part = "")
+				#foreach ($field in ${fields})
+					#set($update_part = "${update_part} ${field.name} = :${field.name}")
+					#if (${velocityCount} < ${fields.size()})
+						#set($update_part = "${update_part}, ")
+					#end
+				#end
+				#set($wh_snpt = '')
+				#foreach ($field in ${where_fields})
+					#set ($wh_snpt = "${wh_snpt} ${field.name} =:${field.name}")
+				                	#if (${velocityCount} < ${where_fields.size()})
+						#set ($wh_snpt = "${wh_snpt} ${where_separator} ")
+					#end
+				#end
+				String sqlQuery = "update ${table} set ${update_part} where (${wh_snpt})";
+				Map namedParameters = new HashMap();
+				#foreach ($field in ${fields})
+					namedParameters.put("${field.name}", ${field.value});
+				#end
+				#foreach ($field in ${where_fields})
+					namedParameters.put("${field.name}", ${field.value});
+				#end
+				namedParameterJdbcTemplate.update(sqlQuery, namedParameters);
+
+
+			]]>
+		</template-body>
+	</template>
+
+	<template name="UPDATE_WITH_NAMED_QUERY">
+		<description>Used to create update Statement</description>
+		<variation>named-query</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new update statement\n
+				#set ($Qt = '"')
+				#set($update_part = "")
+				#foreach ($field in ${fields})
+					#set($update_part = "${update_part} ${field.name} = :${field.name}")
+					#if (${velocityCount} < ${fields.size()})
+						#set($update_part = "${update_part}, ")
+					#end
+				#end
+				#set($wh_snpt = '')
+				#foreach ($field in ${where_fields})
+					#set ($wh_snpt = "${wh_snpt} ${field.name}")
+				                	#if (${velocityCount} < ${where_fields.size()})
+						#set ($wh_snpt = "${wh_snpt} ${where_separator} ")
+					#end
+				#end
+				String sql = "update ${table} set (${update_part}) where (${wh_snpt})";
+				EntityManager em = ...
+				Query q = em.createNamedQuery(${Qt}${queryName}${Qt});
+				#foreach ($field in ${where_fields})
+					q.setParameter("${field.name}", "${field.name}");
+				#end
+				int res = q.executeUpdate();
+				#if(!${useExistingNamedQuery})
+				<fc:xml parent="entity-mappings" node="sql-query" target="${target}">
+					#set($update_part = "")
+					#foreach ($field in ${fields})
+						#set($update_part = "${update_part} ${field.name} = :${field.name}")
+						#if (${velocityCount} < ${fields.size()})
+							#set($update_part = "${update_part}, ")
+						#end
+					#end
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+						#if (${velocityCount} < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+      					update ${table} set ${update_part} ${where_part}
+					]]&gt;
+      			</query>
+   				</sql-query>
+				</fc:xml> 
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="UPDATE_WITH_NAMED_QUERY_ANNOTATION">
+		<description>Used to Insert Statement</description>
+		<variation>named-query-annotation</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new update statement\n
+				#set ($Qt = '"')
+				#set($update_part = "")
+				#foreach ($field in ${fields})
+					#set($update_part = "${update_part} ${field.name} = :${field.name}")
+					#if (${velocityCount} < ${fields.size()})
+						#set($update_part = "${update_part}, ")
+					#end
+				#end
+				#set($wh_snpt = '')
+				#foreach ($field in ${where_fields})
+					#set ($wh_snpt = "${wh_snpt} ${field.name}")
+				                	#if (${velocityCount} < ${where_fields.size()})
+						#set ($wh_snpt = "${wh_snpt} ${where_separator} ")
+					#end
+				#end
+				String sql = "update ${table} set (${update_part}) where (${wh_snpt})";
+				EntityManager em = ...
+				Query q = em.createNamedQuery(${Qt}${queryName}${Qt});
+				#foreach ($field in ${where_fields})
+					q.setParameter("${field.name}", "${field.name}");
+				#end
+				int res = q.executeUpdate();
+				#if(!${useExistingNamedQuery})
+				<fc:xml parent="entity-mappings" node="sql-query" target="${target}">
+					#set($update_part = "")
+					#foreach ($field in ${fields})
+						#set($update_part = "${update_part} ${field.name} = :${field.name}")
+						#if (${velocityCount} < ${fields.size()})
+							#set($update_part = "${update_part}, ")
+						#end
+					#end
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+						#if (${velocityCount} < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+      					update ${table} set ${update_part} ${where_part}
+					]]&gt;
+      			</query>
+   				</sql-query>
+				</fc:xml> 
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="DELETE_SIMPLE">
+		<description>Used to create delete statement.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create delete statement\n#set ($where_part = "")#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#if(${field.whereQualifier.count}==0) 
+						#set ($where_part= "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+					#elseif(${field.whereQualifier.count}==2) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ( ? AND ? )") 
+						#set($count=${count}+1) 
+						#set($betweenset="${field.name}")
+					#elseif(${field.whereQualifier.count}==1 ) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ? ") 
+					#end 
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				final String sqlQuery = "delete from ${table} ${where_part}";
+				PreparedStatement ps = con.prepareStatement(sqlQuery);
+				#foreach ($field in ${where_fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					ps.${MethodWhereFieldMap.get(${field.type.toLowerCase()})}(${velocityCount}, ${field.value});
+				#end
+				ps.executeUpdate();
+			]]>
+		</template-body>
+	</template>
+
+	<template name="DELETE_WITH_NAMED_PARAMETER">
+		<description>Used to create delete statement.</description>
+		<variation>named-parameter</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create delete statement\n#set ($where_part = "")#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				final String sqlQuery = "delete from ${table} ${where_part}";
+				Map namedParameters = new HashMap();
+				#foreach ($field in ${where_fields})
+					namedParameters.put("${field.name}", ${field.value});
+				#end
+				namedParameterJdbcTemplate.update(sqlQuery, namedParameters);
+
+			]]>
+		</template-body>
+	</template>
+
+	<template name="DELETE_WITH_NAMED_QUERY">
+		<description>Used to create delete statement.</description>
+		<variation>named-query</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create delete statement\n
+				#set ($Qt = '"')
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				EntityManager em = ...
+				Query q = em.createNamedQuery(${Qt}${queryName}${Qt});
+				#foreach ($field in ${where_fields})
+					q.setParameter("${field.name}", "${field.name}");
+				#end
+				int res = q.executeUpdate();
+				#if(!${useExistingNamedQuery})
+				<fc:xml parent="entity-mappings" node="sql-query" target="${target}">
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+						#if (${velocityCount} < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+						delete from ${table} ${where_part}
+					]]&gt;
+      			</query>
+   				</sql-query>
+			</fc:xml> 
+		#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="DELETE_WITH_NAMED_QUERY_ANNOTATION">
+		<description>Used to create delete statement.</description>
+		<variation>named-query-annotation</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create delete statement\n
+				#set ($Qt = '"')
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				EntityManager em = ...
+				Query q = em.createNamedQuery(${Qt}${queryName}${Qt});
+				#foreach ($field in ${where_fields})
+					q.setParameter("${field.name}", "${field.name}");
+				#end
+				int res = q.executeUpdate();
+				#if(!${useExistingNamedQuery})
+				<fc:xml parent="entity-mappings" node="sql-query" target="${target}">
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+						#if (${velocityCount} < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+						delete from ${table} ${where_part}
+					]]&gt;
+      			</query>
+   				</sql-query>
+			</fc:xml> 
+		#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SELECT_SIMPLE">
+		<description>Used to create select statement.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create select statement\n
+				#set($select_part = "")
+				#if (!${fields} || ${fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${fields})
+					#if(${field.getSQLFunction()}!="select")
+						#if($field.getSQLFunction()=="now")
+							#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()}()")
+						#elseif(${field.getSQLFunction()}=="mid")
+							#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()}(${instance}.${field.name},  ,  )")
+						#elseif(${field.getSQLFunction()}=="round")
+							#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()}(${instance}.${field.name},   )")
+						#else
+							#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()}(${instance}.${field.name})")
+						#end
+					#else
+						#set($select_part = "${select_part}${instance}.${field.name}")
+					#end
+					#if ($foreach.count < ${fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+				#set($join_part = "")
+				#foreach ($field in ${join_fields})
+					#set($join_part = "${join_part} join ${instance}.${field.name}")
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#if(${field.whereQualifier.count}==0) 
+						#set ($where_part= "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+					#elseif(${field.whereQualifier.count}==2) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ( ? AND ? )") 
+						#set($count=${count}+1) 
+						#set($betweenset="${field.name}")
+					#elseif(${field.whereQualifier.count}==1 ) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ? ") 
+					#end 
+					#if ($foreach.count < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				#set($group_part="")
+				#if(${group_by_fields})
+				#set($group_part="GROUP BY")
+				#set($size=${group_by_fields.size()})
+				#set($i=1)
+				#foreach($field in ${group_by_fields})
+						${field.name}
+					#set($group_part="${group_part} ${field.name}")
+					#set($size=${size}-${i})
+					#if(${size}>0)
+						#set($group_part="${group_part},")
+					#end
+				#end
+				#end
+				#set($order_part="")
+				#if(${order_by_fields})
+				#set($order_part="ORDER BY")
+				#set($size=${order_by_fields.size()})
+				#set($i=1)
+				#foreach($field in ${order_by_fields})
+					#set($order_part="${order_part} ${field.name}")
+					#set($size=${size}-${i})
+					#if(${size}>0)
+						#set($order_part="${order_part},")
+					#end
+				#end
+				#end
+				final String sqlQuery = "select ${select_part} from ${table} ${instance} ${where_part} ${group_part} ${order_part}";
+				PreparedStatement ps = con.prepareStatement(sqlQuery);
+				#foreach ($field in ${where_fields})
+				<fc:import>${field.javaTypeName}</fc:import>
+					ps.${MethodWhereFieldMap.get(${field.type.toLowerCase()})}(${velocityCount}, ${field.value});
+				#end
+				#set ($data_type="")
+				#set ($jFieldName = "")
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()){
+				#foreach ($field in ${fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					#if(${nameMethodMap} && ${nameMethodMap.size()}>0)
+						#set ($setMethodNameFromPojoClass = ${nameMethodMap.get(${field.name})})
+					#end
+					#set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+					#set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+					#set ($getMthName = ${GetMethodFieldMap.get(${field.type.toLowerCase().trim()})})
+						#if(${setMethodNameFromPojoClass})
+							${pojo_class_instance}.${setMethodNameFromPojoClass}(rs.${getMthName}(${velocityCount}));
+					 	#else
+					 		#set ($data_type=${methodName.substring(3)})
+							#if(${data_type}=="Int")
+								#set($data_type="Integer")
+							#end
+					 		$data_type ${jFieldName} = rs.${getMthName}(${velocityCount});
+					 	#end
+					#end
+				}
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SELECT_WITH_NAMED_PARAMETER">
+		<description>Used to create select statement.</description>
+		<variation>named-parameter</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create select statement\n#set($select_part = "")#if (!${fields} || ${fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${fields})
+					#set($select_part = "${select_part} ${instance}.${field.name}")
+					#if (${velocityCount} < ${fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+				#set($join_part = "")
+				#foreach ($field in ${join_fields})
+					#set($join_part = "${join_part} join ${instance}.${field.name}")
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				final String sqlQuery = "select ${select_part} from ${table} ${instance} ${where_part}";
+				Map namedParameters = new HashMap();
+				#foreach ($field in ${where_fields})
+					namedParameters.put("${field.name}", ${field.value});
+				#end
+				List result = namedParameterJdbcTemplate.queryForList(sqlQuery, namedParameters);
+			]]>
+		</template-body>
+	</template>
+
+
+	<template name="SELECT_WITH_NAMED_QUERY">
+		<description>Used to create select statement.</description>
+		<variation>named-query</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create select statement\n
+				#set ($Qt = '"')
+				#set($select_part = "")
+				#if (!${fields} || ${fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${fields})
+					#set($select_part = "${select_part} ${instance}.${field.name}")
+					#if (${velocityCount} < ${fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+				#set($join_part = "")
+				#foreach ($field in ${join_fields})
+					#set($join_part = "${join_part} join ${instance}.${field.name}")
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				EntityManager em = ...
+				Query q = em.createNamedQuery(${Qt}${queryName}${Qt});
+				#foreach ($field in ${where_fields})
+					q.setParameter("${field.name}", "${field.name}");
+				#end
+				List<> results = (List<>) q.getResultList();
+				 #if(!${useExistingNamedQuery})
+					<fc:xml parent="entity-mappings" node="sql-query" target="${target}">
+						#set($select_part = "")
+						#if (!${fields} || ${fields.size()} == 0)
+							#set($select_part = "${instance}")
+						#end
+						#foreach ($field in ${fields})
+							#set($select_part = "${select_part} ${instance}.${field.name}")
+							#if (${velocityCount} < ${fields.size()})
+								#set($select_part = "${select_part}, ")
+							#end
+						#end
+
+						#set($join_part = "")
+						#foreach ($field in ${fields})
+							#set($join_part = "${join_part} join ${instance}.${field.name}")
+						#end
+
+						#set ($where_part = "")
+						#if (${where_fields} && ${where_fields.size()} > 0)
+							#set ($where_part = "where")
+						#end
+						#foreach ($field in ${where_fields})
+							#set ($where_part = "$where_part ${field.name} ${field.whereQualifier.sign} :${field.name}")
+							#if (${velocityCount} < ${where_fields.size()})
+								#set ($where_part = "${where_part} ${where_separator} ")
+							#end
+						#end
+   			<sql-query name="${queryName}">
+      		<query>
+      			&lt;![CDATA[
+					select ${select_part} from ${table} ${instance} ${join_part} ${where_part}
+				]]&gt;
+      		</query>
+   			</sql-query>
+		</fc:xml>
+		#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SELECT_WITH_NAMED_QUERY_ANNOTATION">
+		<description>Used to create select statement.</description>
+		<variation>named-query-annotation</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create select statement\n
+				#set ($Qt = '"')
+				#set($select_part = "")
+				#if (!${fields} || ${fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${fields})
+					#set($select_part = "${select_part} ${instance}.${field.name}")
+					#if (${velocityCount} < ${fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+				#set($join_part = "")
+				#foreach ($field in ${join_fields})
+					#set($join_part = "${join_part} join ${instance}.${field.name}")
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier.sign} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				EntityManager em = ...
+				Query q = em.createNamedQuery(${Qt}${queryName}${Qt});
+				#foreach ($field in ${where_fields})
+					q.setParameter("${field.name}", "${field.name}");
+				#end
+				List<> results = (List<>) q.getResultList();
+				#if(!${useExistingNamedQuery})
+				<fc:xml parent="entity-mappings" node="sql-query" target="${target}">
+					#set($select_part = "")
+						#if (!${fields} || ${fields.size()} == 0)
+							#set($select_part = "${instance}")
+						#end
+						#foreach ($field in ${fields})
+							#set($select_part = "${select_part} ${instance}.${field.name}")
+							#if (${velocityCount} < ${fields.size()})
+								#set($select_part = "${select_part}, ")
+							#end
+						#end
+
+						#set($join_part = "")
+						#foreach ($field in ${fields})
+							#set($join_part = "${join_part} join ${instance}.${field.name}")
+						#end
+
+						#set ($where_part = "")
+						#if (${where_fields} && ${where_fields.size()} > 0)
+							#set ($where_part = "where")
+						#end
+						#foreach ($field in ${where_fields})
+							#set ($where_part = "$where_part ${field.name} ${field.whereQualifier.sign} :${field.name}")
+							#if (${velocityCount} < ${where_fields.size()})
+								#set ($where_part = "${where_part} ${where_separator} ")
+							#end
+						#end
+   			<sql-query name="${queryName}">
+      		<query>
+      			&lt;![CDATA[
+					select ${select_part} from ${table} ${instance} ${join_part} ${where_part}
+				]]&gt;
+      		</query>
+   			</sql-query>
+		</fc:xml>
+		#end
+			]]>
+		</template-body>
+	</template>
+	<template name="POJO_CLASS">
+		<description>Used to create pojo class</description>
+		<variation />
+		<allowed-file-names>*java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				#set ($Qt = '"')
+				#set($class_annotation = "@Entity\n@Table(name = ${Qt}${table}${Qt}) ")
+				#set($field_annotation = "")
+				#set($pk_field_annotation = "")
+				#set($classToImport = "import javax.persistence.CascadeType;\n import javax.persistence.Column; \n import javax.persistence.Entity; \n import javax.persistence.FetchType; \n import javax.persistence.GeneratedValue; \n import javax.persistence.GenerationType; \n import javax.persistence.Id; \n import javax.persistence.JoinColumn; \n import javax.persistence.OneToMany; \n import javax.persistence.Table;")
+				#set ($var_list = "")
+				#set ($get_method_list = "")
+				#set ($set_method_list = "")
+				#set ($data_type = "")
+				#set ($jFieldName = "")
+				#foreach ($field in ${fields})
+					#set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+					#set ($data_type=${methodName.substring(3)})
+					#if(${data_type}=="Int")
+						#set($data_type="Integer")
+					#end
+					#if(${data_type}=="BigDecimal")
+						#set ($classToImport = "$classToImport \nimport java.math.BigDecimal;")
+					#end
+					#if(${data_type}=="Timestamp")
+						#set ($classToImport = "$classToImport \nimport java.sql.Timestamp;")
+					#end
+					#if(${data_type}=="Date")
+						#set ($classToImport = "$classToImport \nimport java.sql.Date;")
+					#end
+					#if(${data_type}=="Time")
+						#set ($classToImport = "$classToImport \nimport java.sql.Time;")
+					#end
+
+					#set ($field_annotation = "@Column(name = ${Qt}${field.name}${Qt},nullable=${field.nullable},length = ${field.size})\n")
+					#set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+					#set ($var_list = "${var_list} private ${data_type} ${jFieldName};")
+
+					#if (${field.id})
+						#set($pk_field_annotation = " @Id \n@Column(name = ${Qt}${field.id.name}${Qt},nullable= ${field.id.nullable})\n @GeneratedValue(strategy = GenerationType.AUTO)\n")
+						#set ($get_method_list= "${get_method_list} ${pk_field_annotation} public ${data_type} get${field.javaName}(){\n\t return ${jFieldName};\n\t}")
+					#else
+						#set ($get_method_list= "${get_method_list} ${field_annotation} public ${data_type} get${field.javaName}(){\n\t return ${jFieldName};\n\t}")
+					#end
+
+					#set ($set_method_list = "${set_method_list} \tpublic void set${field.javaName}(${data_type} ${jFieldName}){\n\tthis.${jFieldName}=${jFieldName};\n\t}")
+					#if (${velocityCount} < ${fields.size()})
+							#set($var_list = "${var_list}\n ")
+							#set($get_method_list= "${get_method_list}\n ")
+							#set($set_method_list = "${set_method_list}\n ")
+					#end
+				#end
+				${classToImport}
+				${class_annotation}
+				public class ${table.substring(0,1).toUpperCase()}${table.substring(1).toLowerCase()}POJO ${baseClass} ${implementInterface} {
+
+				\t${var_list}\n
+				\t${get_method_list}\n
+				\t${set_method_list}\n
+				}
+			]]>
+		</template-body>
+	</template>
+		<template name="POJO_CLASS_WITHOUT_ANNOTATION">
+		<description>Used to create pojo class without annotation</description>
+		<variation/>
+		<allowed-file-names>*java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				#set ($Qt = '"')
+				##set($class_annotation = "@Entity(name = ${Qt}${table}${Qt}) ")
+				##set($field_annotation = "")
+				##set($pk_field_annotation = "")
+				#set ($classToImport = "")
+				#set ($var_list = "")
+				#set ($get_method_list = "")
+				#set ($set_method_list = "")
+				#set ($data_type = "")
+				#set ($jFieldName = "")
+				#foreach ($field in ${fields})
+					#set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+					#set ($data_type=${methodName.substring(3)})
+					#if(${data_type}=="Int")
+						#set($data_type="Integer")
+					#end
+					#if(${data_type}=="BigDecimal")
+						#set ($classToImport = "$classToImport \nimport java.math.BigDecimal;")
+					#end
+					#if(${data_type}=="Timestamp")
+						#set ($classToImport = "$classToImport \nimport java.sql.Timestamp;")
+					#end
+					#if(${data_type}=="Date")
+						#set ($classToImport = "$classToImport \nimport java.sql.Date;")
+					#end
+					#if(${data_type}=="Time")
+						#set ($classToImport = "$classToImport \nimport java.sql.Time;")
+					#end
+					##set ($field_annotation = "@Column(name = ${Qt}${field.name}${Qt},nullable=${field.nullable},length = ${field.size})\n")
+					#set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+					#if (${field.id})
+						##set($pk_field_annotation = " @Id \n@Column(name = ${Qt}${field.id.name}${Qt},nullable= ${field.id.nullable})\n @GeneratedValue(strategy = GenerationType.AUTO)\n")
+						#set ($var_list = "${var_list} private ${data_type} ${jFieldName};")
+					#else
+						#set ($var_list = "${var_list} private ${data_type} ${jFieldName};")
+					#end
+					#set ($get_method_list= "${get_method_list} \tpublic ${data_type} get${field.javaName}(){\n\t return ${jFieldName};\n\t}")
+					#set ($set_method_list = "${set_method_list} \tpublic void set${field.javaName}(${data_type} ${jFieldName}){\n\tthis.${jFieldName}=${jFieldName};\n\t}")
+					#if (${velocityCount} < ${fields.size()})
+							#set($var_list = "${var_list}\n ")
+							#set($get_method_list= "${get_method_list}\n ")
+							#set($set_method_list = "${set_method_list}\n ")
+					#end
+				#end
+				${classToImport}
+				##${class_annotation}
+				public class ${table.substring(0,1).toUpperCase()}${table.substring(1).toLowerCase()}POJO ${baseClass} ${implementInterface} {
+
+				\t${var_list}\n
+				\t${get_method_list}\n
+				\t${set_method_list}\n
+				}
+			]]>
+		</template-body>
+	</template>
+	<template name="ADD_FIELDS_TO_POJO_CLASS">
+		<description>Used to create pojo method</description>
+		<variation />
+		<allowed-file-names>*java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				#set ($Qt = '"')
+				#set($field_annotation = "")
+				#set($pk_field_annotation = "")
+				#set ($classToImport = "javax.persistence.Column")
+				#set ($var_list = "")
+				#set ($get_method_list = "")
+				#set ($set_method_list = "")
+				#set ($data_type = "")
+				#set ($jFieldName = "")
+				#foreach ($field in ${fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					#set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+					#set ($data_type=${methodName.substring(3)})
+					#if(${data_type}=="Int")
+						#set($data_type="Integer")
+					#end
+					#set ($field_annotation = "@Column(name = ${Qt}${field.name}${Qt},nullable=${field.nullable},length = ${field.size})\n")
+					#set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+					#set ($var_list = "${var_list} <pojo_field_list> private ${data_type} ${jFieldName};</pojo_field_list>")
+
+					#if (${field.id})
+						#set($pk_field_annotation = " @Id \n@Column(name = ${Qt}${field.id.name}${Qt},nullable= ${field.id.nullable})\n @GeneratedValue(strategy = GenerationType.AUTO)\n")
+						#set ($get_method_list = "${get_method_list}\t<pojo_get_method_list> ${pk_field_annotation} public ${data_type} get${field.javaName}(){\n\t return ${jFieldName};\n}</pojo_get_method_list>")
+					#else
+						#set ($get_method_list = "${get_method_list}\t<pojo_get_method_list> ${field_annotation} public ${data_type} get${field.javaName}(){\n\t return ${jFieldName};\n}</pojo_get_method_list>")
+					#end
+					#set ($set_method_list = "${set_method_list} \t<pojo_set_method_list>public void set${field.javaName}(${data_type} ${jFieldName} ){\n\t this.${jFieldName}=${jFieldName};\n}</pojo_set_method_list>")
+						#if (${velocityCount} < ${fields.size()})
+							#set($var_list = "${var_list}\n ")
+							#set($get_method_list="${get_method_list}\n ")
+							#set($set_method_list = "${set_method_list}\n ")
+						#end
+				#end
+				<create_pojo_method>
+				<pojo_import_list>${classToImport}</pojo_import_list>
+				${var_list}
+				${get_method_list}
+				${set_method_list}</create_pojo_method>
+
+			]]>
+		</template-body>
+	</template>
+	<template name="ADD_FIELDS_TO_POJO_CLASS_WITHOUT_ANNOTATION">
+		<description>Used to create pojo method</description>
+		<variation />
+		<allowed-file-names>*java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				#set ($Qt = '"')
+				#set ($classToImport = "")
+				#set ($var_list = "")
+				#set ($get_method_list = "")
+				#set ($set_method_list = "")
+				#set ($data_type = "")
+				#set ($jFieldName = "")
+				#foreach ($field in ${fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					#set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+					#set ($data_type=${methodName.substring(3)})
+					#if(${data_type}=="Int")
+						#set($data_type="Integer")
+					#end
+					#set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+					#set ($var_list = "${var_list} <pojo_field_list> private ${data_type} ${jFieldName};</pojo_field_list>")
+					#set ($get_method_list = "${get_method_list}\t<pojo_get_method_list>public ${data_type} get${field.javaName}(){\n\t return ${jFieldName};\n}</pojo_get_method_list>")
+					#set ($set_method_list = "${set_method_list} \t<pojo_set_method_list>public void set${field.javaName}(${data_type} ${jFieldName} ){\n\t this.${jFieldName}=${jFieldName};\n}</pojo_set_method_list>")
+					#if (${velocityCount} < ${fields.size()})
+						#set($var_list = "${var_list}\n ")
+						#set($get_method_list="${get_method_list}\n ")
+						#set($set_method_list = "${set_method_list}\n ")
+					#end
+				#end
+				<create_pojo_method>
+				<pojo_import_list>${classToImport}</pojo_import_list>
+				${var_list}
+				${get_method_list}
+				${set_method_list}</create_pojo_method>
+
+			]]>
+		</template-body>
+	</template>
+	<template name="SIMPLE_SNIPPET">
+		<description>Used to create table snippet</description>
+		<variation>table column</variation>
+		<allowed-file-names>*java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+			#if (${_template_variation} == "table")
+				${table}
+			#end
+			#if (${_template_variation} == "column")
+				#foreach ($field in ${fields})
+					${instance}.${field.name}
+				#end
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SELECT_COUNT">
+		<description>Used to create select statement with count.</description>
+		<variation>count</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create select statement\n
+				#set($select_part = "")
+				#if (!${fields} || ${fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${fields})
+					#set($select_part = "${select_part} ${instance}.${field.name}")
+					#if (${velocityCount} < ${fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+				#set($join_part = "")
+				#foreach ($field in ${join_fields})
+					#set($join_part = "${join_part} join ${instance}.${field.name}")
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#if(${field.whereQualifier.count}==0) 
+						#set ($where_part= "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+					#elseif(${field.whereQualifier.count}==2) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ( ? AND ? )") 
+						#set($count=${count}+1) 
+						#set($betweenset="${field.name}")
+					#elseif(${field.whereQualifier.count}==1 ) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ? ") 
+					#end 
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				final String sqlQuery = "select count(${select_part}) from ${table} ${instance} ${where_part}";
+				PreparedStatement ps = con.prepareStatement(sqlQuery);
+				#foreach ($field in ${where_fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					ps.${MethodWhereFieldMap.get(${field.type.toLowerCase()})}(${velocityCount}, ${field.value});
+				#end
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()){
+					int count = rs.getInt();
+				}
+			]]>
+		</template-body>
+	</template>
+	<template name="SELECT_WITH_JOIN">
+		<description>Used to create select statement.</description>
+		<variation>join</variation>
+		<allowed-file-names>*java </allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create select statement\n
+				#set($select_part = "")
+				#if (!${fields} || ${fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${fields})
+					#if(${field.tableName} == ${First_Table})
+						#set($instance = "${First_Table_Instance}")
+					#elseif(${field.tableName} == ${Second_Table})
+						#set($instance = "${Second_Table_Instance}")
+					#elseif(${field.tableName} == ${Third_Table})
+						#set($instance = "${Third_Table_Instance}")
+					#end
+					#if(${field.getSQLFunction()}=="select")
+							#set($select_part = "${select_part} ${instance}.${field.name}")
+						#elseif(${field.getSQLFunction()}=="now")
+							#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()} ()")
+						#elseif(${field.getSQLFunction()}=="round")
+							#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()} (${instance}.${field.name},  )")
+						#elseif(${field.getSQLFunction()}=="mid")
+							#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()} (${instance}.${field.name},  ,   )")
+						#else
+							#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()} (${instance}.${field.name})")
+						#end
+					#if (${velocityCount} < ${fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+				#set($join_part = "")
+				#set($join_part1 = "")
+				#set($join_part2 = "")
+
+				#if(${Number_Of_Join_Tables}=="TWO")
+
+				#set($join_part = "${join_part}${First_Table_Instance}.${First_Table_Join_Column}=${Second_Table_Instance}.${Second_Table_Join_Column}")
+
+				#elseif(${Number_Of_Join_Tables}=="THREE")
+
+				#set($join_part1="${join_part1}${First_Table_Instance}.${First_Table_Join_Column}=${Third_Table_Instance}.${Third_Table_Join_Column}")
+				#set($join_part2="${join_part2}${Second_Table_Instance}.${Second_Table_Join_Column}=${Third_Table_Instance}.${Copy_Of_Third_Table_Join_Column}")
+
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#if(${field.tableName} == ${First_Table})
+						#if(${field.whereQualifier.count}==2)
+							#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} (? AND ?) ")
+						#elseif(${field.whereQualifier.count}==0)
+							#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+						#elseif(${field.whereQualifier.count}==1)
+							#set($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ?")
+						#end
+					#elseif(${field.tableName} == ${Second_Table})
+						#if(${field.whereQualifier.count}==2)
+							#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} (? AND ?) ")
+						#elseif(${field.whereQualifier.count}==0)
+							#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+						#elseif(${field.whereQualifier.count}==1)
+							#set($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ?")
+						#end
+					#elseif(${field.tableName} == ${Third_Table})
+						#if(${field.whereQualifier.count}==2)
+							#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} (? AND ?) ")
+						#elseif(${field.whereQualifier.count}==0)
+							#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+						#elseif(${field.whereQualifier.count}==1)
+							#set($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ?")
+						#end
+					#end
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				#set($group_part="")
+				#if(${group_by_fields})
+				#set($group_part="GROUP BY")
+				#set($size=${group_by_fields.size()})
+				#set($i=1)
+				#foreach($field in ${group_by_fields})
+						#if(${field.tableName} == ${First_Table})
+							#set($group_part="${group_part} ${First_Table_Instance}.${field.name}")
+						#elseif(${field.tableName} == ${Second_Table})
+							#set($group_part="${group_part} ${Second_Table_Instance}.${field.name}")
+						#else
+							#set($group_part="${group_part} ${Third_Table_Instance}.${field.name}")
+						#end
+					#set($size=${size}-${i})
+					#if(${size}>0)
+						#set($group_part="${group_part},")
+					#end
+				#end
+				#end
+				#set($order_part="")
+				#if(${order_by_fields})
+				#set($order_part="ORDER BY")
+				#set($size=${order_by_fields.size()})
+				#set($i=1)
+				#foreach($field in ${order_by_fields})
+					#if(${field.tableName} == ${First_Table})
+						#set($order_part="${order_part} ${First_Table_Instance}.${field.name}")
+					#elseif(${field.tableName} == ${Second_Table})
+						#set($order_part="${order_part} ${Second_Table_Instance}.${field.name}")
+					#else
+						#set($order_part="${order_part} ${Third_Table_Instance}.${field.name}")
+					#end
+					#set($size=${size}-${i})
+					#if(${size}>0)
+						#set($order_part="${order_part},")
+					#end
+				#end
+				#end
+				#if(${Number_Of_Join_Tables}=="TWO")
+				final String sqlQuery = "select ${select_part} from ${First_Table} ${First_Table_Instance} ${JoinTypes} ${Second_Table} ${Second_Table_Instance} ON ${join_part} ${where_part} ${group_part} ${order_part}";
+				#elseif(${Number_Of_Join_Tables}=="THREE")
+				final String sqlQuery ="select ${select_part} from ${First_Table} ${First_Table_Instance},${Second_Table} ${Second_Table_Instance},${Third_Table} ${Third_Table_Instance} ${JoinTypes}  ${First_Table} ${First_Table_Instance} ON ${join_part1}  ${JoinTypes} ${Second_Table} ${Second_Table_Instance} ON ${join_part2} ${where_part} ${group_part} ${order_part}";
+				#end
+				PreparedStatement ps = con.prepareStatement(sqlQuery);
+				#foreach ($field in ${where_fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					ps. ${MethodWhereFieldMap.get(${field.type.toLowerCase().trim()})}(${velocityCount}, ${field.value});
+				#end
+				#set ($data_type="")
+				#set ($jFieldName = "")
+
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()){
+				#foreach ($field in ${fields})
+					<fc:import>${field.javaTypeName}</fc:import>
+					#set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+					#set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+					#set ($getMthName = ${GetMethodFieldMap.get(${field.type.toLowerCase().trim()})})
+					#set ($data_type=${methodName.substring(3)})
+					#if(${data_type}=="Int")
+						#set($data_type="Integer")
+					#end
+					 	$data_type ${jFieldName} = rs.${getMthName}(${velocityCount});
+				#end
+				}
+			]]>
+		</template-body>
+	</template>
+	<template name="ROWMAPPER">
+		<description>Used to create a Row Mapper class.</description>
+		<variation>join</variation>
+		<allowed-file-names>*java </allowed-file-names>
+		<allow-multiple-variation></allow-multiple-variation>
+		<additional-parameters>TargetPackage:package</additional-parameters>
+		<template-body>
+			<![CDATA[
+			<fc:class name="${class.name}Mapper" package="${TargetPackage.getName()}" project="${TargetPackage.javaProject}">
+				import java.sql.ResultSet;
+				import java.sql.SQLException;
+				import org.springframework.jdbc.core.RowMapper;
+				import ${class.package.name}.${class.name};
+				
+				public class ${class.name}Mapper implements RowMapper<${class.name}> {
+					public ${class.name} mapRow(ResultSet rs, int rowNum) throws SQLException {
+						${class.name} ${class.defaultInstance} = new ${class.name}();
+						#foreach ($field in ${fields})
+							#if(${nameMethodMap} && ${nameMethodMap.size()}>0)
+								#set ($setMethodNameFromPojoClass = ${nameMethodMap.get(${field.name})})
+							#end
+							##set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+							##set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+							#set ($getMthName = ${GetMethodFieldMap.get(${field.type.toLowerCase().trim()})})
+							#if(${setMethodNameFromPojoClass})
+								${class.defaultInstance}.${setMethodNameFromPojoClass}(rs.${getMthName}("${field.name}"));
+								#set ($setMethodNameFromPojoClass = "")
+							#end
+						#end
+						return ${class.defaultInstance};
+					}
+				}
+			</fc:class>
+			]]>
+		</template-body>
+	</template>
+	<template name="SELECT_WITH_ROWMAPPER">
+		<description>Used to create select statement.</description>
+		<allowed-file-names>*java </allowed-file-names>
+		<template-body>
+		<![CDATA[
+		<fc:method name="get${class.name}List">
+		<fc:import>java.sql.ResultSet</fc:import>
+		<fc:import>java.sql.SQLException</fc:import>
+		<fc:import>org.springframework.jdbc.core.RowMapper</fc:import>
+		<fc:import>org.springframework.jdbc.core.JdbcTemplate</fc:import>
+		<fc:import>java.util.List</fc:import>
+		<fc:import>${class.fullyQualifiedName}</fc:import>
+		/**
+				 * This will create an instance of ${class.name}
+				 *
+				 #foreach ($field in ${where_fields})
+				 * @parm ${field.name}
+				 #end
+				 * @return
+				 *
+				 */
+				 
+		public List<${class.name}> get${class.name}List (#foreach ($field in ${where_fields}) #set($type="${field.javaTypeName.substring($field.javaTypeName.lastIndexOf('.'))}") final ${type.replace('.','')} ${field.name} #if (${velocityCount} < ${where_fields.size()}),#end #end) throws SQLException {
+			//create select statement\n
+				#set($select_part = "")
+				#if (!${fields} || ${fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${fields})
+					#set($select_part = "${select_part} ${instance}.${field.name}")
+					#if (${velocityCount} < ${fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#if(${field.whereQualifier.count}==0) 
+						#set ($where_part= "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+					#elseif(${field.whereQualifier.count}==2) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ( ? AND ? )") 
+						#set($count=${count}+1) 
+						#set($betweenset="${field.name}")
+					#elseif(${field.whereQualifier.count}==1 ) 
+						#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ? ") 
+					#end 
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				final String sqlQuery = "select ${select_part} from ${table} ${instance} ${where_part}";
+				JdbcTemplate jdbcTemplate = new JdbcTemplate();
+				Object[] params =new Object[]{#foreach ($field in ${where_fields})${field.name} #if (${velocityCount} < ${where_fields.size()}),#end #end};
+				List<${class.name}> ${class.defaultInstance}List=jdbcTemplate.query(sqlQuery,new RowMapper<${class.name}>() {
+					public ${class.name} mapRow(ResultSet rs, int rowNum) throws SQLException {
+						${class.name} ${class.defaultInstance} = new ${class.name}();
+						#foreach ($field in ${fields})
+							#if(${nameMethodMap} && ${nameMethodMap.size()}>0)
+								#set ($setMethodNameFromPojoClass = ${nameMethodMap.get(${field.name})})
+							#end
+						##set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+						##set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+						#set ($getMthName = ${GetMethodFieldMap.get(${field.type.toLowerCase().trim()})})
+						#if(${setMethodNameFromPojoClass})
+							${class.defaultInstance}.${setMethodNameFromPojoClass}(rs.${getMthName}("${field.name}"));
+							#set ($setMethodNameFromPojoClass = "")
+						#end
+						#end
+						return ${class.defaultInstance};
+									
+								}
+				},params);
+				return ${class.defaultInstance}List;
+				}
+				
+				</fc:method>
+				
+				
+			]]>
+		</template-body>
+	</template>
+	<template name="POJO_INSTANCE_FROM_DB_FIELD">
+		<description></description>
+		<allowed-file-names>*java </allowed-file-names>
+		<template-body>
+			<![CDATA[
+					${class.name} ${class.defaultInstance} = new ${class.name}();
+					#foreach ($field in ${fields})
+						#if(${nameMethodMap} && ${nameMethodMap.size()}>0)
+							#set ($setMethodNameFromPojoClass = ${nameMethodMap.get(${field.name})})
+						#end
+						##set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+						##set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+						#set ($getMthName = ${GetMethodFieldMap.get(${field.type.toLowerCase().trim()})})
+						#if(${setMethodNameFromPojoClass})
+							${class.defaultInstance}.${setMethodNameFromPojoClass}(rs.${getMthName}("${field.name}"));
+							#set ($setMethodNameFromPojoClass = "")
+						#end
+					#end
+					]]>
+		</template-body>
+	</template>
+		<template name="SELECT_WITH_JOIN_AND_MAPPER">
+		<description>Used to create select statement.</description>
+		<variation>join</variation>
+		<allowed-file-names>*java </allowed-file-names>
+		<template-body>
+			<![CDATA[
+			<fc:method name="get${class.name}List">
+			<fc:import>java.sql.ResultSet</fc:import>
+			<fc:import>java.sql.SQLException</fc:import>
+			<fc:import>org.springframework.jdbc.core.RowMapper</fc:import>
+			<fc:import>org.springframework.jdbc.core.JdbcTemplate</fc:import>
+			<fc:import>java.util.List</fc:import>
+			<fc:import>${class.fullyQualifiedName}</fc:import>
+			/**
+					 * This will create an instance of ${class.name}
+					 *
+					 #foreach ($field in ${where_fields})
+					 * @parm ${field.name}
+					 #end
+					 * @return
+					 *
+					 */
+					 
+			public List<${class.name}> get${class.name}List (#foreach ($field in ${where_fields}) #set($type="${field.javaTypeName.substring($field.javaTypeName.lastIndexOf('.'))}") final ${type.replace('.','')} ${field.name} #if (${velocityCount} < ${where_fields.size()}),#end #end) throws SQLException {
+					#set($select_part = "")
+					#if (!${fields} || ${fields.size()} == 0)
+						#set($select_part = "${instance}")
+					#end
+					#foreach ($field in ${fields})
+						#if(${field.tableName} == ${First_Table})
+							#set($instance = "${First_Table_Instance}")
+						#elseif(${field.tableName} == ${Second_Table})
+							#set($instance = "${Second_Table_Instance}")
+						#elseif(${field.tableName} == ${Third_Table})
+							#set($instance = "${Third_Table_Instance}")
+						#end
+						#if(${field.getSQLFunction()}=="select")
+								#set($select_part = "${select_part} ${instance}.${field.name}")
+							#elseif(${field.getSQLFunction()}=="now")
+								#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()} ()")
+							#elseif(${field.getSQLFunction()}=="round")
+								#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()} (${instance}.${field.name},  )")
+							#elseif(${field.getSQLFunction()}=="mid")
+								#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()} (${instance}.${field.name},  ,   )")
+							#else
+								#set($select_part = "${select_part} ${field.getSQLFunction().toUpperCase()} (${instance}.${field.name})")
+							#end
+						#if (${velocityCount} < ${fields.size()})
+							#set($select_part = "${select_part}, ")
+						#end
+					#end
+					#set($join_part = "")
+					#set($join_part1 = "")
+					#set($join_part2 = "")
+	
+					#if(${Number_Of_Join_Tables}=="TWO")
+	
+					#set($join_part = "${join_part}${First_Table_Instance}.${First_Table_Join_Column}=${Second_Table_Instance}.${Second_Table_Join_Column}")
+	
+					#elseif(${Number_Of_Join_Tables}=="THREE")
+	
+					#set($join_part1="${join_part1}${First_Table_Instance}.${First_Table_Join_Column}=${Third_Table_Instance}.${Third_Table_Join_Column}")
+					#set($join_part2="${join_part2}${Second_Table_Instance}.${Second_Table_Join_Column}=${Third_Table_Instance}.${Copy_Of_Third_Table_Join_Column}")
+	
+					#end
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#if(${field.tableName} == ${First_Table})
+							#if(${field.whereQualifier.count}==2)
+								#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} (? AND ?) ")
+							#elseif(${field.whereQualifier.count}==0)
+								#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+							#elseif(${field.whereQualifier.count}==1)
+								#set($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ?")
+							#end
+						#elseif(${field.tableName} == ${Second_Table})
+							#if(${field.whereQualifier.count}==2)
+								#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} (? AND ?) ")
+							#elseif(${field.whereQualifier.count}==0)
+								#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+							#elseif(${field.whereQualifier.count}==1)
+								#set($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ?")
+							#end
+						#elseif(${field.tableName} == ${Third_Table})
+							#if(${field.whereQualifier.count}==2)
+								#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} (? AND ?) ")
+							#elseif(${field.whereQualifier.count}==0)
+								#set ($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ")
+							#elseif(${field.whereQualifier.count}==1)
+								#set($where_part = "${where_part} ${instance}.${field.name} ${field.whereQualifier.sign} ?")
+							#end
+						#end
+						#if (${velocityCount} < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+					#set($group_part="")
+					#if(${group_by_fields})
+					#set($group_part="GROUP BY")
+					#set($size=${group_by_fields.size()})
+					#set($i=1)
+					#foreach($field in ${group_by_fields})
+							#if(${field.tableName} == ${First_Table})
+								#set($group_part="${group_part} ${First_Table_Instance}.${field.name}")
+							#elseif(${field.tableName} == ${Second_Table})
+								#set($group_part="${group_part} ${Second_Table_Instance}.${field.name}")
+							#else
+								#set($group_part="${group_part} ${Third_Table_Instance}.${field.name}")
+							#end
+						#set($size=${size}-${i})
+						#if(${size}>0)
+							#set($group_part="${group_part},")
+						#end
+					#end
+					#end
+					#set($order_part="")
+					#if(${order_by_fields})
+					#set($order_part="ORDER BY")
+					#set($size=${order_by_fields.size()})
+					#set($i=1)
+					#foreach($field in ${order_by_fields})
+						#if(${field.tableName} == ${First_Table})
+							#set($order_part="${order_part} ${First_Table_Instance}.${field.name}")
+						#elseif(${field.tableName} == ${Second_Table})
+							#set($order_part="${order_part} ${Second_Table_Instance}.${field.name}")
+						#else
+							#set($order_part="${order_part} ${Third_Table_Instance}.${field.name}")
+						#end
+						#set($size=${size}-${i})
+						#if(${size}>0)
+							#set($order_part="${order_part},")
+						#end
+					#end
+					#end
+					#if(${Number_Of_Join_Tables}=="TWO")
+					final String sqlQuery = "select ${select_part} from ${First_Table} ${First_Table_Instance} ${JoinTypes} ${Second_Table} ${Second_Table_Instance} ON ${join_part} ${where_part} ${group_part} ${order_part}";
+					#elseif(${Number_Of_Join_Tables}=="THREE")
+					final String sqlQuery ="select ${select_part} from ${First_Table} ${First_Table_Instance},${Second_Table} ${Second_Table_Instance},${Third_Table} ${Third_Table_Instance} ${JoinTypes}  ${First_Table} ${First_Table_Instance} ON ${join_part1}  ${JoinTypes} ${Second_Table} ${Second_Table_Instance} ON ${join_part2} ${where_part} ${group_part} ${order_part}";
+					#end
+					#set ($data_type="")
+					#set ($jFieldName = "")
+	
+					
+					JdbcTemplate jdbcTemplate = new JdbcTemplate();
+					Object[] params =new Object[]{#foreach ($field in ${where_fields})${field.name} #if (${velocityCount} < ${where_fields.size()}),#end #end};
+					List<${class.name}> ${class.defaultInstance}List=jdbcTemplate.query(sqlQuery,
+										new RowMapper<${class.name}>() {
+										public ${class.name} mapRow(ResultSet rs, int rowNum) throws SQLException {
+										${class.name} ${class.defaultInstance} = new ${class.name}();
+										#foreach ($field in ${fields})
+											#if(${nameMethodMap} && ${nameMethodMap.size()}>0)
+												#set ($setMethodNameFromPojoClass = ${nameMethodMap.get(${field.name})})
+											#end
+											#set ($jFieldName = "${field.javaName.substring(0,1).toLowerCase()}${field.javaName.substring(1)}")
+											#set ($methodName = ${MethodFieldMap.get(${field.type.toLowerCase().trim()})})
+											#set ($getMthName = ${GetMethodFieldMap.get(${field.type.toLowerCase().trim()})})
+											#if(${setMethodNameFromPojoClass})
+												${class.defaultInstance}.${setMethodNameFromPojoClass}(rs.${getMthName}("${field.name}"));
+												#set ($setMethodNameFromPojoClass = "")
+											#end
+										#end
+										return ${class.defaultInstance};
+										
+									}
+					},params);
+					return ${class.defaultInstance}List;
+					}
+				
+				</fc:method>
+			]]>
+		</template-body>
+	</template>
+</templates>

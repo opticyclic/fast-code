@@ -1,0 +1,1073 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result-formats>
+
+	<result-format applies-to="JUNIT_TYPE_4">
+		<format return-type="String">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.equals(""));
+					]]>
+				</option>
+				<option name="Not Null and equal to some value" require-value="true">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and equal to ${value}", ${result.name} != null && ${result.name}.equals("${value}"));
+					]]>
+				</option>
+				<option name="Not Null and start with some value" require-value="true">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and start with ${value}", ${result.name} != null && ${result.name}.startsWith("${value}"));
+					]]>
+				</option>
+				<option name="Not Null and end with some value" require-value="true">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and end with ${value}", ${result.name} != null && ${result.name}.endsWith("${value}"));
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="String[]">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && ${result.name}.length > 0);
+					]]>
+				</option>
+				<option name="Not Null and length equal to some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.length == ${value});
+					]]>
+				</option>
+				<option name="Not Null and length greater than some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.length > ${value});
+					]]>
+				</option>
+				<option name="Not Null and length less than some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.length < ${value});
+					]]>
+				</option>
+				<option name="loop">
+				<![CDATA[
+					for (String s : ${result.name}) {
+						assertNotNull("s cannot be null", s);
+					}
+				]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="java.util.Collection">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Not Null and size equal to some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() == ${value});
+					]]>
+				</option>
+				<option name="Not Null and size not equal to some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() != ${value});
+					]]>
+				</option>
+				<option name="Not Null and size greater than some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() > ${value});
+					]]>
+				</option>
+				<option name="Not Null and size less than some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="java.util.Map">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Not Null and size equal to some value" require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and size equal to ${value}", ${result.name} != null && ${result.name}.size() == ${value});
+					]]>
+				</option>
+				<option name="Not Null and size greater than some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and size greater than ${value}", ${result.name} != null && ${result.name}.size() > ${value});
+					]]>
+				</option>
+				<option name="Not Null and size less than some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and size less than ${value}", ${result.name} != null && ${result.name}.size() < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+
+		<format return-type="int">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="float">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="float">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="float">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="float">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="long">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="long">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="long">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="long">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="double">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="double">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="double">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="double">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="short">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="short">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="short">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="short">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="byte">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="byte">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="byte">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="byte">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="boolean">
+			<options>
+				<option name="True">
+					<![CDATA[
+						assertTrue("${result.name} should be true", ${result.name});
+					]]>
+				</option>
+				<option name="False">
+					<![CDATA[
+						assertFalse("${result.name} should be false", ${result.name});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="char">
+			<options>
+				<option name="Equal to some value" require-value="true" value-type="char">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="Date">
+			<options>
+				<option name="Not Null">
+					<![CDATA[
+						assertTrue("${result.name} should not be null.", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Date">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Before date" require-value="true" value-type="Date">
+					<![CDATA[
+						assertTrue("${result.name} should be before ${value}", ${result.name}.compareTo(${value}) < 1);
+					]]>
+				</option>
+				<option name="After date" require-value="true" value-type="Date">
+					<![CDATA[
+						assertTrue("${result.name} should be after ${value}", ${result.name}.compareTo(${value}) > 1);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Integer">
+			<options>
+				<option name="Not Null">
+					<![CDATA[
+						assertTrue("${result.name} should not be null.", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Integer">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value " require-value="true" value-type="Integer">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Integer">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Short">
+			<options>
+				<option name="Not Null">
+					<![CDATA[
+						assertTrue("${result.name} should not be null.", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Equal to some value " require-value="true" value-type="Short">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Short">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value " require-value="true" value-type="Short">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Long">
+			<options>
+				<option name="Not Null">
+					<![CDATA[
+						assertTrue("${result.name} should not be null.", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Long">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Long">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Long">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Float">
+			<options>
+				<option name="Not Null">
+					<![CDATA[
+						assertTrue("${result.name} should not be null.", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Float">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Float">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Float">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Double">
+			<options>
+				<option name="Not Null">
+					<![CDATA[
+						assertTrue("${result.name} should not be null.", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Double">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Double">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Double">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Byte">
+			<options>
+				<option name="Not Null">
+					<![CDATA[
+						assertTrue("${result.name} should not be null.", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Byte">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Byte">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Byte">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Boolean">
+			<options>
+				<option name="Not Null">
+					<![CDATA[
+						assertTrue("${result.name} should not be null.", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Boolean">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Not equal to some value " require-value="true" value-type="Boolean">
+					<![CDATA[
+						assertTrue("${result.name} should not be equal to ${value}", ${result.name}.compareTo(${value}) != 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="*Vo">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null", ${result.name} != null);
+					]]>
+				</option>
+				<option name="Null" >
+					<![CDATA[
+						assertTrue("${result.name} should be null", ${result.name} == null);
+					]]>
+				</option>
+			</options>
+		</format>
+	</result-format>
+
+	<result-format applies-to="JUNIT_TYPE_TESTNG">
+		<format return-type="String">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.equals(""));
+					]]>
+				</option>
+				<option name="Not Null and equal to ">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and equal to", ${result.name} != null && !${result.name}.equals(""));
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="String[]">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && ${result.name}.length > 0);
+					]]>
+				</option>
+				<option name="Not Null and length equal to some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.length == ${value});
+					]]>
+				</option>
+				<option name="Not Null and length greater than some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.length > ${value});
+					]]>
+				</option>
+				<option name="Not Null and length less than some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.length < ${value});
+					]]>
+				</option>
+				<option name="loop">
+				<![CDATA[
+					for (String s : ${result.name}) {
+						assertNotNull("s cannot be null", s);
+					}
+				]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="java.util.Collection">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Not Null and size equal to some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() == ${value});
+					]]>
+				</option>
+				<option name="Not Null and size not equal to some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() != ${value});
+					]]>
+				</option>
+				<option name="Not Null and size greater than some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() > ${value});
+					]]>
+				</option>
+				<option name="Not Null and size less than some value " require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="java.util.Map">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Not Null and length equal to some value" require-value="true" value-type="int">
+					<![CDATA[
+					assertTrue("${result.name} should be not null and length equal to ${value}", ${result.name} != null && ${result.name}.size() == ${value});
+					for (${result.type} s : ${result.name}) {
+						assertNotNull("s cannot be null", s);
+					}
+					]]>
+				</option>
+			</options>
+		</format>
+
+
+		<format return-type="int">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="int">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="float">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="float">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="float">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="float">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="long">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="long">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="long">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="long">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="double">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="double">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="double">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="double">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="short">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="short">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="short">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="short">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="byte">
+			<options>
+				<option name="Greater than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than zero", ${result.name} > 0);
+					]]>
+				</option>
+				<option name="Less than Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be less than zero", ${result.name} < 0);
+					]]>
+				</option>
+				<option name="Equal to Zero">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to zero", ${result.name} == 0);
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="byte">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="byte">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name} > ${value});
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="byte">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name} < ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="boolean">
+			<options>
+				<option name="True">
+					<![CDATA[
+						assertTrue("${result.name} should be true", ${result.name});
+					]]>
+				</option>
+				<option name="False">
+					<![CDATA[
+						assertFalse("${result.name} should be false", ${result.name});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="char">
+			<options>
+				<option name="Equal to some value" require-value="true" value-type="char">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name} == ${value});
+					]]>
+				</option>
+			</options>
+		</format>
+
+		<format return-type="Date">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Equal to some value " require-value="true" value-type="Date">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Before date " require-value="true" value-type="Date">
+					<![CDATA[
+						assertTrue("${result.name} should be before ${value}", ${result.name}.compareTo(${value}) < 1);
+					]]>
+				</option>
+				<option name="After date " require-value="true" value-type="Date">
+					<![CDATA[
+						assertTrue("${result.name} should be after ${value}", ${result.name}.compareTo(${value}) > 1);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Integer">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Integer">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Integer">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Integer">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Short">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Short">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Short">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value " require-value="true" value-type="Short">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Long">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Long">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Long">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Long">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Float">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Equal to  some value" require-value="true" value-type="Float">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Float">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Float">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Double">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Double">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value " require-value="true" value-type="Double">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Double">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Byte">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertTrue("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Byte">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Less than some value" require-value="true" value-type="Byte">
+					<![CDATA[
+						assertTrue("${result.name} should be less than ${value}", ${result.name}.compareTo(${value}) < 0);
+					]]>
+				</option>
+				<option name="Greater than some value" require-value="true" value-type="Byte">
+					<![CDATA[
+						assertTrue("${result.name} should be greater than ${value}", ${result.name}.compareTo(${value}) > 0);
+					]]>
+				</option>
+			</options>
+		</format>
+		<format return-type="Boolean">
+			<options>
+				<option name="Not Null and not empty">
+					<![CDATA[
+						assertNotNull("${result.name} should be not null and not empty", ${result.name} != null && !${result.name}.isEmpty());
+					]]>
+				</option>
+				<option name="Equal to some value" require-value="true" value-type="Boolean">
+					<![CDATA[
+						assertTrue("${result.name} should be equal to ${value}", ${result.name}.compareTo(${value}) == 0);
+					]]>
+				</option>
+				<option name="Not equal to some value " require-value="true" value-type="Boolean">
+					<![CDATA[
+						assertTrue("${result.name} should not be equal to ${value}", ${result.name}.compareTo(${value}) != 0);
+					]]>
+				</option>
+			</options>
+		</format>
+
+	</result-format>
+
+</result-formats>

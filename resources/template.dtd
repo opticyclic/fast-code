@@ -1,0 +1,18 @@
+<!ELEMENT templates (template)*>
+
+<!ELEMENT template (description, variation?, variation-field?,  allow-multiple-variation?, first-template-item?, second-template-item?, additional-parameters?, template-body)>
+<!ATTLIST template name ID #REQUIRED>
+
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT variation (#PCDATA)>
+<!ELEMENT variation-field (#PCDATA)>
+<!ELEMENT allow-multiple-variation (#PCDATA)>
+<!ELEMENT allowed-file-names (#PCDATA)>
+<!ELEMENT first-template-item (#PCDATA)>
+<!ELEMENT second-template-item (#PCDATA)>
+<!ELEMENT additional-parameters (#PCDATA)>
+<!ELEMENT template-body (#PCDATA)>
+<!ATTLIST first-template-item number-required-items (0|1|2) "0">
+<!ATTLIST first-template-item item-pattern CDATA "">
+<!ATTLIST second-template-item getter-setter (gettersetter|getter|setter|none) "none">
+

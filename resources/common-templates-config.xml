@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE templates PUBLIC "//UNKNOWN/" "http://fast-code.sourceforge.net/dtd/template.dtd">
+<templates>
+	<template name="method.body.setUpBeforeClass">
+		<description>Used to create method body of setUpBeforeClass</description>
+		<template-body>
+			<![CDATA[
+				// TODO add setup code.
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.setUp">
+		<description>Used to create method body of setUp</description>
+		<template-body>
+			<![CDATA[
+				// TODO add setup code.
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.tearDown">
+		<description>Used to create method body of tearDown</description>
+		<template-body>
+			<![CDATA[
+				// TODO add tear down code.
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.tearDownAfterClass">
+		<description>Used to create method body of tearDownAfterClass</description>
+		<template-body>
+			<![CDATA[
+				// TODO add tear down code.
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.org.springframework.beans.factory.InitializingBean.afterPropertiesSet">
+		<description>Used to create method body of afterPropertiesSet</description>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${fields})
+					#if (${field.name} != "logger")
+					    assert(${field.name} != null);
+					#end
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.Constructor">
+		<description>Used to create body of Constructor</description>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${fields})
+					this.${field.name} = ${field.name};
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	
+	<template name="test.method.pattern.negative">
+		<description>Pattern for Negative Test Method</description>
+		<template-body>
+			<![CDATA[
+				try\s*\{.*\}\s*catch\s*\(\s*[a-zA-Z]*Exception\s*[a-zA-Z]*\)\s*\{.*\}.*fail\(.*\)\s*;
+			]]>
+		</template-body>
+	</template>
+
+</templates>

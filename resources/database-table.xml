@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+<database type = "mysql">
+	<table-with-columns>
+		<![CDATA[
+			#set ($column_part = "")
+			#foreach ($columnName in ${columnNames})
+				#set ($column_part = "${column_part}${columnName} ${columnType} ")
+				#if (!${columnSize.equals("")})
+					#set ($column_part = "${column_part}(${columnSize})")
+				#end
+				#if (!${columnPrecisionAndScale.equals("")})
+					#set ($column_part = "${column_part}(${columnPrecisionAndScale})")
+				#end
+				#set ($column_part = "${column_part} ${columnNotNull}")
+				#if (!${defaultValue.equals("")})
+					#set ($column_part = "${column_part} DEFAULT ${defaultValue}")
+				#end
+				#if ($foreach.count < ${columnNames.size()})
+					#set ($column_part = "${column_part}, " )
+				#end
+			#end
+			CREATE TABLE ${schema}.${table}(${column_part})
+		]]>
+	</table-with-columns>
+	<add-columns>
+		<![CDATA[
+			#set ($column_part = "")
+			#foreach ($columnName in ${columnNames})
+			#set ($column_part = "${column_part} ADD COLUMN ${columnName} ${columnType} ")
+			#if (!${columnSize.equals("")})
+					#set ($column_part = "${column_part}(${columnSize})")
+				#end
+				#if (!${columnPrecisionAndScale.equals("")})
+					#set ($column_part = "${column_part}(${columnPrecisionAndScale})")
+				#end
+				#set ($column_part = "${column_part} ${columnNotNull}")
+				#if (!${defaultValue.equals("")})
+					#set ($column_part = "${column_part} DEFAULT ${defaultValue}")
+				#end
+				#if ($foreach.count < ${columnNames.size()})
+					#set ($column_part = "${column_part}, " )
+					##set ($column_part ="${column_part} \n")
+				#end
+			#end
+			ALTER TABLE ${schema}.${table} ${column_part}
+		]]>
+	</add-columns>
+</database>
+
+<database type="oracle">
+	<table-with-columns>
+		<![CDATA[
+			#set ($column_part = "")
+			#foreach ($columnName in ${columnNames})
+				#set ($column_part = "${column_part}${columnName} ${columnType} ")
+				#if (!${columnSize.equals("")})
+					#if (!${columnSizeType.equals("")})
+						#set ($column_part = "${column_part}(${columnSize} ${columnSizeType})")
+					#else
+						#set ($column_part = "${column_part}(${columnSize})")
+					#end
+				#end
+				#if (!${columnPrecisionAndScale.equals("")})
+					#set ($column_part = "${column_part}(${columnPrecisionAndScale})")
+				#end
+				#if (!${defaultValue.equals("")})
+					#set ($column_part = "${column_part} DEFAULT ${defaultValue}")
+				#end
+				#set ($column_part = "${column_part} ${columnNotNull}")
+				#if ($foreach.count < ${columnNames.size()})
+					#set ($column_part = "${column_part}, " )
+				#end
+			#end
+			CREATE TABLE ${schema}.${table}(${column_part})
+		]]>
+	</table-with-columns>
+	<add-columns>
+		<![CDATA[
+			#set ($column_part = "")
+			#foreach ($columnName in ${columnNames})
+			#set ($column_part = "${column_part} ${columnName} ${columnType} ")
+				#if (!${columnSize.equals("")})
+					#if (!${columnSizeType.equals("")})
+						#set ($column_part = "${column_part}(${columnSize} ${columnSizeType})")
+					#else
+						#set ($column_part = "${column_part}(${columnSize})")
+					#end
+				#end
+				#if (!${columnPrecisionAndScale.equals("")})
+					#set ($column_part = "${column_part}(${columnPrecisionAndScale})")
+				#end
+				#if (!${defaultValue.equals("")})
+					#set ($column_part = "${column_part} DEFAULT ${defaultValue}")
+				#end
+				#set ($column_part = "${column_part} ${columnNotNull}")
+				#if ($foreach.count < ${columnNames.size()})
+					#set ($column_part = "${column_part}, " )
+					##set ($column_part ="${column_part} \n")
+				#end
+			#end
+			ALTER TABLE ${schema}.${table} ADD (${column_part})
+		]]>
+	</add-columns>
+</database>
+
+<database type="postgresql">
+	<table-with-columns>
+		<![CDATA[
+			#set ($column_part = "")
+			#foreach ($columnName in ${columnNames})
+				#set ($column_part = "${column_part}${columnName} ${columnType} ")
+				#if (!${columnSize.equals("")})
+					#set ($column_part = "${column_part}(${columnSize})")
+				#end
+				#if (!${columnPrecisionAndScale.equals("")})
+					#set ($column_part = "${column_part}(${columnPrecisionAndScale})")
+				#end
+				#set ($column_part = "${column_part} ${columnNotNull}")
+				#if (!${defaultValue.equals("")})
+					#set ($column_part = "${column_part} DEFAULT ${defaultValue}")
+				#end
+				#if ($foreach.count < ${columnNames.size()})
+					#set ($column_part = "${column_part}, " )
+				#end
+			#end
+			CREATE TABLE ${schema}.${table}(${column_part})
+		]]>
+	</table-with-columns>
+	<add-columns>
+		<![CDATA[
+			#set ($column_part = "")
+			#foreach ($columnName in ${columnNames})
+			#set ($column_part = "${column_part} ADD COLUMN ${columnName} ${columnType} ")
+			#if (!${columnSize.equals("")})
+					#set ($column_part = "${column_part}(${columnSize})")
+				#end
+				#if (!${columnPrecisionAndScale.equals("")})
+					#set ($column_part = "${column_part}(${columnPrecisionAndScale})")
+				#end
+				#set ($column_part = "${column_part} ${columnNotNull}")
+				#if (!${defaultValue.equals("")})
+					#set ($column_part = "${column_part} DEFAULT ${defaultValue}")
+				#end
+				#if ($foreach.count < ${columnNames.size()})
+					#set ($column_part = "${column_part}, " )
+					##set ($column_part ="${column_part} \n")
+				#end
+			#end
+			ALTER TABLE ${schema}.${table} ${column_part}
+		]]>
+	</add-columns>
+</database>
+</root>

@@ -1,0 +1,251 @@
+# Enerjy Software baseline data (files=26, problems=224).
+path: /JTest/src/jtest/Activator.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'PLUGIN_ID'
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'Activator'
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+path: /JTest/src/jtest/common/JTestConstants.java
+problem: JAVA0014:JAVA0014 Class 'JTestConstants' with only static members has non-private constructor
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'TEST_PREFIX'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'JAVA_EXTENSION'
+path: /JTest/src/jtest/editors/ColorManager.java
+problem: JAVA0076:JAVA0076 Use of magic number '10'
+problem: JAVA0254:JAVA0254 Use enhanced for loop construct instead of Iterator
+problem: JAVA0036:JAVA0036 Missing braces in while statement
+path: /JTest/src/jtest/editors/IXMLColorConstants.java
+problem: JAVA0257:JAVA0257 Use of 'Constant Interface' anti-pattern: declaring 'jtest.editors.IXMLColorConstants'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'XML_COMMENT'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'PROC_INSTR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'STRING'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'DEFAULT'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'TAG'
+path: /JTest/src/jtest/editors/NonRuleBasedDamagerRepairer.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0098:JAVA0098 Minimize use of implicit field initializers
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'defaultTextAttribute'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /JTest/src/jtest/editors/XMLConfiguration.java
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /JTest/src/jtest/editors/XMLDoubleClickStrategy.java
+problem: JAVA0137:JAVA0137 Non-abstract class 'XMLDoubleClickStrategy' missing constructor
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0177:JAVA0177 Variable declaration 'startPos' missing initializer
+problem: JAVA0177:JAVA0177 Variable declaration 'endPos' missing initializer
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0177:JAVA0177 Variable declaration 'startPos' missing initializer
+problem: JAVA0177:JAVA0177 Variable declaration 'endPos' missing initializer
+problem: JAVA0177:JAVA0177 Variable declaration 'c' missing initializer
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+path: /JTest/src/jtest/editors/XMLEditor.java
+problem: JAVA0058:JAVA0058 Constructor 'XMLEditor' calls super()
+path: /JTest/src/jtest/editors/XMLPartitionScanner.java
+problem: JAVA0068:JAVA0068 Modifiers not declared in recommended order
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'XML_COMMENT'
+problem: JAVA0068:JAVA0068 Modifiers not declared in recommended order
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'XML_TAG'
+path: /JTest/src/jtest/editors/XMLScanner.java
+problem: JAVA0003:JAVA0003 Minimize use of on-demand (.*) imports
+problem: JAVA0005:JAVA0005 Imports not in specified order
+path: /JTest/src/jtest/editors/XMLTagScanner.java
+problem: JAVA0003:JAVA0003 Minimize use of on-demand (.*) imports
+path: /JTest/src/jtest/popup/actions/CreateSimilarAction.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'CreateSimilarAction'
+problem: JAVA0058:JAVA0058 Constructor 'CreateSimilarAction' calls super()
+problem: JAVA0171:JAVA0171 Unused local variable 'retCompUnit'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0075:JAVA0075 Method parameter 'selection' hides field
+path: /JTest/src/jtest/popup/actions/JTestAction.java
+problem: JAVA0080:JAVA0080 Import declaration 'java.util.HashMap' not used
+problem: JAVA0080:JAVA0080 Import declaration 'java.util.Map' not used
+problem: JAVA0080:JAVA0080 Import declaration 'jtest.util.SourceUtil' not used
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'JTestAction'
+problem: JAVA0058:JAVA0058 Constructor 'JTestAction' calls super()
+problem: JAVA0171:JAVA0171 Unused local variable 'project'
+problem: JAVA0171:JAVA0171 Unused local variable 'junitBase'
+problem: JAVA0171:JAVA0171 Unused local variable 'creator'
+problem: JAVA0171:JAVA0171 Unused local variable 'testPath'
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0075:JAVA0075 Method parameter 'selection' hides field
+path: /JTest/src/jtest/preferences/CreateSimilarPreferencePage.java
+problem: JAVA0080:JAVA0080 Import declaration 'jtest.util.MultiColumnStringFieldEditor' not used
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0076:JAVA0076 Use of magic number '10'
+path: /JTest/src/jtest/preferences/JUnitPreferencePage.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0076:JAVA0076 Use of magic number '10'
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0029:JAVA0029 Private method 'isValid' not used
+problem: JAVA0130:JAVA0130 Non-static method 'isValid' does not use instance fields
+problem: JAVA0171:JAVA0171 Unused local variable 'superClass'
+path: /JTest/src/jtest/preferences/MainPreferencePage.java
+problem: JAVA0080:JAVA0080 Import declaration 'org.eclipse.jdt.core.IJavaProject' not used
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0080:JAVA0080 Import declaration 'jtest.util.SourceUtil' not used
+problem: JAVA0080:JAVA0080 Import declaration 'jtest.preferences.PreferenceConstants.*' not used
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+path: /JTest/src/jtest/preferences/PreferenceConstants.java
+problem: JAVA0014:JAVA0014 Class 'PreferenceConstants' with only static members has non-private constructor
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_BASE_TEST'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_BOOLEAN'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_CHOICE'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_TEST_DIR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_JUNIT_TEST_FORMAT'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_PACKAGE'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_PROJECTS'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'CREATE_SIMILAR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_FROM_PATTERN'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_TO_PATTERN'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_TO_PATTERN2'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_IMPLEMENT_INT'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_IMPLEMENT_SUB_PACKAGE'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_INCLUDE_INSTACE_FROM'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'P_COPY_METHODS'
+path: /JTest/src/jtest/preferences/PreferenceInitializer.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+path: /JTest/src/jtest/preferences/SamplePreferencePage.java
+problem: JAVA0080:JAVA0080 Import declaration 'org.eclipse.jdt.core.IJavaProject' not used
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0080:JAVA0080 Import declaration 'jtest.util.SourceUtil' not used
+problem: JAVA0080:JAVA0080 Import declaration 'jtest.preferences.PreferenceConstants.*' not used
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+path: /JTest/src/jtest/properties/SamplePropertyPage.java
+problem: JAVA0057:JAVA0057 Unnecessary default constructor 'SamplePropertyPage'
+problem: JAVA0058:JAVA0058 Constructor 'SamplePropertyPage' calls super()
+problem: JAVA0130:JAVA0130 Non-static method 'addSeparator' does not use instance fields
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0130:JAVA0130 Non-static method 'createDefaultComposite' does not use instance fields
+path: /JTest/src/jtest/util/FormatListEditor.java
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+path: /JTest/src/jtest/util/JUnitCreator.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'EMPTY_STR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'LONG_ONE'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'VOID_STR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'SEMI_COLON_STR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'SPACE_STR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'NEW_LINE_STR'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'TEST_PREFIX'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'SRC_JAVA_PATH'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'SRC_TEST_PATH'
+problem: JAVA0116:JAVA0116 Missing javadoc: field 'FORWARD_SLASH'
+problem: JAVA0171:JAVA0171 Unused local variable 'inStream'
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0075:JAVA0075 Method parameter 'junitBaseClass' hides field
+problem: JAVA0174:JAVA0174 Assigned local variable 'pak' never used
+problem: JAVA0171:JAVA0171 Unused local variable 'f'
+problem: JAVA0075:JAVA0075 Method parameter 'junitBaseClass' hides field
+problem: JAVA0130:JAVA0130 Non-static method 'createSourceFragment' does not use instance fields
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0171:JAVA0171 Unused local variable 'paramVal'
+problem: JAVA0130:JAVA0130 Non-static method 'convertTypes' does not use instance fields
+problem: JAVA0138:JAVA0138 7 parameters defined for method 'processResolvedParam' (maximum: 5)
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0029:JAVA0029 Private method 'processResolvedParam1' not used
+problem: JAVA0138:JAVA0138 7 parameters defined for method 'processResolvedParam1' (maximum: 5)
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0109:JAVA0109 Incorrect javadoc: no parameter '@param'
+problem: JAVA0029:JAVA0029 Private method 'getDetailsOld' not used
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'type'
+problem: JAVA0175:JAVA0175 Successive assignment to variable 'typeClass'
+problem: JAVA0049:JAVA0049 Nested block at depth '6' (maximum: '5')
+problem: JAVA0049:JAVA0049 Nested block at depth '6' (maximum: '5')
+problem: JAVA0049:JAVA0049 Nested block at depth '6' (maximum: '5')
+problem: JAVA0029:JAVA0029 Private method 'getClass' not used
+problem: JAVA0076:JAVA0076 Use of magic number '6'
+problem: JAVA0049:JAVA0049 Nested block at depth '6' (maximum: '5')
+problem: JAVA0049:JAVA0049 Nested block at depth '6' (maximum: '5')
+problem: JAVA0166:JAVA0166 Generic exception 'java.lang.Exception' caught
+problem: JAVA0130:JAVA0130 Non-static method 'itemexists' does not use instance fields
+problem: JAVA0029:JAVA0029 Private method 'stripSpace' not used
+problem: JAVA0130:JAVA0130 Non-static method 'stripSpace' does not use instance fields
+problem: JAVA0130:JAVA0130 Non-static method 'crateDirectory' does not use instance fields
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'project'
+problem: JAVA0173:JAVA0173 Unused method parameter 'project'
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0139:JAVA0139 Definition of main other than public static void main(java.lang.String[])
+problem: JAVA0160:JAVA0160 Method 'main' does not throw specified exception 'java.lang.Exception'
+problem: JAVA0171:JAVA0171 Unused local variable 'generator'
+path: /JTest/src/jtest/util/MultiColumnStringFieldEditor.java
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0076:JAVA0076 Use of magic number '50'
+path: /JTest/src/jtest/util/SourceUtil.java
+problem: JAVA0271:JAVA0271 3 on-demand (.*) static import statements (maximum: 2)
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0014:JAVA0014 Class 'SourceUtil' with only static members has non-private constructor
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0270:JAVA0270 Use Java 5.0 enhanced for loop construct to iterate over all elements in an array
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0067:JAVA0067 Array descriptor on identifier name 'fes'
+problem: JAVA0270:JAVA0270 Use Java 5.0 enhanced for loop construct to iterate over all elements in an array
+problem: JAVA0171:JAVA0171 Unused local variable 'className'
+problem: JAVA0067:JAVA0067 Array descriptor on identifier name 'projects'
+problem: JAVA0171:JAVA0171 Unused local variable 'basePkg'
+problem: JAVA0270:JAVA0270 Use Java 5.0 enhanced for loop construct to iterate over all elements in an array
+problem: JAVA0109:JAVA0109 Incorrect javadoc: no parameter '@param'
+problem: JAVA0067:JAVA0067 Array descriptor on identifier name 'projects'
+problem: JAVA0138:JAVA0138 7 parameters defined for method 'createSimilar' (maximum: 5)
+problem: JAVA0173:JAVA0173 Unused method parameter 'copyMeth'
+problem: JAVA0171:JAVA0171 Unused local variable 'fromElement'
+problem: JAVA0171:JAVA0171 Unused local variable 'toElement'
+problem: JAVA0175:JAVA0175 Successive assignment to variable 'field'
+problem: JAVA0171:JAVA0171 Unused local variable 'field'
+problem: JAVA0109:JAVA0109 Incorrect javadoc: no parameter '@param'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'implClass'
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'instance'
+path: /JTest/src/jtest/wizards/SampleNewWizard.java
+problem: JAVA0005:JAVA0005 Imports not in specified order
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0058:JAVA0058 Constructor 'SampleNewWizard' calls super()
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'containerName'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'fileName'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'monitor'
+problem: JAVA0115:JAVA0115 Incorrect javadoc: no @throws or @exception tag for 'CoreException'
+problem: JAVA0179:JAVA0179 Local variable 'page' hides visible field
+problem: JAVA0110:JAVA0110 Incorrect javadoc: no @return tag
+problem: JAVA0130:JAVA0130 Non-static method 'openContentStream' does not use instance fields
+problem: JAVA0144:JAVA0144 Line exceeds maximum 132 characters
+problem: JAVA0130:JAVA0130 Non-static method 'throwCoreException' does not use instance fields
+problem: JAVA0075:JAVA0075 Method parameter 'selection' hides field
+path: /JTest/src/jtest/wizards/SampleNewWizardPage.java
+problem: JAVA0113:JAVA0113 Incorrect javadoc: no @author tag
+problem: JAVA0114:JAVA0114 Incorrect javadoc: no @version tag
+problem: JAVA0109:JAVA0109 Incorrect javadoc: no parameter '@param'
+problem: JAVA0108:JAVA0108 Incorrect javadoc: no @param tag for 'selection'
+problem: JAVA0076:JAVA0076 Use of magic number '9'
+problem: JAVA0081:JAVA0081 Boolean literal in comparison (selection.isEmpty() == false)
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0177:JAVA0177 Variable declaration 'container' missing initializer
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0034:JAVA0034 Missing braces in if statement
+problem: JAVA0081:JAVA0081 Boolean literal in comparison (ext.equalsIgnoreCase("mpe") == false)

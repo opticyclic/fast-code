@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations>
+	<item name="dao">
+		<name>${input}DAO</name>
+		<type>interface</type>
+		<configuration>spring</configuration>
+	</item>
+	<item name="service" description="Service">
+		<name>${input}Service</name>
+		<field modifier="private" type="${input}Dao">${input}Dao</field>
+		<type>interface</type>
+		<configuration>spring</configuration>
+	</item>
+	<item name="vo" description="Value Object">
+		<name>${input}Vo</name>
+		<field modifier="private" type="Long">${input}Id</field>
+		<type data="true">class</type>
+	</item>
+	<item name="dto" description="Data Transfer Object">
+		<name>${input}Dto</name>
+		<type data="true">class</type>
+	</item>
+	<item name="exception" description="Exception">
+		<name>${input}Exception</name>
+		<type exception="true" base="Exception">class</type>
+	</item>
+	<item name="runtime-exception" description="Runtime Exception">
+		<name>${input}RuntimeException</name>
+		<type exception="true" base="RuntimeException">class</type>
+	</item>
+	<item name="abstract" description="Abstract Class">
+		<name>Abstract${input}</name>
+		<type abstract="true">class</type>
+	</item>
+	<item name="util" description="Utility Class">
+		<name>${input}Util</name>
+		<type final="true">class</type>
+	</item>
+
+</configurations>

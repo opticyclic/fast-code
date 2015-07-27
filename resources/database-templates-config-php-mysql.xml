@@ -1,0 +1,346 @@
+t<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE templates PUBLIC "//UNKNOWN/" "http://fast-code.sourceforge.net/dtd/template.dtd">
+
+<templates>
+	<template name="INSERT_SIMPLE">
+		<description>Used to Insert Statement</description>
+		<allowed-file-names>java php</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new insert statement\n
+				#set($vsnpt = "")
+				#foreach ($field in ${fields})
+					#if ($vsnpt == "")
+						#set ($vsnpt = "${field.name}")
+					#else
+						#set ($vsnpt = "${vsnpt}, ${field.name}")
+					#end
+				#end
+				#set($snpt = "")
+				#foreach ($field in ${fields})
+					#if ($snpt == "")
+						#set ($snpt = "?")
+					#else
+						#set ($snpt = "${snpt}, ?")
+					#end
+				#end
+				$query="insert into ${table} (${vsnpt}) values (${snpt})";
+				$stmt=$mysqli>prepare($query);
+				#foreach ($field in ${fields})
+				#if (${field.type} == "vchar" || ${field.type.toLowerCase()} == "varchar"||${field.type.toLowerCase()} == "varchar2"||${field.type.toLowerCase()} == "char"||${field.type.toLowerCase()} == "longvarchar"||${field.type.toLowerCase()} == "long"||${field.type.toLowerCase()} == "nvarchar")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "number" || ${field.type.toLowerCase()} == "int"||${field.type.toLowercase()} == "integer")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "decimal"||${field.type.toLowerCase()} == "numeric" )
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "double"||${field.type.toLowerCase()} == "float")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "timestamp"||${field.type.toLowerCase()} == "datetime"||${field.type.toLowerCase()} == "timestamp(6)")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					 #if (${field.type.toLowerCase()} == "date")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "bigint")
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "smallint")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "binary"||${field.type.toLowerCase()} == "longvarbinary"||${field.type.toLowerCase()} == "tinyint"||${field.type.toLowerCase()} == "varbinary")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "bit")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "time")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "real")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+				
+				#end
+				$stmt->execute();
+			]]>
+		</template-body>
+	</template>
+	
+	<template name="UPDATE_SIMPLE">
+		<description>Used to create Update Statement</description>
+		<allowed-file-names>java php</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				// Creating new update statement\n#set($update_part = "")#foreach ($field in ${update_fields})
+					#set($update_part = "${update_part} ${field.name} = ?")
+					#if (${velocityCount} < ${update_fields.size()})
+						#set($update_part = "${update_part}, ")
+					#end
+				#end
+				#set($wh_snpt = '')
+				#foreach ($field in ${where_fields})
+					#set ($wh_snpt = "${wh_snpt} ${field.name} ${where_qualifier} ? ")
+				                	#if (${velocityCount} < ${where_fields.size()})
+						#set ($wh_snpt = "${wh_snpt} ${where_separator} ")
+					#end
+				#end
+				$query = "update ${table} set ${update_part} where (${wh_snpt})";
+				$stmt=$mysqli->prepare($query);
+				#foreach ($field in ${fields})
+				#if (${field.type} == "vchar" || ${field.type.toLowerCase()} == "varchar"||${field.type.toLowerCase()} == "varchar2"||${field.type.toLowerCase()} == "char"||${field.type.toLowerCase()} == "longvarchar"||${field.type.toLowerCase()} == "long"||${field.type.toLowerCase()} == "nvarchar")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "number" || ${field.type.toLowerCase()} == "int"||${field.type.toLowercase()} == "integer")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "decimal"||${field.type.toLowerCase()} == "numeric" )
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "double"||${field.type.toLowerCase()} == "float")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "timestamp"||${field.type.toLowerCase()} == "datetime"||${field.type.toLowerCase()} == "timestamp(6)")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					 #if (${field.type.toLowerCase()} == "date")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "bigint")
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "smallint")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "binary"||${field.type.toLowerCase()} == "longvarbinary"||${field.type.toLowerCase()} == "tinyint"||${field.type.toLowerCase()} == "varbinary")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "bit")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "time")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "real")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+				#end
+				#foreach ($field in ${where_fields})
+				#if (${field.type} == "vchar" || ${field.type.toLowerCase()} == "varchar"||${field.type.toLowerCase()} == "varchar2"||${field.type.toLowerCase()} == "char"||${field.type.toLowerCase()} == "longvarchar"||${field.type.toLowerCase()} == "long"||${field.type.toLowerCase()} == "nvarchar")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "number" || ${field.type.toLowerCase()} == "int"||${field.type.toLowercase()} == "integer")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "decimal"||${field.type.toLowerCase()} == "numeric" )
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "double"||${field.type.toLowerCase()} == "float")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "timestamp"||${field.type.toLowerCase()} == "datetime"||${field.type.toLowerCase()} == "timestamp(6)")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					 #if (${field.type.toLowerCase()} == "date")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "bigint")
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "smallint")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "binary"||${field.type.toLowerCase()} == "longvarbinary"||${field.type.toLowerCase()} == "tinyint"||${field.type.toLowerCase()} == "varbinary")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "bit")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "time")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "real")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+				#end
+				$stmt->execute();
+				]]>
+		</template-body>
+	</template>
+			<template name="DELETE_SIMPLE">
+		<description>Used to create delete statement.</description>
+		<allowed-file-names>java php</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create delete statement\n#set ($where_part = "")#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${where_qualifier} ?")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				$query = "delete from ${table} ${where_part}";
+				$stmt=$mysqli->prepare($query);
+				#foreach ($field in ${where_fields})
+				#if (${field.type} == "vchar" || ${field.type.toLowerCase()} == "varchar"||${field.type.toLowerCase()} == "varchar2"||${field.type.toLowerCase()} == "char"||${field.type.toLowerCase()} == "longvarchar"||${field.type.toLowerCase()} == "long"||${field.type.toLowerCase()} == "nvarchar")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "number" || ${field.type.toLowerCase()} == "int"||${field.type.toLowercase()} == "integer")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "decimal"||${field.type.toLowerCase()} == "numeric" )
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "double"||${field.type.toLowerCase()} == "float")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "timestamp"||${field.type.toLowerCase()} == "datetime"||${field.type.toLowerCase()} == "timestamp(6)")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					 #if (${field.type.toLowerCase()} == "date")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "bigint")
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "smallint")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "binary"||${field.type.toLowerCase()} == "longvarbinary"||${field.type.toLowerCase()} == "tinyint"||${field.type.toLowerCase()} == "varbinary")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "bit")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "time")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "real")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+				#end
+					$stmt->execute();
+				]]>
+		</template-body>
+	</template>
+			<template name="SELECT_SIMPLE">
+		<description>Used to create select statement.</description>
+		<allowed-file-names>java php</allowed-file-names>
+		<template-body>
+			<![CDATA[
+				//create select statement\n#set($select_part = "")#if (!${selected_fields} || ${selected_fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${selected_fields})
+					#set($select_part = "${select_part} ${instance}.${field.name}")
+					#if (${velocityCount} < ${selected_fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+				#set($join_part = "")
+				#foreach ($field in ${join_fields})
+					#set($join_part = "${join_part} join ${instance}.${field.name}")
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${where_qualifier} ?")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+				$query="select ${select_part} from ${table} ${instance} ${where_part}";
+				$stmt=$mysqli->prepare($query);
+				
+				#foreach ($field in ${where_fields})
+				#if (${field.type} == "vchar" || ${field.type.toLowerCase()} == "varchar"||${field.type.toLowerCase()} == "varchar2"||${field.type.toLowerCase()} == "char"||${field.type.toLowerCase()} == "longvarchar"||${field.type.toLowerCase()} == "long"||${field.type.toLowerCase()} == "nvarchar")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "number" || ${field.type.toLowerCase()} == "int"||${field.type.toLowercase()} == "integer")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "decimal"||${field.type.toLowerCase()} == "numeric" )
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "double"||${field.type.toLowerCase()} == "float")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "timestamp"||${field.type.toLowerCase()} == "datetime"||${field.type.toLowerCase()} == "timestamp(6)")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					 #if (${field.type.toLowerCase()} == "date")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+				      #if (${field.type.toLowerCase()} == "bigint")
+					  $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "smallint")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "binary"||${field.type.toLowerCase()} == "longvarbinary"||${field.type.toLowerCase()} == "tinyint"||${field.type.toLowerCase()} == "varbinary")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "bit")
+					 $stmt->bind_param('i', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "time")
+					 $stmt->bind_param('s', "${field.name}");
+					#end
+					#if (${field.type.toLowerCase()} == "real")
+					 $stmt->bind_param('d', "${field.name}");
+					#end
+				#end
+				$stmt->execute();
+				$stmt->bind_result(${select_part});
+				while($row=$stmt->fetch()){
+				#foreach ($field in ${fields})
+				#if (${field.type} == "vchar" || ${field.type.toLowerCase()} == "varchar"||${field.type.toLowerCase()} == "varchar2"||${field.type.toLowerCase()} == "char"||${field.type.toLowerCase()} == "longvarchar"||${field.type.toLowerCase()} == "long"||${field.type.toLowerCase()} == "nvarchar")
+					 printf("%s",${field.value});
+					#end
+					#if (${field.type.toLowerCase()} == "number" || ${field.type.toLowerCase()} == "int"||${field.type.toLowercase()} == "integer")
+					printf("%d",${field.value});
+					#end
+					#if (${field.type.toLowerCase()} == "decimal"||${field.type.toLowerCase()} == "numeric" )
+					  printf("%d",${field.value});
+					#end
+				      #if (${field.type.toLowerCase()} == "double"||${field.type.toLowerCase()} == "float")
+					printf("%d",${field.value});
+					#end
+					#if (${field.type.toLowerCase()} == "timestamp"||${field.type.toLowerCase()} == "datetime"||${field.type.toLowerCase()} == "timestamp(6)")
+					 printf("%s",${field.value});
+					#end
+					 #if (${field.type.toLowerCase()} == "date")
+					 printf("%s",${field.value});
+					#end
+				      #if (${field.type.toLowerCase()} == "bigint")
+					  printf("%d",${field.value});
+					#end
+					#if (${field.type.toLowerCase()} == "smallint")
+					 printf("%d",${field.value});
+					#end
+					#if (${field.type.toLowerCase()} == "binary"||${field.type.toLowerCase()} == "longvarbinary"||${field.type.toLowerCase()} == "tinyint"||${field.type.toLowerCase()} == "varbinary")
+					printf("%d",${field.value});
+					#end
+					#if (${field.type.toLowerCase()} == "bit")
+					printf("%d",${field.value});
+					#end
+					#if (${field.type.toLowerCase()} == "time")
+					 printf("%s",${field.value});
+					#end
+					#if (${field.type.toLowerCase()} == "real")
+					printf("%d",${field.value});
+					#end
+				#end
+				
+				}
+				]]>
+		</template-body>
+	</template>
+	</templates>		

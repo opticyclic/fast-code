@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parents>
+<parent name="java.util.Collection">
+	<child>java.util.ArrayList</child>
+	<child>java.util.List</child>
+	<child>java.util.LinkedList</child>
+	<child>java.util.Set</child>
+	<child>java.util.TreeSet</child>
+	<child>java.util.SortedSet</child>
+	<child>java.util.LinkedHashSet</child>
+
+</parent>
+<parent name="java.util.Map">
+	<child>java.util.HashMap</child>
+	<child>java.util.LinkedHashMap</child>
+	<child>java.util.SortedMap</child>
+	<child>java.util.TreeMap</child>
+	<child>java.util.Hashtable</child>
+	
+</parent>
+</parents>

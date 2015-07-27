@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	<template name="SAMPLE_SNIPPET">
+		<description>Used to create sample snippet</description>
+		<variation> </variation>
+		<template-body>
+			<![CDATA[
+				##This is a sample template which will work only with file containing tab delimited data
+				#foreach ($data in ${records})
+					<tr> ${data.Code} : ${data.Country} : ${data.EName} </tr>
+				#end
+			]]>
+		</template-body>
+	</template>
+</templates>

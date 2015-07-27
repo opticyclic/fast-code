@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>FastCode-DBTemplates</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="css/grid.css" type="text/css" media="screen">
+		<script type="text/javascript" src="js/shCore.js"></script>
+		<script type="text/javascript" src="js/shAutoloader.js"></script>
+		<script type="text/javascript" src="js/shBrushJava.js"></script>
+		<script type="text/javascript" src="js/shBrushXml.js"></script>
+		<script type="text/javascript" src="js/shBrushJScript.js"></script>
+ <!--	 <script type="text/javascript" src="js/shCore.js"></script>
+	 <script type="text/javascript" src="css/shBrushJScript.js"></script>-->
+	 <link href="css/shCore.css" rel="stylesheet" type="text/css" />
+	 <link href="css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+	 <!-- Finally, to actually run the highlighter, you need to include this JS on your page -->		     <script type="text/javascript">
+	 SyntaxHighlighter.config.clipboardSwf = 'http://www.marchwicki.pl/blog/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf';
+	 SyntaxHighlighter.all()
+	 </script>
+		<!--[if lt IE 7]>
+		<div style=' clear: both; text-align:center; position: relative;'>
+			<a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+				<img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+			</a>
+		</div>
+		<![endif]-->
+		<!--[if lt IE 9]>
+			<script type="text/javascript" src="js/html5.js"></script>
+		<![endif]-->
+	    <style type="text/css">
+<!--
+.style3 {color: #000000}
+.style12 {color: #400000}
+.style14 {color: #000000; font-weight: bold; }
+.style18 {color: #0000CC}
+.style23 {color: #0000CC; font-size: small; }
+.style20 {color: #800000}
+.style22 {color: #660000}
+.style27 {color: #660000; font-size: large; }
+.style28 {color: #660000; font-weight: bold; }
+.style29 {font-weight: bold}
+-->
+        </style>
+</head>
+	<body id="page3">
+		<div class="extra">
+<!--==============================header=================================-->
+			<header>
+				<div class="main">
+					<div class="border-top">
+						<div class="wrapper">
+						  <h1><img src="images/title.jpg" width="266" height="101"></h1>
+							<nav>
+								<ul class="menu">
+									<li><a href="http://3pintech.com/index.htm">Home</a></li>
+									<li><a href="http://3pintech.com/about_us.htm">About Us</a></li>
+									<li><a class="active" href="http://3pintech.com/products.htm">Products</a></li>
+									<li><a href="http://3pintech.com/solutions.htm">Solutions</a></li>
+									<li><a href="http://3pintech.com/clients.htm">Clients</a></li>
+									<li class="last-item"><a href="http://3pintech.com/contacts.htm">Contacts</a></li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+					<div class="slider-bg">
+					  <div class="slider"></div>
+					</div>
+				</div>
+			</header>
+<!--==============================content================================-->
+<div align="right">
+  <ul class="list-1">
+    <li class="style23"><a href="http://sourceforge.net/projects/fast-code/files/updates/" class="style18">Fast Code Download</a> | <a href="license.htm"><span class="style18">Fast Code</span> <span class="style18">License</span></a><span class="style18"> |</span> <a href="feedbacks.htm" class="style18">Feedback</a> | <a href="http://www.youtube.com/watch?v=fxuJOvkNdL8" class="style18">3PinTalk</a></li>
+  </ul>
+</div>
+<h4>&nbsp;</h4>
+			<div class="ic"></div>
+				<div class="main">
+				  <div class="container_12">
+						<div class="wrapper p3">
+							<h4><span class="style12">
+						    </span></h4>
+							<ul class="list-1"><div align="left"><h4><a href="/products/" class="style18">Fast code eclipse plug-in</a><a href="/products/" class="style20"></a></h4>
+						      <div align="right">
+                                <ul class="list-1">
+                                  <li class="style18">
+                                    <div align="left" class="style20">
+                                      <div align="left"><a href="documentation.htm" class="style22">Documentation</a> | <a href="templates.htm" class="style22">Templates</a> | <a href="dbcodetemplates.htm" class="style22">Database Templates</a> | <a href="templatelist.htm" class="style22">Template List</a> |<a href="installation.htm" class="style22"> Installation </a> | <a href="troubleshooting.htm" class="style22">Trouble shooting</a> | <a href="faq.htm" class="style22">FAQ</a> | <a href="tracker.htm" class="style22">Tracker</a> | <a href="video.htm" class="style22">Video Tutorials</a> | <a href="spreadthenews.htm" class="style22">Spread the news</a> | <a href="features.htm" class="style22">Features</a> | <a href="discussionforum.htm" class="style22">Discussion Forum</a> | <a href="releasenotes.htm" class="style22">Release Notes</a> </div>
+                                    </div>
+                                  </li>
+                                </ul>
+					          </div>
+						      </div>
+    </ul>
+							<h2 class="style22">&nbsp;</h2>
+							<h2 class="style27">DATABASE TEMPLATES</h2>
+							<p class="style3">This plug-in also provides an easy way to create SQL statements in a Java file or any other file. This greatly helps in any program involving JDBC. To use this plugin, the user first needs to configure connection settings for the database ie. <strong>MySql</strong>, <strong>Oracle</strong>, <strong>PostgreSQL</strong>. They can do this in the preference page by going to <strong>Windows --&gt; Preference --&gt;Fast Code--&gt;Database</strong>  as shown in below dialog:</p>
+							<p class="style3"><img src="images/dbconnectionprefpage.JPG" width="950" height="694"></p>
+							<p class="style3">The user can choose any table they wish and select multiple columns from them to create the SQL statements. The snippets generated can be easily configured to velocity templates. Various kind of code snippets can be created with this feature. The plugin comes with some built-in templates. User can modify the templates by going to <strong>Windows--&gt; Preference--&gt; Fast Code--&gt; Database --&gt;Templates</strong>. <a href="templatelist/database-templates-config.xml" class="style3"><strong>Database-templates-config.xml</strong></a> file has all the db templates. Once the file is in place, one can import the templates by going to <strong>FastCode--&gt; Database Templates --&gt; Import Database Template</strong>. One can enable or disable any template from the Preferences, but to completely delete a template or insert a new template, one has to update the <strong><a href="templatelist/database-templates-config.xml" class="style3">database-templates-config.xml</a></strong> file.</p>
+							<p class="style3">Database Templates  is also available for <strong>PHP</strong> which provides an easier way to create SQL statements in a php file.  Please point your update site to <a href="http://sourceforge.net/projects/fast-code/files/updates/php/" class="style22">http://sourceforge.net/projects/fast-code/files/updates/php/</a> in eclipse. To know more about PHP installation  click <a href="installation.htm" class="style14">here</a>. One can enable or disable any template from the Preferences, but to completely delete a template or insert a new template, one has to update the <strong><a href="templatelist/php/database-templates-config.xml" class="style3">database-templates-config.xml</a></strong> file. This file is available for database types <strong>MySql</strong>, <strong>Oracle</strong>, <strong>PostgreSQL</strong>. All three databases are consolidated into one template. Also three seperate db templates are available for the each databases ( <span class="style29"><a href="templatelist/php/database-templates-config-mysql.xml" class="style3">MySql</a>, <a href="templatelist/php/database-templates-config-oracle.xml" class="style3">Oracle</a>, <a href="templatelist/php/database-templates-config-PostgreSQL.xml" class="style3">PostgreSQL</a></span>). One can rename the database template for each database templates available and import the templates.</p>
+							<p class="style3">DB template preference page is shown below: </p>
+							<div class="background" style="width: 1000px; height: 710px;  overflow-x: scroll; border: 0; padding: 1px;">
+	<p class="style3"><img src="images/dbtemplateprefpage.JPG" width="950" height="738">
+					  <img src="images/dbtemplateprefpage1.JPG" width="950" height="738">
+	                  <img src="images/dbtemplateprefpage2.JPG" width="950" height="738">
+	                  <img src="images/dbtemplateprefpage3.JPG" width="950" height="738">
+	                  <img src="images/dbtemplateprefpage4.JPG" width="950" height="738">
+	                  <img src="images/dbtemplateprefpage5.JPG" width="950" height="738">
+					  <img src="images/dbtemplateprefpage6.JPG" width="950" height="738">
+					  <img src="images/dbtemplateprefpage7.JPG" width="950" height="738">
+					  <img src="images/dbtemplateprefpage8.JPG" width="950" height="738">							</p>
+	</div>						<p class="style28">The database template feature can be invoked with the following steps : </p>
+							<p class="style3"><img src="images/arrow1.jpg" width="11" height="22"> Navigate to a java file. <br>
+							  <img src="images/arrow1.jpg" width="11" height="22"> Go to <strong>fast code menu--&gt; Database templates--&gt;Create New Database Snippet</strong> and select appropriate template.<br>
+							  <img src="images/arrow1.jpg" width="11" height="22"> Select the table. <br>
+							  <img src="images/arrow1.jpg" width="11" height="22"> Select the columns to create code snippet within the java file. <br>
+    </p>
+							<p class="style28">The database template can be a arbitrary velocity template with the following variables : </p>
+<p class="style3"><img src="images/arrow1.jpg" width="11" height="22"> <strong>${table}</strong> is the name of table selected. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <strong>${instance}</strong> is the default table instance eg. If table is books, instance is b. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <strong>${where_fields}</strong> is the list of fields that will be used in the where clause.<br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <strong>${fields}</strong> is the list of fields that will be used in the select/insert/update/delete statements. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <strong>${join_fields}</strong> is the list of fields that will be used for join query.<br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <strong>${field}</strong> is the type of the element within any of the above mentioned field list --<strong>${fields}</strong>.Each has the attributes <strong>name, javaName, value ,type, size, nullable, &nbsp;&nbsp;&nbsp;&nbsp;idField</strong>. These attributes can be accessed by using <strong>${field.name}</strong>, <strong>${field.type}</strong>,<strong>${field.whereQualifier.sign}</strong>,<strong>${field.javaTypeName}</strong>,<strong>${field.tableName} </strong> &nbsp;&nbsp;&nbsp;&nbsp;etc. <strong>JavaName</strong> is a computed attribute which holds the column name in the form of a java variable name, e.g. FIRST_NAME will be stored as firstName. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <strong>${where_separator}</strong> is the 'and' or 'or' condition to be used in the where clause.<br>
+	  <img src="images/arrow1.jpg" width="11" height="22"><strong> Class:</strong> Class has several attributes like: <br>
+      &nbsp;&nbsp;&nbsp;<img src="images/arrow1.jpg" width="11" height="22"><strong> ${class.name} </strong>is the name of class selected.<br>
+      &nbsp;&nbsp;&nbsp;<img src="images/arrow1.jpg" width="11" height="22"> <strong>${class.fullyQualifiedName} </strong>is the name of fully qualified class name. </span><br>
+      &nbsp;&nbsp;&nbsp;<img src="images/arrow1.jpg" width="11" height="22"><strong> ${class.defaultInstance}</strong> is the default instance which will have the class name in lower case.<br>
+      &nbsp;&nbsp;&nbsp;<img src="images/arrow1.jpg" width="11" height="22"><strong> ${class.package.name}</strong> is  the package name of the class. <br>
+      &nbsp;&nbsp;&nbsp;<img src="images/arrow1.jpg" width="11" height="22"><strong> ${pojo_class_instance}</strong> is used to hold the instance name while creating a pojo class. <br>
+    <img src="images/arrow1.jpg" width="11" height="22"><strong> ${MethodFieldMap} </strong>is the placeholder which holds one map and map has  field type<strong> </strong>attribute <strong>${field.type.toLowerCase().trim()}</strong><span dir="ltr" id=":y6"> which holds set method name of this field</span>.<br>
+      <img src="images/arrow1.jpg" width="11" height="22"><strong> ${GetMethodFieldMap}</strong> is the placeholder which holds one map and map has <span dir="ltr" id=":y6">field type<strong> </strong>attribute <strong>${field.type.toLowerCase().trim()}</strong> which holds get method name of this field</span><strong>.</strong><br>
+      <br>
+      <strong>&nbsp;&nbsp;&nbsp;</strong> <br>
+      <span class="style22"><strong>The user can choose from any of the following types of snippets : </strong></span>
+	<p class="style3"><img src="images/arrow1.jpg" width="11" height="22"> <a href="#createidus" class="style3">Create insert/delete/update/select statements as a simple, named parameter (to use with NamedParameterJdbcTemplate),  named query or named query with annotation</a>.<br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#join" class="style3">Create Select statement with JOIN</a>. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#pojoclass" class="style3">Create  POJO Class</a>. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#pojoclassann" class="style3">Create  POJO Class without annotation</a>.<br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#exportimport" class="style3">Export/Import Database Template</a>. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#snippet" class="style3">Create New  Database Snippet</a>.  <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#snippet" class="style3">Create New Simple Table/Column Snippet</a>.<br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#addpojofield" class="style3">Add Fields to POJO Class</a>. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#addpojofieldnoannot" class="style3">Add Fields to POJO Class without annotation.</a><br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#rowmapperclass" class="style3">RowMapper as Class</a>. <br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#selectrowmappermethod" class="style3">Select with RowMapper as Method.</a><br>
+	  <img src="images/arrow1.jpg" width="11" height="22"> <a href="#pojoinstance" class="style3">Create POJO instance from DB field.</a><a href="#selectrowmapper" class="style3"></a><br>
+      <img src="images/arrow1.jpg" width="11" height="22"> <a href="#selectrowmapperjoin" class="style3">Select with Join </a><a href="#selectrowmapperjoin" class="style3">RowMapper as Method</a><a href="#pojoinstance" class="style3">.</a><a href="#selectrowmapper" class="style3"></a></p>
+							<h6 class="style22"><img src="images/arrow1.jpg" width="11" height="22"> <a name="createidus"></a>CREATE INSERT/DELETE/UPDATE/SELECT</h6>
+							<p class="style3">In case the user wants to create an update statement, the user needs to go to<strong> FastCode--&gt;</strong> <strong>Database Templates--&gt;Create new database snippet</strong>. The below dialog box will be shown. </p>
+							<p><img src="images/databasetemplatesnippet.JPG" width="739" height="445"></p>
+							<p><a name="snippet"></a><img src="images/createdatabasesnippet.JPG" width="733" height="580"></p>
+							<h6>&nbsp;</h6>
+							<p class="style3"><img src="images/databaseColumnSelection.JPG" width="438" height="247"></p>
+							<p class="style3">From the list of snippets, the user can select the required snippet, and then choose the table and the required columns. Below are the examples of code generated for simple, named parameter and named query. </p>
+							<h6 class="style22"><img src="images/arrow1.jpg" width="11" height="22"> Simple SQL statements : </h6>
+							<p class="style14">Select : </p>
+							<pre class="brush: java;">
+	  //create select statement
+	final String sqlQuery = "select  e.COMM,  e.DEPTNO,  e.EMPNO,  e.ENAME,  e.HIREDATE
+	from EMP e where  HIREDATE != ? and  JOB != ? and  MGR != ?";
+	PreparedStatement ps = con.prepareStatement(sqlQuery);
+	ps.setDate(1, new Date(0000-00-00));
+	ps.setString(2, "");
+	ps.setInt(3, 0);
+	ResultSet rs=ps.executeQuery();
+	while(rs.next()) {
+	    BigDecimal comm = rs.getBigDecimal(1);
+	    Integer deptno = rs.getInt(2);
+	    Integer empno = rs.getInt(3);
+	    String ename = rs.getString(4);
+	    Date hiredate = rs.getDate(5);
+	}
+
+</pre>
+                            <ul>
+                              <li class="style22">
+                                <p><strong><img src="images/arrow1.jpg" width="11" height="22"> Database to class mapping feature:</strong></p>
+                              </li>
+                            </ul>
+                            <p class="style3">When user tries to create a simple select statement using <strong>FastCode --&gt; Database Templates --&gt;  Create Select Statement</strong>, if the project already has pojo classes, the  fields selected in the snippet dialog tries to map with the existing pojo class  fields and create a snippet statement with the <strong>pojoclassname.Fieldname</strong> as shown in below sample code: </p>
+                            <pre class="brush: java;">
+	//create select statement
+	final String sqlQuery = "select  e.firstname,  e.JOB,  e.lastname,  e.COMM,  e.DEPTNO from EMP e where  EMPNO IN ? AND  JOB IS NULL  AND  MGR IS NULL  AND  HIREDATE LIKE ? AND  SAL < ?";
+	PreparedStatement ps = con.prepareStatement(sqlQuery);
+	ps.setInt(1, 0);
+	ps.setString(2, "");
+	ps.setInt(3, 0);
+	ps.setDate(4, new Date(0000-00-00));
+	ps.setBigDecimal(5, new BigDecimal(""));
+	ResultSet rs=ps.executeQuery();
+	while(rs.next()){
+		empPOJO.setfirstname(rs.getString(1));//added pojoclass name for field which already exists in empPOJO
+		empPOJO.setlastname(rs.getDate(3));
+		BigDecimal comm = rs.getBigDecimal(4);
+		Integer deptno = rs.getInt(5);
+	}</pre>
+                            <p class="style3"><br>
+                                <strong>Insert : </strong></p>
+                            <pre class="brush: java;">
+    // Creating new insert statement
+	String sql = "insert into EMP (DEPTNO, EMPNO, ENAME, HIREDATE, JOB, MGR)
+	values (?, ?, ?, ?, ?, ?)";
+	PreparedStatement ps = con.prepareStatement(sql);
+	ps.setInt(1, 0);
+	ps.setInt(2, 0);
+	ps.setString(3, "");
+	ps.setDate(4, new Date(0000-00-00));
+	ps.setString(5, "");
+	ps.setInt(6, 0);
+	ps.executeUpdate();
+                            </pre>
+                            <p class="style3"><br>
+                                <strong>Update : </strong></p>
+                            <pre class="brush: java;">
+	   // Creating new update statement
+	String sql = "update EMP set  DEPTNO = ?,  EMPNO = ?,  ENAME = ? where
+	( HIREDATE like ?  and  JOB like ?  and  MGR like ?)";
+	PreparedStatement ps = con.prepareStatement(sql);
+	ps.setInt(1, 0);
+	ps.setInt(2, 0);
+	ps.setString(3, "");
+	ps.setDate(4, new Date(0000-00-00));
+	ps.setString(5, "");
+	ps.setInt(6, 0);
+	ps.executeUpdate();
+                            </pre>
+                            <p class="style3"><br>
+                                <strong>Delete :</strong> </p>
+                            <pre class="brush: java;">
+    //create delete statement
+	final String sqlQuery = "delete from EMP where  DEPTNO = ? and  EMPNO = ?";
+	PreparedStatement ps = con.prepareStatement(sqlQuery);
+	ps.setInt(1, 0);
+	ps.setInt(2, 0);
+	ps.executeUpdate();
+
+                            </pre>
+    <h6><br>
+      <span class="style22"><img src="images/arrow1.jpg" width="11" height="22"> SQL Statements with Named Parameter : </span></h6>
+                            <p class="style14">Select : </p>
+                            <pre class="brush: java;">
+   //create select statement
+	final String sqlQuery = "select  e.COMM,  e.DEPTNO,  e.EMPNO,  e.ENAME from EMP e where
+	HIREDATE like :HIREDATE or  JOB like :JOB or  MGR like :MGR";
+	Map namedParameters = new HashMap();
+	namedParameters.put("HIREDATE", new Date(0000-00-00));
+	namedParameters.put("JOB", "");
+	namedParameters.put("MGR", 0);
+	List result = namedParameterJdbcTemplate.queryForList(sqlQuery, namedParameters);
+                            </pre>
+                            <p> <span class="style3"><br>
+                                  <strong>Insert : </strong></span></p>
+                            <pre class="brush: java;">
+	   // Creating new insert statement
+	String sqlQuery = "insert into EMP (DEPTNO, EMPNO, ENAME, HIREDATE, JOB, MGR)
+	 values (:DEPTNO, :EMPNO, :ENAME, :HIREDATE, :JOB, :MGR)";
+	Map namedParameters = new HashMap();
+	namedParameters.put("DEPTNO", 0);
+	namedParameters.put("EMPNO", 0);
+	namedParameters.put("ENAME", "");
+	namedParameters.put("HIREDATE", new Date(0000-00-00));
+	namedParameters.put("JOB", "");
+	namedParameters.put("MGR", 0);
+	namedParameterJdbcTemplate.update(sqlQuery, namedParameters);
+                            </pre>
+                            <p class="style3"><br>
+                                <strong>Update : </strong></p>
+                            <pre class="brush: java;">
+	   // Creating new update statement
+	String sqlQuery = "update EMP set  DEPTNO = :DEPTNO,  EMPNO = :EMPNO,  ENAME = :ENAME,
+	HIREDATE = :HIREDATE where ( HIREDATE =:HIREDATE or  JOB =:JOB or  MGR =:MGR)";
+	Map namedParameters = new HashMap();
+	namedParameters.put("DEPTNO", 0);
+	namedParameters.put("EMPNO", 0);
+	namedParameters.put("ENAME", "");
+	namedParameters.put("HIREDATE", new Date(0000-00-00));
+	namedParameters.put("HIREDATE", new Date(0000-00-00));
+	namedParameters.put("JOB", "");
+	namedParameters.put("MGR", 0);
+	namedParameterJdbcTemplate.update(sqlQuery, namedParameters);
+                            </pre>
+                            <p class="style3"> <br>
+                                <strong>Delete : </strong></p>
+                            <pre class="brush: java;">
+	   //create delete statement
+	final String sqlQuery = "delete from EMP where  DEPTNO != :DEPTNO or  EMPNO != :EMPNO";
+	Map namedParameters = new HashMap();
+	namedParameters.put("DEPTNO", 0);
+	namedParameters.put("EMPNO", 0);
+	namedParameterJdbcTemplate.update(sqlQuery, namedParameters);
+                            </pre>
+    <h6 class="style3"><br>
+      <span class="style22"><img src="images/arrow1.jpg" width="11" height="22"> SQL Statements with Named Query : </span></h6>
+    <p class="style3">To use the named query, one needs to have a valid xml file so that the code generated in it. The plugin generated the required code in the java file and the xml code in the file the user chooses. The code in the xml file is generated with the help of template configurations in a file called additional-templates-config.xml.</p>
+    <p class="style14">Select : </p>
+ <pre class="brush: java;">
+	//create select statement
+	EntityManager em = ...
+	Query q = em.createNamedQuery("selectAll");
+	q.setParameter("HIREDATE", "HIREDATE");
+	q.setParameter("JOB", "JOB");
+	List<> results = (List<>) q.getResultList();
+                            </pre>
+                            <p class="style3"><br>
+                              <strong>Code generated in xml file</strong></p>
+<pre class="brush: java;">
+   &lt;sql-query name="selectAll" &gt;
+        &lt;query&gt;
+        &lt;![CDATA[
+            select  e.DEPTNO,  e.EMPNO,  e.ENAME,  e.JOB,  e.SAL from EMP e  where HIREDATE = :HIREDATE AND  JOB = :JOB
+        ]]&gt;
+        &lt;/query&gt;
+    &lt;/sql-query&gt;
+                            </pre>
+                            <p class="style3"><br>
+                                <strong>Insert : </strong></p>
+<pre class="brush: java;">
+// Creating new insert statement
+EntityManager em = ...
+Query q = em.createNamedQuery("insertDept").execute();
+                            </pre>
+                              <p class="style3"><br>
+                                <strong>Code generated in xml file</strong></p>
+<pre class="brush: java;">
+   &lt;sql-query name="insertDept" &gt;
+        &lt;query&gt;
+        &lt;![CDATA[
+            insert into DEPT (DEPTNO, DNAME, LOC) values (:DEPTNO, :DNAME, :LOC)
+        ]]&gt;
+        &lt;/query&gt;
+    &lt;/sql-query&gt;
+                            </pre>
+                            <p> <span class="style3"><br>
+                                  <strong>Update : </strong></span></p>
+<pre class="brush: java;">
+	// Creating new update statement
+	EntityManager em = ...
+	Query q = em.createNamedQuery("updateSal");
+	q.setParameter("JOB", "JOB");
+	int res = q.executeUpdate();
+                            </pre>
+                              <p class="style3"><br>
+                                <strong>Code generated in xml file</strong></p>
+<pre class="brush: java;">
+   &lt;sql-query name="updateSal" &gt;
+        &lt;query&gt;
+        &lt;![CDATA[
+            update EMP set  SAL = :SAL where  JOB = :JOB
+        ]]&gt;
+        &lt;/query&gt;
+    &lt;/sql-query&gt;
+                            </pre>
+                            <p> <span class="style3"><br>
+                                  <strong>Delete : </strong></span></p>
+ <pre class="brush: java;">
+	//create delete statement
+	EntityManager em = ...
+	Query q = em.createNamedQuery("deleteJob");
+	q.setParameter("JOB", "JOB");
+	int res = q.executeUpdate();
+                            </pre>
+                              <p class="style3"><br>
+                                <strong>Code generated in xml file</strong></p>
+<pre class="brush: java;">
+   &lt;sql-query name="deleteJob" &gt;
+        &lt;query&gt;
+        &lt;![CDATA[
+            delete from EMP where  JOB = :JOB
+        ]]&gt;
+        &lt;/query&gt;
+    &lt;/sql-query&gt;                            </pre>
+                            <p> <span class="style3"><br>
+                            </span></p>
+                            <h6 class="style3"><span class="style22"><img src="images/arrow1.jpg" width="11" height="22"> SQL Statements with Named Query Annotation: </span></h6>
+                            <p class="style3"><br>
+To use the named query with annotation, one needs to have an entity annotation defined in a class file and a valid xml file so that the code generates in it. The plugin generated the required code in the java file which has an entity and the xml code in the file the user chooses. The code in the xml file is generated with the help of template configurations in a file called additional-templates-config.xml.</p>
+                            <p class="style3"><span class="style14">Select : </span></p>
+<pre class="brush: java;">
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+@NamedQueries({@NamedQuery(name = "selectAll", query = "select e.DEPTNO,  e.EMPNO,  e.ENAME,  e.JOB,  e.SAL from EMP e  where HIREDATE = :HIREDATE AND  JOB = :JOB")})
+
+	//create select statement
+	EntityManager em = ...
+	Query q = em.createNamedQuery("selectAll");
+	q.setParameter("HIREDATE", "HIREDATE");
+	q.setParameter("JOB", "JOB");
+	List<> results = (List<>) q.getResultList();
+</pre>
+                            <p class="style3"><br>
+                                <strong>Code generated in xml file</strong></p>
+<pre class="brush: java;">
+   &lt;sql-query name="selectAll" &gt;
+        &lt;query&gt;
+        &lt;![CDATA[
+            select  e.DEPTNO,  e.EMPNO,  e.ENAME,  e.JOB,  e.SAL from EMP e  where HIREDATE = :HIREDATE AND  JOB = :JOB
+        ]]&gt;
+        &lt;/query&gt;
+    &lt;/sql-query&gt;
+                            </pre>
+                            <p class="style3"><br>
+                                <strong>Insert : </strong></p>
+<pre class="brush: java;">
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+@NamedQueries({@NamedQuery(name = "insertDept", query = "insert into DEPT (DEPTNO, DNAME, LOC) values (:DEPTNO, :DNAME, :LOC)")})
+
+	// Creating new insert statement
+	EntityManager em = ...
+	Query q = em.createNamedQuery("insertDept").execute();
+                            </pre>
+                            <p class="style3"><br>
+                                <strong>Code generated in xml file</strong></p>
+<pre class="brush: java;">
+   &lt;sql-query name="insertDept" &gt;
+        &lt;query&gt;
+        &lt;![CDATA[
+            insert into DEPT (DEPTNO, DNAME, LOC) values (:DEPTNO, :DNAME, :LOC)
+        ]]&gt;
+        &lt;/query&gt;
+    &lt;/sql-query&gt;
+                            </pre>
+                            <p> <span class="style3"><br>
+                                  <strong>Update : </strong></span></p>
+<pre class="brush: java;">
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+@NamedQueries({@NamedQuery(name = "updateSal", query = "update EMP set  SAL = :SAL where  JOB = :JOB")})
+
+	// Creating new update statement
+	EntityManager em = ...
+	Query q = em.createNamedQuery("updateSal");
+	q.setParameter("JOB", "JOB");
+	int res = q.executeUpdate();
+</pre>
+                            <p class="style3"><br>
+                                <strong>Code generated in xml file</strong></p>
+<pre class="brush: java;">
+   &lt;sql-query name="updateSal" &gt;
+        &lt;query&gt;
+        &lt;![CDATA[
+            update EMP set  SAL = :SAL where  JOB = :JOB
+        ]]&gt;
+        &lt;/query&gt;
+    &lt;/sql-query&gt;
+                            </pre>
+                            <p> <span class="style3"><br>
+                                  <strong>Delete : </strong></span></p>
+<pre class="brush: java;">
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+@NamedQueries({@NamedQuery(name = "deleteJob", query = "delete from EMP where  JOB = :JOB")})
+
+	//create delete statement
+	EntityManager em = ...
+	Query q = em.createNamedQuery("deleteJob");
+	q.setParameter("JOB", "JOB");
+	int res = q.executeUpdate();
+                            </pre>
+                            <p class="style3"><br>
+                                <strong>Code generated in xml file</strong></p>
+<pre class="brush: java;">
+   &lt;sql-query name="deleteJob" &gt;
+        &lt;query&gt;
+        &lt;![CDATA[
+            delete from EMP where  JOB = :JOB
+        ]]&gt;
+        &lt;/query&gt;
+    &lt;/sql-query&gt;                          </pre>
+                            <p> <span class="style3"></span></p>
+                            <h6 class="style22"><img src="images/arrow1.jpg" width="11" height="22"> <a name="pojoclass"></a>CREATE POJO CLASS</h6>
+                            <p class="style3">When user wants to generate a POJO class for the columns of a table, they can go to FastCode -&gt; Database Template -&gt;Create new database snippet and choose from the options given or go to <strong>FastCode--&gt; Database Templates --&gt;Create POJO Class</strong> menu. The plugin is very useful when there are POJO classes need to be created for   a table with large number of columns. The POJO class is created for class, fields, getter/setter with annotation.</p>
+                            <p class="style3"><img src="images/createpojoclass.JPG" width="551" height="459"> </p>
+                            <p class="style3">&nbsp;</p>
+                            <h6 class="style22"><img src="images/arrow1.jpg" width="11" height="22"> <a name="pojoclassann"></a>CREATE POJO CLASS WITHOUT ANNOTATION</h6>
+                            <p class="style3">When user wants to generate a POJO class for the columns of a table, they can go to <strong>FastCode --&gt; Database Templates --&gt;Create new database snippet</strong> and choose from the options given or go to <strong>FastCode--&gt; Database Templates --&gt;Create POJO Class</strong> menu. The plugin is very useful when there are POJO classes need to be created for   a table with large number of columns. The POJO class is created only for class, fields, getter/setter without annotation.</p>
+                            <p class="style3"><img src="images/createpojoclasswithoutannot.JPG" width="578" height="459">
+    <ol>
+    <h6 class="style3">&nbsp;</h6>
+                            <h6 class="style22"><img src="images/arrow1.jpg" width="11" height="22"> <a name="join"></a>CREATE SELECT STATEMENT USING JOIN </h6>
+                            <p class="style3">To create a select with Join, user needs to go to <strong>FastCode --&gt; Database Templates --&gt;Create a select with Join</strong>.  One can create select statement using join for <strong>two tables </strong>and also for  <strong>three tables</strong>. The below dialog box for <strong>two tables join</strong> is  shown:</p>
+                            <p><br>
+      <img src="images/database_join_dialog.JPG" width="924" height="595"></p>
+    <p class="style3">In join dialog, one  can choose the number of joins table for eg two tables and their respective columns, the  type of join and the other data.  Once  tables, columns and type of join is selected, a field selection dialog will  open which displays complete column structure for each table selected in join  dialog, one can select fields for the join as shown below:</p>
+                            <p class="style3"><img src="images/feildselectionjointwo.JPG" width="483" height="285"></p>
+                            <p class="style3">Once the fields are selected for join, where condition can be selected for  each field by clicking on check box as shown:</p>
+                            <p class="style3"><img src="images/createwherefeildjoin.JPG" width="549" height="285"></p>
+                            <p class="style3">Below is a sample snippet  generated for two table join:</p>
+<pre class="brush: java;">
+	//create select statement
+	final String sqlQuery = "select  c.CUSTOMERID,  c.companyName,  c.lastname,  c.firstname,  c1.customername,  c1.CompanyName from customer c inner join customername c1 ON c.CUSTOMERID=c1.CUSTOMERID where  c.CUSTOMERID = ? and  c.companyName IS NOT NULL ? and  c.lastname IS NOT NULL ? and  c.firstname IS NOT NULL ? and  c1.customername IS NOT NULL ? and  c1.CompanyName IS NOT NULL ? ORDER BY c.CUSTOMERID";
+	PreparedStatement ps = con.prepareStatement(sqlQuery);
+	ps.setInt(1, 0);
+	ps.setString(2, "");
+	ps.setString(3, "");
+	ps.setString(4, "");
+	ps.setString(5, "");
+	ps.setString(6, "");
+	ResultSet rs=ps.executeQuery();
+	while(rs.next()){
+		Integer customerid = rs.getInt(1);
+		String companyname = rs.getString(2);
+		String lastname = rs.getString(3);
+		String firstname = rs.getString(4);
+		String customername = rs.getString(5);
+		String companyname = rs.getString(6);
+	}
+</pre>
+                            <p>&nbsp;</p>
+                            <p><span class="style22 extra-wrap"><strong><img src="images/arrow1.jpg" width="11" height="22"> <a name="addpojofield" id="addpojofield"></a>ADD FIELDS TO POJO CLASS</strong></span></p>
+                            <p align="justify"><span class="style3">One can add fields to the existing pojo class. One can select the menu by typing <strong>Ctl-Alt-Shift-B </strong>which will show create snippet dialog and one can  select the snippet type as shown below:</span></p>
+                            <p align="justify"><span class="style3"><img src="images/addfieldtopojoclass.JPG" width="730" height="561"></span></p>
+                            <p align="justify" class="style3">The snippet generated below shows how one can  add fields to pojo class:</p>
+                            <pre class="brush: java;">
+	@Id
+	@Column(name = "CUSTOMERID",nullable= false)
+	 @GeneratedValue(strategy = GenerationType.AUTO)
+	 public Integer getCustomerid(){
+		 return customerid;
+	}
+	public void setCustomerid(Integer customerid ){
+		 this.customerid=customerid;
+	}
+                            </pre>
+                            <p align="justify"></p>
+                            <p><span class="style22 extra-wrap"><strong><img src="images/arrow1.jpg" width="11" height="22"> <a name="addpojofieldnoannot" id="addpojofieldnoannot"></a>ADD FIELDS TO POJO CLASS WITHOUT ANNOTATION </strong></span></p>
+                            <p align="justify" class="style3">One can also create fields for pojo class without annotation. Below sample shows how a pojo field can be created without annotations.</p>
+                            <pre class="brush: java;">
+	private Integer customerid;
+
+	public Integer getCustomerid() {
+		return customerid;
+	}
+
+	public void setCustomerid(Integer customerid) {
+		this.customerid = customerid;
+	}
+                            </pre>
+                            <p align="justify">&nbsp;</p>
+                            <p><span class="style22 extra-wrap"><strong><img src="images/arrow1.jpg" width="11" height="22"> <a name="rowmapperclass" id="rowmapperclass"></a>ROWMAPPER AS CLASS</strong></span> </p>
+                            <p align="justify" class="style3">This menu creates a  rowmapper class with the selected fields  for the given table. The row mapper class  gets created in the specified target  as shown below:</p>
+                            <p align="justify" class="style3"><strong>Example: </strong>Classname: <strong>CustomerPojoMapper.java</strong>. It imports all the required interfaces from the template body as shown below.</p>
+                            <p align="justify" class="style3"><img src="images/rowmapper.JPG" width="730" height="561"></p>
+                            <p align="justify" class="style3"><img src="images/rowmapper1.JPG" width="698" height="171"></p>
+                            <p align="justify" class="style3">The below code is  generated for <strong>CustomerPOJO</strong> class: </p>
+                            <pre class="brush: java;">
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
+import com.test.CustomerPOJO;
+
+public class CustomerPOJOMapper implements RowMapper<CustomerPOJO> {
+	public CustomerPOJO mapRow(ResultSet rs, int rowNum) throws SQLException {
+		CustomerPOJO customerPOJO = new CustomerPOJO();
+		return customerPOJO;
+	}
+}
+</pre>
+                            <p align="justify" class="style3">&nbsp;</p>
+                            <p><span class="style22 extra-wrap"><strong><img src="images/arrow1.jpg" width="11" height="22"> <a name="selectrowmappermethod" id="selectrowmappermethod"></a>SELECT WITH ROWMAPPER AS METHOD</strong></span></p>
+                            <p align="justify" class="style3">This menu is used to create row mapper as a method using the selected statement. </p>
+                            <p align="justify" class="style3"><img src="images/selectrowmapper.JPG" width="730" height="561"></p>
+                            <p align="justify" class="style3"><img src="images/selectrowmapper1.JPG" width="350" height="442"></p>
+                            <p align="justify" class="style3">Below   snippet code is generated for   empid pojo class:</p>
+<pre class="brush: java;">
+	@Override
+	public List<EmpidPOJO> empidrowmapper() throws SQLException {
+		// create select statement
+
+		final String sqlQuery = "select  e.empid e.firstname e.lastname from empid e ";
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		Object[] params = new Object[] {};
+		List<EmpidPOJO> empidPOJOList = jdbcTemplate.query(sqlQuery,
+				new RowMapper<EmpidPOJO>() {
+					public EmpidPOJO mapRow(ResultSet rs, int rowNum)
+							throws SQLException {
+						EmpidPOJO empidPOJO = new EmpidPOJO();
+						empidPOJO.setEmpid(rs.getInt("empid"));
+						empidPOJO.setFirstname(rs.getString("firstname"));
+						empidPOJO.setLastname(rs.getString("lastname"));
+						return empidPOJO;
+					}
+				}, params);
+		return empidPOJOList;
+	}
+</pre>
+                            <p><span class="style22 extra-wrap"><strong><img src="images/arrow1.jpg" width="11" height="22"> <a name="pojoinstance" id="pojoinstance"></a>CREATE POJO INSTANCE FROM DB FIELD</strong> </span></p>
+                            <p align="justify" class="style3">This menu creates a  pojo class instance from a database fields. </p>
+                            <p align="justify" class="style3"><img src="images/pojoinstancedbfield.JPG" width="732" height="563"></p>
+                            <p class="brush: java;"><span class="style3">Below  snippet code is generated when pojo instance for fields of <strong>customer</strong> table is selected:</span></p>
+<pre class="brush: java;">
+	CustomerPOJO customerPOJO = new CustomerPOJO();
+	customerPOJO.setCompanyname(rs.getString("companyName"));
+	customerPOJO.setLastname(rs.getString("lastname"));
+	customerPOJO.(rs.getString("firstname"));
+</pre>
+                            <p align="justify">&nbsp;</p>
+                            <p><span class="style22 extra-wrap"><strong><img src="images/arrow1.jpg" width="11" height="22"> <a name="selectrowmapperjoin" id="selectrowmapperjoin"></a>SELECT WITH JOIN ROWMAPPER AS METHOD</strong></span></p>
+                            <p align="justify" class="style3">One can  create a row mapper as a method using select join query. To do this, one needs to go to <strong>FastCode --&gt; Database Templates --&gt;Create a select with Join</strong> <strong>and Rowmapper.</strong> </p>
+                            <p align="justify" class="style3"> Below sample shows how <span class="java; brush:"><strong>CustomerJoinRowmapper</strong></span> method  is created for two tables &quot;<strong>customer</strong>&quot; and &quot;<strong>customername</strong>&quot; which generates an left join query. </p>
+                            <pre class="brush: java;">
+@Override
+public List<CustomerPOJO> CustomerJoinRowmapper () throws SQLException {
+		final String sqlQuery = "select  c.CUSTOMERID c.companyName c.firstname c.lastname c1.customername c1.CompanyName from customer c left join customername c1 ON  c.CUSTOMERID = c1.CUSTOMERID";
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		Object[] params = new Object[]{};
+		List<CustomerPOJO> customerPOJOList = jdbcTemplate.query(sqlQuery,new RowMapper<CustomerPOJO>() {
+				public CustomerPOJO mapRow(ResultSet rs, int rowNum) throws SQLException {
+					CustomerPOJO customerPOJO = new CustomerPOJO();
+					customerPOJO.setCompanyname(rs.getString("companyName"));
+					customerPOJO.(rs.getString("firstname"));
+					customerPOJO.setLastname(rs.getString("lastname"));
+					customerPOJO.(rs.getString("customername"));
+					customerPOJO.setCompanyname(rs.getString("CompanyName"));
+					return customerPOJO;
+				}
+		},params);
+		return customerPOJOList;
+}
+
+</pre>
+
+                            <p><span class="style22 extra-wrap"><strong><img src="images/arrow1.jpg" width="11" height="22"> <a name="exportimport"></a>EXPORT/IMPORT DATABASE TEMPLATE</strong></span></p>
+                            <p align="justify"><span class="style3">The database templates can be exported from the <strong>FastCode--&gt; Database Templates --&gt;Export Database Template</strong> menu.</span></p>
+                            <p align="justify"><img src="images/exportmportdbtemplates.JPG" width="736" height="500"></p>
+    <p class="style3"> When exported, a new project called 'Fast Code Eclipse Plugin' will be created and there will be a resources folder within it. Within the resources folder, a sub folder databaseTemplates  is created. After the  export is completed, one can see the files  <strong><a href="templatelist/database-templates-config.xml" class="style22">database-templates-config.xml</a></strong> and <strong><a href="templatelist/additional-database-templates-config.xml" class="style22">additional-database-templates-config.xml</a></strong> in the folder as shown:</p>
+    <p class="style3"><img src="images/importexportdbtemplates.JPG" width="303" height="174"></p>
+    <p class="style3"> Now one can change the templates by opening them in the editor within the eclipse. It is more convenient to change in this manner than going through the preferences. Once they are edited, one can import them from the <strong>FastCode--&gt; Database Templates --&gt;Import Database Template </strong>menu.</p>
+    <p class="style3">Once database template is exported, one can check in to local repositories, e.g. cvs, svn, etc. Then other team members can check out and start using the templates right away. While exporting the file, it first  checks for existance of the file, if file already exists, it  overwrites the existing file. One can confirm the file exported by checking the timestamp of the file in the folder.<span class="style12">
+                            <article class="grid_8">
+    </span></p>
+    <p align="justify">&nbsp;</p>
+    <p><br>
+    </p>
+                            </div>
+	  </div>
+    </div>
+                             <div align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://sourceforge.net/projects/fast-code/"><img src="images/sourceforge.jpg" width="168" height="49" border="0"></a></div>
+<br>
+</br>
+
+<!--==============================footer=================================-->
+	<footer>
+      <div class="main">
+        <div class="footer-bg">
+          <div class="aligncenter"> 3Pin Technology, LLC &copy; 2011<br>
+            www.3pintech.com  </div>
+        </div>
+      </div>
+    </footer>
+	</body>
+</html>

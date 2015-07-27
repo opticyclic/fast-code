@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	<template name="SIMPLE_SNIPPET">
+		<description>Used to create simple snippet</description>
+		<variation> </variation>
+		<template-body>
+			<![CDATA[
+
+				#foreach ($data in ${file_values})
+					<tr> ${data.Code} : ${data.Country} : ${data.EName} </tr>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+</templates>

@@ -1,0 +1,2787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE templates PUBLIC "//UNKNOWN/" "http://fast-code.sourceforge.net/dtd/template.dtd">
+<templates>
+	<template name="INSTANCE_OF_CLASS">
+		<description>Used to create instance of class.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="setter">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#if (${class.defaultConstructor})
+					// Creating new instance of ${class.name}
+					final ${class.name} ${class.defaultInstance} = new ${class.name}();
+					#foreach ($field in ${fields})
+						${class.defaultInstance}.${field.setter}(${field.value});
+					#end
+				#else
+					##<fc:message title="Error">No default constructor found for ${class.name} exitng...</fc:message>
+					<fc:exit message="No default constructor found for ${class.name}"/>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="INSTANCE_OF_CLASS_AS_METHOD">
+		<description>Used to create instance of class as method.
+		</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="setter">field</second-template-item>
+		<additional-parameters>targetClass:class staticImport:boolean methodName(value="create${class.name}")</additional-parameters>
+		<template-body>
+			<![CDATA[
+					#if (${targetClass})##validation for additional parameters
+						<fc:method name="${methodName}" target="${targetClass.fullyQualifiedName}" optional="false">
+						<fc:import>${class.fullyQualifiedName}</fc:import>
+						/**
+						 * This will create an instance of ${class.name}
+						 *
+						 #foreach ($field in ${fields})
+						 * @parm ${field.type.name}
+						 #end
+						 * @return
+						 *
+						 */
+						public static ${class.name} create${class.name}(#foreach ($field in ${fields}) final ${field.type.name} ${field.name} #if ($foreach.count < ${fields.size()}),#end #end) {
+						final ${class.name} ${class.defaultInstance} = new ${class.name}();
+						#foreach ($field in ${fields})
+							<fc:import optional="true">${field.type.fullyQualifiedName}</fc:import>
+							${class.defaultInstance}.${field.setter}(${field.name});
+						#end
+						return ${class.defaultInstance};
+						}
+						</fc:method>
+						#if($staticImport)
+							<fc:import>${targetClass.fullyQualifiedName}#create${class.name}</fc:import>
+						#else
+							<fc:import>${targetClass.fullyQualifiedName}</fc:import>
+						#end
+						<fc:import>${class.fullyQualifiedName}</fc:import>
+						${class.name} ${class.defaultInstance} = create${class.name}(#foreach ($field in ${fields}) ${field.value} #if ($foreach.count < ${fields.size()}),#end #end);
+					#else
+						<fc:exit message="Can not execute the template without value for additional parameter targetClass"/>
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="INSTANCE_OF_CLASS_WEB">
+		<description>Used to create instance of class in web tier e.g. jsp, xthtml etc.</description>
+		<variation>default jsp:useBean bean:define ExtJs</variation>
+		<allowed-file-names>*.jsp *.js</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<template-body>
+			<![CDATA[
+					#if (${_template_variation} == "default")
+						var ${class.defaultInstance} = new Object();
+						#foreach ($field in ${fields})
+							${class.defaultInstance}.${field.name} = ${field.value};
+						#end
+					#end
+					#if (${_template_variation} == "jsp:useBean")
+						<jsp:useBean id="${class.defaultInstance}" scope="page" class="${class.fullyQualifiedName}">
+						#foreach ($field in ${fields})
+							<jsp:setProperty name="${class.defaultInstance}" property="${field.fullName}" value="${field.value}" />
+						#end
+						</jsp:useBean>
+					#end
+					#if (${_template_variation} == "bean:define")
+						<bean:define id="${class.defaultInstance}" class="${class.fullyQualifiedName}">
+					#end
+					#if (${_template_variation} == "ExtJs")
+						#foreach ($field in ${fields})
+							#if (${field.type.name.endsWith("String")})
+								#set ($field_type = "textfield")
+							#elseif (${field.type.name.endsWith("Date")})
+								#set ($field_type = "datefield")
+							#elseif (${field.type.name.endsWith("Boolean")} || ${field.type.name.endsWith("boolean")})
+								#set ($field_type = "checkbox")
+							#end
+						{
+						xtype : '${field_type}',
+						fieldLabel : '${field.nameAsWord}',
+						name : '${field.name}'
+						}#if ($foreach.count < ${fields.size()}), #end
+            			#end
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="PRINT_FIELDS_OF_CLASS">
+		<description>Used to print fields of a class.</description>
+		<variation>logger.debug logger.trace logger.info logger.error System.out.println System.err.println</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="getter">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#if (!${fields} && !${localvars})
+					##<fc:message title="Error">no fields selected exitng...</fc:message>
+					<fc:exit message="No fields selected for printing." />
+				#end
+
+				##<fc:import>org.slf4j.Logger</fc:import>
+				##Logger logger;
+				#set ($snippet = "")
+				#set ($Qt = '"')
+
+				#if (${_template_variation} == "logger.debug")
+					#set ($snippet = "if (logger.isDebugEnabled()) {")
+				#end
+				#if (${_template_variation} == "logger.trace")
+					#set ($snippet = "if (logger.isTraceEnabled()) {")
+				#end
+				#foreach ($field in ${fields})
+					#if (${_template_variation} == "logger.debug" || ${_template_variation} == "logger.trace" || ${_template_variation} == "logger.info" || ${_template_variation} == "logger.error")
+						#set ($snippet = "${snippet}\n ${_template_variation}(${Qt}${field.nameAsWord} {}${Qt} , ${instance}.${field.getter}());")
+					#else
+						#set ($snippet = "${snippet}\n ${_template_variation}(${Qt}${field.nameAsWord} ${Qt} + ${instance}.${field.getter}());")
+					#end
+            	#end
+				#foreach ($localvar in ${localvars})
+					#if (${_template_variation} == "logger.debug" || ${_template_variation} == "logger.trace" || ${_template_variation} == "logger.info" || ${_template_variation} == "logger.error")
+						#set ($snippet = "${snippet} \n ${_template_variation}(${Qt}${localvar.name} {} ${Qt}, ${localvar.name}) ;")
+					#else
+						#set ($snippet = "${snippet} \n ${_template_variation}(${Qt}${localvar.name} ${Qt} + ${localvar.name}) ;")
+					#end
+				#end
+				#if (${_template_variation} == "logger.debug" || ${_template_variation} == "logger.trace")
+					#set ($snippet = "${snippet} \n }")
+				#end
+				${snippet}
+			]]>
+		</template-body>
+	</template>
+
+	<template name="EXTRACT_FIELDS_FROM_CLASS">
+		<description>Used to extract fields from a java class.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="getter">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#set ($modifier = "final ")
+				#foreach ($field in ${fields})
+					<fc:import>${field.type.fullyQualifiedName}</fc:import>
+					${modifier} ${field.type.name} ${field.name} = ${instance}.${field.getter}();
+            	#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="PRINT_FIELDS_OF_CLASS_WEB">
+		<description>Used to print fields of class Jsp.</description>
+		<variation>html:text html:textarea html:select html:checkbox html:radio h:inputText h:inputText-validation h:selectSingleMenu h:selectManyMenu</variation>
+		<allowed-file-names>*.jsp *.xhtml *.js</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				<table align="center" >
+				#foreach ($field in ${fields})
+					<tr>
+					<!--<td align="right" valign="top">${field.nameAsWord} : </td>-->
+					#if (${_template_variation} == "html:text" || ${_template_variation} == "html:textarea" || ${_template_variation} == "html:radio" || ${_template_variation} == "html:checkbox")
+						<td align="right" valign="top"><bean:message bundle="${class.defaultInstance}" key="${field.name}"/> : </td>
+						<td align="right" valign="top"><${_template_variation} name="${class.defaultInstance}" property="${field.name}" size="10"/> </td>
+					#end
+					#if (${_template_variation} == "html:select")
+						<html:select name="${class.defaultInstance}" property="${field.name}">
+						<html:option value=""><bean:message bundle="${class.defaultInstance}" key="" /></html:option>
+						<html:options collection="" property="" labelProperty="" />
+						</html:select>
+					#end
+					#if (${_template_variation} == "h:inputText")
+						<h:outputText value="\#${field.nameAsWord}"/>
+						<h:message for="${field.name}"/>
+						<${_template_variation} id="${field.name}" value="\#\{${class.defaultInstance}.${field.name}\}" />
+					#end
+					#if (${_template_variation} == "h:inputText-validation")
+						<h:outputText value="\#${field.nameAsWord}"/>
+						<h:message for="${field.name}"/>
+						<${_template_variation} id="${field.name}" value="\#\{${class.defaultInstance}.${field.name}\}" >
+							<f:validateLength minimum="1" maximum="2"/>
+						</${_template_variation}>
+					#end
+					#if (${_template_variation} == "h:selectSingleMenu")
+						<${_template_variation} value="\#{${class.defaultInstance}.${field.name}}">
+						<f:selectItem value = "\#{}" />
+						</<${_template_variation}>
+					#end
+					#if (${_template_variation} == "h:selectManyMenu")
+						<${_template_variation} value="${class.defaultInstance}.${field.name}">
+						<f:selectItems value = "\#{}" />
+						</<${_template_variation}>
+					#end
+					</tr>
+            	#end
+            	</table>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="PRINT_FIELDS_OF_CLASS_WEB_SINGLE">
+		<description>Used to print a single field of a class in Jsp.</description>
+		<!-- <variation>html:text html:textarea html:checkbox html:radio</variation> -->
+		<variation>h:inputText h:inputSecret h:inputHidden h:inputTextarea h:selectBooleanCheckbox h:selectOneRadio h:selectOneMenu h:inputText-validation
+			h:selectSingleMenu h:selectManyMenu</variation>
+		<allowed-file-names>*.jsp *.xhtml</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#if (!${field})
+					##<fc:message title="Error">no fields selected exitng...</fc:message>
+					<fc:exit message="No fields selected for printing." />
+				#end
+				<tr>
+				#if (${_template_variation} == "html:text" || ${_template_variation} == "html:textarea" || ${_template_variation} == "html:radio" || ${_template_variation} == "html:checkbox")
+					<td align="right" valign="top"><bean:message bundle="${class.defaultInstance}" key="${field.name}"/> : </td>
+					<td align="right" valign="top"><${_template_variation} name="${class.defaultInstance}" property="${field.name}" size="10"/> </td>
+				#end
+				#if (${_template_variation} == "html:select")
+					<html:select name="${class.defaultInstance}" property="${field.name}">
+					<html:option value=""><bean:message bundle="${class.defaultInstance}" key="" /></html:option>
+					<html:options collection="" property="" labelProperty="" />
+					</html:select>
+				#end
+				#if (${_template_variation} == "h:inputText")
+					<h:outputText value="\#${field.nameAsWord}"/>
+					<h:message for="${field.name}"/>
+					<${_template_variation} id="name" value="\#\{${class.defaultInstance}.${field.name}\}" />
+				#end
+				#if (${_template_variation} == "h:inputText-validation")
+					<h:outputText value="\#${field.nameAsWord}"/>
+					<h:message for="${field.name}"/>
+					<${_template_variation} id="${field.name}" value="\#\{${class.defaultInstance}.${field.name}\}" >
+					<f:validateLength minimum="1" maximum="2"/>
+					</${_template_variation}>
+				#end
+				#if (${_template_variation} == "h:selectSingleMenu")
+					<${_template_variation} value="\#{${class.defaultInstance}.${field.name}}">
+					<f:selectItem value = "\#{}" />
+					</<${_template_variation}>
+				#end
+				#if (${_template_variation} == "h:selectManyMenu")
+					<${_template_variation} value="${class.defaultInstance}.${field.name}">
+					<f:selectItems value = "\#{}" />
+					</<${_template_variation}>
+				#end
+			</tr>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SPRING_BEAN">
+		<description>Used to spring bean of a class.</description>
+		<variation>setter constructor embedded-setter embedded-constructor</variation>
+		<allowed-file-names>*.xml</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<template-body>
+			<![CDATA[
+					#set ($id = "")
+					#if (${class.isInterface()})
+						#if (!${class.implementations.isEmpty()})
+							#if (${class.implementations.size()} == 1)
+								#set ($id = "${class.implementations.get(0).fullyQualifiedName}")
+							#else
+								<fc:message title="warning" >More than one implementaion found for ${class.name}</fc:message>
+							#end
+						#else
+							<fc:message title="warning" >No implementaion found for ${class.name}</fc:message>
+						#end
+					#elseif (${class.isClass()})
+						#if (!${class.interfaces.isEmpty()})
+							#if (${class.interfaces.size()} == 1)
+								#set ($id = "${class.interfaces.get(0).defaultInstance}")
+							#else
+								<fc:exit message="More than one interface found for ${class.name}"/>
+							#end
+						#else
+							<fc:exit message="No interface found for ${class.name}"/>
+						#end
+					#end
+					<fc:xml node="bean" parent="beans" target="">
+					#if (${_template_variation} == "setter")
+						<bean id="${id}" class="${class.fullyQualifiedName}">
+						#foreach (${field} in ${fields})
+							#if (${field.typeNative} || ${field.type.fullyQualifiedName.startsWith("java.")})
+								<property name="${field.name}" value=""/>
+							#else
+								<property name="${field.name}" ref="${field.name}"/>
+							#end
+						#end
+						</bean>
+					#end
+					#if (${_template_variation} == "constructor")
+						<bean id="${id}" class="${class.fullyQualifiedName}">
+						#foreach (${field} in ${fields})
+							#set ($index = $foreach.count - 1)
+							<constructor-arg index="${index}"><ref bean="${field.name}"/></constructor-arg>
+						#end
+						</bean>
+					#end
+					#if (${_template_variation} == "embedded-setter")
+						<bean id="${id}" parent="parent">
+						<property name="target">
+						<bean class="${class.fullyQualifiedName}">
+						#foreach (${field} in ${fields})
+							#if (${field.typeNative} || ${field.type.fullyQualifiedName.startsWith("java.")})
+								<property name="${field.name}" value=""/>
+							#else
+								<property name="${field.name}" ref="${field.name}"/>
+							#end
+						#end
+						</bean>
+						</property>
+						</bean>
+					#end
+					#if (${_template_variation} == "embedded-constructor")
+						<bean id="${id}" parent="parent">
+						<property name="target">
+						<bean class="${class.fullyQualifiedName}">
+						#foreach (${field} in ${fields})
+							#set ($index = $foreach.count - 1)
+							<constructor-arg index="${index}"><ref bean="${field.name}"/></constructor-arg>
+						#end
+						</bean>
+						</property>
+						</bean>
+					#end
+					</fc:xml>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SPRING_BEAN_OF_MULTIPLE_CLASS">
+		<description>Used to spring bean of a class.</description>
+		<variation>setter constructor embedded-setter embedded-constructor</variation>
+		<allowed-file-names>*.xml</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>class</second-template-item>
+		<template-body>
+			<![CDATA[
+				#foreach ($class in ${classes})
+					#set ($classVar = "")
+					#set ($idVar = "")
+					#if (${class.isInterface()})
+						#if (!${class.implementations.isEmpty()})
+							#if (${class.implementations.size()} == 1)
+								#set ($classVar = "${class.implementations.get(0).fullyQualifiedName}")
+							#else
+								<fc:message title="warning" >More than one implementaion found for ${class.name}</fc:message>
+							#end
+						#else
+							<fc:message title="warning" >No implementaion found for ${class.name}</fc:message>
+						#end
+					#elseif (${class.isClass()})
+						#if (!${class.interfaces.isEmpty()})
+							#if (${class.interfaces.size()} == 1)
+								#set ($idVar = "${class.interfaces.get(0).defaultInstance}")
+							#else
+								<fc:message title="warning" >More than one interface found for ${class.name}</fc:message>
+							#end
+						#else
+							<fc:message title="warning" >No interface found for ${class.name}</fc:message>
+						#end
+					#end
+
+					#if ((${class.isInterface()} && $classVar != "") || (${class.isClass()} && $idVar != ""))
+						#if (${_template_variation} == "setter" || ${_template_variation} == "constructor")
+							#if (${class.isInterface()})
+								<bean id="${class.defaultInstance}" class="${classVar}">
+							#elseif (${class.isClass()})
+								<bean id="${idVar}" class="${class.fullyQualifiedName}">
+							#end
+								</bean>
+						#end
+						#if (${_template_variation} == "embedded-setter" || ${_template_variation} == "embedded-constructor")
+							#if (${class.isInterface()})
+								<bean id="${class.defaultInstance}" parent="parent">
+								<property name="target">
+								<bean class="${classVar}">
+							#elseif (${class.isClass()})
+								<bean id="${idVar}" parent="parent">
+								<property name="target">
+								<bean class="${class.fullyQualifiedName}">
+							#end
+							</bean>
+							</property>
+							</bean>
+						#end
+					#end
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SPRING_BEAN_AS_FILE">
+		<description>Used to spring bean of a class as a file.</description>
+		<variation>setter constructor embedded-setter embedded-constructor</variation>
+		<allowed-file-names></allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<allow-multiple-variation></allow-multiple-variation>
+		<additional-parameters>folder:folder fileName(value="applicationContext-${class.defaultInstance}.xml")</additional-parameters>
+		<template-body>
+			<![CDATA[
+						#set ($id = "")
+						#if (${class.isClass()})
+							#if (!${class.interfaces.isEmpty()})
+								#if (${class.interfaces.size()} == 1)
+									#set ($id = "${class.interfaces.get(0).defaultInstance}")
+								#else
+									<fc:exit message="More than one interface found for ${class.name}"/>
+								#end
+							#else
+								<fc:exit message="No interface found for ${class.name}" />
+							#end
+						#end
+						#if (${folder})##validation for additional parameters
+						<fc:file dir="${folder.fullPath}" name="${fileName}">
+						<?xml version="1.0" encoding="UTF-8"?>
+						<beans xmlns="http://www.springframework.org/schema/beans"
+							xsi:schemaLocation="http://www.springframework.org/schema/beans
+								http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+						#if (${_template_variation} == "setter")
+							<bean id="${id}" class="${class.fullyQualifiedName}">
+							#foreach (${field} in ${fields})
+								#if (${field.typeNative} || ${field.type.fullyQualifiedName.startsWith("java.")})
+									<property name="${field.name}" value=""/>
+								#else
+									<property name="${field.name}" ref="${field.name}"/>
+								#end
+							#end
+							</bean>
+						#end
+						#if (${_template_variation} == "constructor")
+							<bean id="${id}" class="${class.fullyQualifiedName}">
+							#foreach (${field} in ${fields})
+								#set ($index = $foreach.count - 1)
+								<constructor-arg index="${index}"><ref bean="${field.name}"/></constructor-arg>
+							#end
+							</bean>
+						#end
+						#if (${_template_variation} == "embedded-setter")
+							<bean id="${id}" parent="parent">
+							<property name="target">
+							<bean class="${class.fullyQualifiedName}">
+							#foreach (${field} in ${fields})
+								#if (${field.typeNative} || ${field.type.fullyQualifiedName.startsWith("java.")})
+									<property name="${field.name}" value=""/>
+								#else
+									<property name="${field.name}" ref="${field.name}"/>
+								#end
+							#end
+							</bean>
+							</property>
+							</bean>
+						#end
+						#if (${_template_variation} == "embedded-constructor")
+							<bean id="${id}" parent="parent">
+							<property name="target">
+							<bean class="${class.fullyQualifiedName}">
+							#foreach (${field} in ${fields})
+								#set ($index = $foreach.count - 1)
+								<constructor-arg index="${index}"><ref bean="${field.name}"/></constructor-arg>
+							#end
+							</bean>
+							</property>
+							</bean>
+						#end
+					</beans>
+					</fc:file>
+				#else
+					<fc:exit message="Can not execute the template without value for additional parameter folder"/>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="COPY_CLASS_AS_METHOD">
+		<description>Used to create a method copy one class to another.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="2">class</first-template-item>
+		<second-template-item getter-setter="gettersetter">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				/**
+				 * This method copies fields from ${from_class.name} to ${to_class.name}
+				 * @param ${from_instance}
+				 * @param ${to_instance}
+				 *
+				 */
+				public void copy${from_class.name}To${to_class.name}(final ${from_class.name} ${from_instance}, final ${to_class.name} ${to_instance}) {
+					#foreach ($field in ${fields})
+						${to_instance}.${field.setter}(${from_instance}.${field.getter}());
+					#end
+				}
+			]]>
+		</template-body>
+	</template>
+
+	<!--<template name="COPY_CLASS_SINGLE"> <description>Used to create a method
+		copy one field of a class into another.</description> <getter-setter>getter-setter</getter-setter>
+		<allowed-file-names>*.java</allowed-file-names> <number-required-classes>2</number-required-classes>
+		<first-template-item>class</first-template-item> <second-template-item>field</second-template-item>
+		<template-body> <![CDATA[ #foreach ($field in ${from_fields}) #set ($from_field
+		= $field) #end #foreach ($field in ${to_fields}) #set ($to_field = $field)
+		#end ${to_instance}.${from_field.setter}(${from_instance}.${to_field.getter}());
+		]]> </template-body> </template> -->
+
+	<template name="TOSTRING_METHOD">
+		<description>Used to create a toString method.</description>
+		<variation>StringBuilder String String-format</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+            <![CDATA[
+                #set($Qt = '"')
+                #if (${_template_variation} == "StringBuilder")
+                    #set ($toStringBody = "final StringBuilder sb = new StringBuilder();\n")
+                    ##set ($toStringBody = "${toStringBody} sb")
+                    #foreach ($field in ${fields})
+                        #if (${field.typeNative})
+                            #set ($toStringBody = "${toStringBody}\n sb.append(${Qt}${field.nameAsWord} :  ${Qt} + this.${field.name} + ${Qt},${Qt});")
+                        #else
+                            #set ($toStringBody = "${toStringBody}\n sb.append(${Qt}${field.nameAsWord} :  ${Qt} + this.${field.name} == null ? ${Qt}${Qt} : #if(${field.array}) Arrays.toString(this.${field.name}) #else this.${field.name} #end + ${Qt},${Qt});")
+                        #end
+                    #end
+                    #set ($toStringBody = "${toStringBody} \n return ${Qt}${class.name} [${Qt} + sb.toString() + ${Qt}]${Qt};")
+                #end
+                #if (${_template_variation} == "String")
+                    #set ($toStringBody = "")
+                    #foreach ($field in ${fields})
+                        #if (${field.type.name} == "boolean" || ${field.type.name} == "int" || ${field.type.name} == "long" || ${field.type.name} == "float") || ${field.type.name} == "double" || ${field.type.name} == "char")
+                            #set ($toStringBody = "${toStringBody} \n + (${Qt}${field.nameAsWord} :  ${Qt} + this.${field.name})")
+                        #else
+                            #set ($toStringBody = "${toStringBody} \n + ${Qt}${field.nameAsWord} :  ${Qt} + this.${field.name} == null ? ${Qt}${Qt} : this.${field.name}")
+                        #end
+                    #end
+                    #set ($toStringBody = "return ${Qt}${class.name} [${Qt} ${toStringBody} +  ${Qt}]${Qt};")
+                #end
+                #if (${_template_variation} == "String-format")
+                    #set ($toStringBody = "")
+                    #foreach (${field} in ${fields})
+                        #set ($toStringBody = "${toStringBody} ${field.name}=%s")
+                        #if ($foreach.count < ${fields.size()})
+                            #set ($toStringBody = "${toStringBody},")
+                        #end
+                    #end
+                    #set ($toStringBody = "${Qt}${class.name} [${toStringBody}]${Qt}, \n")
+                    #foreach (${field} in ${fields})
+                        #set ($toStringBody = "${toStringBody} ${field.name}")
+                        #if ($foreach.count < ${fields.size()})
+                            #set ($toStringBody = "${toStringBody} ,")
+                        #end
+                    #end
+                    #set ($toStringBody = "return String.format(\n${toStringBody});")
+                #end
+                <fc:method name="toString">
+                /**
+                 * toString method for ${class.name}
+                 *
+                 * @see java.lang.Object#toString()
+                 */
+                @Override
+                public String toString() {
+                    ${toStringBody}
+                }
+                 </fc:method>
+            ]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_SELECT">
+		<description>Used to create a HQL select statement.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+					#set ($select_part = "")
+					#if (!${fields} || ${fields.size()} == 0)
+						#set ($select_part = "${class.defaultInstance}")
+					#end
+					#foreach ($field in ${fields})
+						#set ($select_part = "${select_part} ${class.defaultInstance}.${field.fullName}")
+						#if ($foreach.count < ${fields.size()})
+							#set ($select_part = "${select_part}, ")
+						#end
+					#end
+
+					#set ($join_part = "")
+					#foreach ($field in ${join_fields})
+						#set ($join_part = "${join_part} join ${class.defaultInstance}.${field.fullName}")
+					#end
+
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "$where_part ${field.fullName} ${where_qualifier} :${field.name}")
+						#if ($foreach.count < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+					final String hqlQuery = "select ${select_part} from ${class.name} ${class.defaultInstance} ${where_part}";
+					final Query query = session.createQuery(hqlQuery);
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+					]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_SELECT_WITH_NAMED_QUERY">
+		<description>Used to create a HQL select statement with named query.</description>
+		<variation>named-query</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+				   // named Query\n
+					final Query query = session.createnamedQuery("${queryName}");
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+					#if (!${useExistingNamedQuery})
+						<fc:xml parent="entity-mappings" node="named-query" target="${target}">
+							#set ($select_part = "")
+							#if (!${fields} || ${fields.size()} == 0)
+								#set ($select_part = "${instance}")
+							#end
+							#foreach ($field in ${fields})
+								#set($select_part = "${select_part} ${instance}.${field.fullName}")
+								#if ($foreach.count < ${fields.size()})
+									#set ($select_part = "${select_part}, ")
+								#end
+							#end
+
+							#set ($join_part = "")
+							#foreach ($field in ${join_fields})
+								#set ($join_part = "${join_part} join ${instance}.${field.fullName}")
+							#end
+
+							#set ($where_part = "")
+							#if (${where_fields} && ${where_fields.size()} > 0)
+								#set ($where_part = "where")
+							#end
+							#foreach ($field in ${where_fields})
+								#set ($where_part = "$where_part ${field.fullName} ${where_qualifier} :${field.name}")
+								#if ($foreach.count < ${where_fields.size()})
+									#set ($where_part = "${where_part} ${where_separator} ")
+								#end
+							#end
+				   			<named-query name="${queryName}">
+				      		<query>
+				      			&lt;![CDATA[
+									select ${select_part} from ${class.name} ${instance} ${join_part} ${where_part}
+								]]&gt;
+				      		</query>
+				   			</named-query>
+						</fc:xml>
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_SELECT_NAMED_QUERY_WITH_ANNOTATION">
+		<description>Used to create a HQL select statement with named query and annotation.</description>
+		<variation>named-query-annotation</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+				   // named Query\n
+					final Query query = session.createnamedQuery("${queryName}");
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+				    #end
+			        #if (!${useExistingNamedQuery})
+						<fc:xml parent="entity-mappings" node="named-query" target="${target}">
+							#set ($select_part = "")
+							#if (!${fields} || ${fields.size()} == 0)
+								#set ($select_part = "${instance}")
+							#end
+							#foreach ($field in ${fields})
+								#set ($select_part = "${select_part} ${instance}.${field.fullName}")
+								#if ($foreach.count < ${fields.size()})
+									#set($select_part = "${select_part}, ")
+								#end
+							#end
+
+							#set ($join_part = "")
+							#foreach ($field in ${join_fields})
+								#set ($join_part = "${join_part} join ${instance}.${field.fullName}")
+							#end
+
+							#set ($where_part = "")
+							#if (${where_fields} && ${where_fields.size()} > 0)
+								#set ($where_part = "where")
+							#end
+							#foreach ($field in ${where_fields})
+								#set ($where_part = "$where_part ${field.fullName} ${where_qualifier} :${field.name}")
+								#if ($foreach.count < ${where_fields.size()})
+									#set ($where_part = "${where_part} ${where_separator} ")
+								#end
+							#end
+				   			<named-query name="${queryName}">
+				      		<query>
+				      			&lt;![CDATA[
+									select ${select_part} from ${class.name} ${instance} ${join_part} ${where_part}
+								]]&gt;
+				      		</query>
+				   			</named-query>
+						</fc:xml>
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_UPDATE">
+		<description>Used to create a HQL update statement.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+					#set ($update_part = "")
+					#foreach ($field in ${fields})
+						#set ($update_part = "${update_part} ${field.fullName} = :${field.name}")
+						#if ($foreach.count < ${fields.size()})
+							#set ($update_part = "${update_part}, ")
+						#end
+					#end
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+						#if ($foreach.count < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+
+					final String hqlQuery = "update ${class.name} set ${update_part} ${where_part}";
+					final Query query = session.createQuery(hqlQuery);
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_UPDATE_WITH_NAMED_QUERY">
+		<description>Used to create a HQL update statement with named query.</description>
+		<variation>named-query</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+				// named Query\n
+				final Query query = em.createnamedQuery("${queryName}");
+
+                   #foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+					#if (!${useExistingNamedQuery})
+						<fc:xml parent="entity-mappings" node="named-query" target="${target}">
+							#set ($update_part = "")
+							#foreach ($field in ${fields})
+								#set ($update_part = "${update_part} ${field.fullName} = :${field.name}")
+								#if ($foreach.count < ${fields.size()})
+									#set ($update_part = "${update_part}, ")
+								#end
+							#end
+							#set ($where_part = "")
+							#if (${where_fields} && ${where_fields.size()} > 0)
+								#set ($where_part = "where ")
+							#end
+							#foreach ($field in ${where_fields})
+								#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+								#if ($foreach.count < ${where_fields.size()})
+									#set ($where_part = "${where_part} ${where_separator} ")
+								#end
+							#end
+			   				<named-query name="${queryName}">
+			      			<query>
+			      				&lt;![CDATA[
+			      					update ${class.name} set ${update_part} ${where_part}
+								]]&gt;
+			      			</query>
+			   				</named-query>
+						</fc:xml>
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_UPDATE_NAMED_QUERY_WITH_ANNOTATION">
+		<description>Used to create a HQL update statement with named query and annotation.</description>
+		<variation>named-query-annotation</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+				// named Query\n
+				final Query query = em.createnamedQuery("${queryName}");
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+				#if (!${useExistingNamedQuery})
+					<fc:xml parent="entity-mappings" node="named-query" target="${target}">
+						#set ($update_part = "")
+						#foreach ($field in ${fields})
+							#set ($update_part = "${update_part} ${field.fullName} = :${field.name}")
+							#if ($foreach.count < ${fields.size()})
+								#set ($update_part = "${update_part}, ")
+							#end
+						#end
+						#set ($where_part = "")
+						#if (${where_fields} && ${where_fields.size()} > 0)
+							#set ($where_part = "where ")
+						#end
+						#foreach ($field in ${where_fields})
+							#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+							#if ($foreach.count < ${where_fields.size()})
+								#set ($where_part = "${where_part} ${where_separator} ")
+							#end
+						#end
+		   				<named-query name="${queryName}">
+		      			<query>
+		      				&lt;![CDATA[
+		      					update ${class.name} set ${update_part} ${where_part}
+							]]&gt;
+		      			</query>
+		   				</named-query>
+					</fc:xml>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_DELETE">
+		<description>This is used to create HQL delete statement.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+						#if ($foreach.count < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+					final String hqlQuery = "delete from ${class.name} ${where_part}";
+					final Query query = session.createQuery(hqlQuery);
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+					]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_DELETE_WITH_NAMED_QUERY">
+		<description>This is used to create HQL delete statement with named query.</description>
+		<variation>named-query</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+				// named Query\n
+					final Query query = session.createnamedQuery("${queryName}");
+					#foreach ($field in ${where_fields})
+                    	query.setParameter("${field.name}", null);
+				   #end
+				#if (!${useExistingNamedQuery})
+					<fc:xml parent="entity-mappings" node="named-query" target="${target}">
+						#set ($where_part = "")
+						#if (${where_fields} && ${where_fields.size()} > 0)
+							#set ($where_part = "where ")
+						#end
+						#foreach ($field in ${where_fields})
+							#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+							#if ($foreach.count < ${where_fields.size()})
+								#set ($where_part = "${where_part} ${where_separator} ")
+							#end
+						#end
+		   				<named-query name="${queryName}">
+		      			<query>
+		      				&lt;![CDATA[
+								delete from ${class.name} ${where_part}
+							]]&gt;
+		      			</query>
+		   				</named-query>
+					</fc:xml>
+				#end
+		]]>
+		</template-body>
+	</template>
+
+	<template name="HQL_DELETE_NAMED_QUERY_WITH_ANNOTATION">
+		<description>This is used to create HQL delete statement with named query and annotation.</description>
+		<variation>named-query-annotation</variation>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+				// named Query\n
+					final Query query = session.createnamedQuery("${queryName}");
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+					#if (!${useExistingNamedQuery})
+						<fc:xml parent="entity-mappings" node="named-query" target="${target}">
+							#set ($where_part = "")
+							#if (${where_fields} && ${where_fields.size()} > 0)
+								#set ($where_part = "where ")
+							#end
+							#foreach ($field in ${where_fields})
+								#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+								#if ($foreach.count < ${where_fields.size()})
+									#set ($where_part = "${where_part} ${where_separator} ")
+								#end
+							#end
+			   				<named-query name="${queryName}">
+			      			<query>
+			      				&lt;![CDATA[
+									delete from ${class.name} ${where_part}
+								]]&gt;
+			      			</query>
+			   				</named-query>
+						</fc:xml>
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="DOZER_MAPPING">
+		<description>This is used to create dozer mapping between two classes.</description>
+		<allowed-file-names>*.xml</allowed-file-names>
+		<first-template-item number-required-items="2">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				<mapping wildcard="false">
+				<class-a>${from_class.fullyQualifiedName}</class-a>
+				<class-b>${to_class.fullyQualifiedName}</class-b>
+				#foreach ($field in ${fields})
+					<field>
+						<a>${field.fullName}</a>
+						<b>${field.fullName}</b>
+					</field>
+            	#end
+            	</mapping>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="DOZER_MAPPING_SINGLE">
+		<description>This is used to create a single dozer mapping between two classes.</description>
+		<allowed-file-names>*.xml</allowed-file-names>
+		<first-template-item number-required-items="2">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${from_fields})
+					#set ($from_field = $field)
+				#end
+				#foreach ($field in ${to_fields})
+					#set ($to_field = $field)
+				#end
+				<mapping>
+					<field>
+						<a>${from_field.fullName}</a>
+						<b>${to_field.fullName}</b>
+					</field>
+            	</mapping>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="RESOURCE_BUNDLE">
+		<description>Used to Create Resource bundle.</description>
+		<allowed-file-names>*.properties</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<additional-parameters>prefix</additional-parameters>
+		<template-body>
+			<![CDATA[
+					# Resource Bundle for ${class.fullyQualifiedName}\n
+					#foreach ($field in ${fields})
+						#if (${prefix} && !${prefix.trim().equals("")}) ##validation for additional parameters
+							${prefix}.${field.name} = ${field.nameAsWord}
+						#else
+							${class.defaultInstance}.${field.name} = ${field.nameAsWord}
+						#end
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="RESOURCE_BUNDLE_AS_FILE">
+		<description>Used to Create Resource bundle as a file.</description>
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<additional-parameters>folder:folder fileName prefix</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${folder} && (${fileName} && !${fileName.trim().equals("")})) ##validation for additional parameters
+				<fc:file dir="${folder.fullPath}" name="${fileName}.properties">
+				# Resource Bundle for ${class.fullyQualifiedName}\n
+					#foreach ($field in ${fields})
+						#if((${prefix} && !${prefix.trim().equals("")}))
+							${prefix}.${field.name} = ${field.nameAsWord}
+						#else
+							${class.defaultInstance}.${field.name} = ${field.nameAsWord}
+						#end
+					#end
+			 	</fc:file>
+			 #else
+				<fc:exit message="Can not execute the template without values for additional parameters folder, fileName"/>
+			 #end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="PRINT_RESOURCE_BUNDLE">
+		<description>Used to print Resource bundle in a jsp or xhtml file.</description>
+		<allowed-file-names>*.jsp *.xhtml</allowed-file-names>
+		<first-template-item>file</first-template-item>
+		<second-template-item>property</second-template-item>
+		<template-body>
+			<![CDATA[
+				${property.name}
+			]]>
+		</template-body>
+	</template>
+
+
+	<template name="SIMPLE_CLASS_SNIPPET">
+		<description>This is used to create a simple snippet with classes.</description>
+		<variation>class-name fully-qualified-class-name field-name method-name</variation>
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">custom</second-template-item>
+		<template-body>
+		<![CDATA[
+			#if (${_template_variation} == "class-name")
+				${class.name}
+			#end
+			#if (${_template_variation} == "fully-qualified-class-name")
+				## full_class_name full_class_name full_class_name
+				${class.fullyQualifiedName}
+			#end
+			#if (${_template_variation} == "field-name")
+				${field.fullName}
+			#end
+			#if (${_template_variation} == "method-name")
+				${method.name}
+			#end
+		]]>
+		</template-body>
+	</template>
+
+	<template name="SIMPLE_FILE_SNIPPET">
+		<description>This is used to create a simple snippet with files.</description>
+		<variation>file-name fully-qualified-file-name</variation>
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item>file</first-template-item>
+		<second-template-item getter-setter="none">none</second-template-item>
+		<template-body>
+		<![CDATA[
+			#if (${_template_variation} == "file-name")
+				#foreach ($file in ${files})
+					${file.name}
+				#end
+			#end
+			#if (${_template_variation} == "fully-qualified-file-name")
+					${file.fullPath}
+			#end
+		]]>
+		</template-body>
+	</template>
+
+	<!-- <template name="STRUTS_VALIDATION"> <description>This is used to create
+		struts2 validation.</description> <variation>required requiredstring int
+		intRange regex date floatRange minlength maxlength email creditCard</variation>
+		<allowed-file-names>*.xml</allowed-file-names> <getter-setter>getter</getter-setter>
+		<number-required-classes>1</number-required-classes> <first-template-item>class</first-template-item>
+		<second-template-item>field</second-template-item> <allow-multiple-variation>true</allow-multiple-variation>
+		<template-body> <![CDATA[ #foreach ($field in ${fields}) <field name="${field.name}">
+		#foreach ($validType in ${_template_variation}) #set ($param_names = [])
+		#set ($message = "") #if ($validType == "required") #set ($message = "Value
+		of ${field.name} must not be null.") #elseif ($validType == "int") #set ($param_names
+		= ["min", "max"]) #set ($message = "Value of ${field.name} must be between
+		between ${min} and ${max}, current value is '${'${field.name}'}'.") #elseif
+		($validType == "regex") #set ($param_names = ["regex"]) #elseif ($validType
+		== "requiredstring") #set ($message = "The value of ${field.name} must be
+		of the format ${regex}") #end #foreach ($param_name in ${param_names}) <param
+		name="${param_name}"></param> #end <message key="key.${validType}">${message}</message>
+		#end <field> #end ]]> </template-body> </template> -->
+
+	<template name="STRUTS_VALIDATION">
+		<description>This is used to create struts validation.</description>
+		<variation>required integer intRange date floatRange minlength maxlength mask email creditCard validwhen</variation>
+		<allowed-file-names>*.xml</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<allow-multiple-variation>true</allow-multiple-variation>
+		<template-body>
+			<![CDATA[
+				<!-- validation for ${class.fullyQualifiedName}-->
+				<form name="${class.defaultInstance}">
+				#foreach ($field in ${fields})
+					#set ($dep = "")
+					#foreach ($validType in ${_template_variation})
+						#set ($dep = "${dep} ${validType}")
+						#if ($velocityCount < ${_template_variation.size()})
+							#set ($dep = "${dep} ,")
+					 	#end
+					 #end
+					<field property="${field.name}" depends="${dep}">
+				#if (${_template_variation.contains("minlength")})
+					#set ($key = '${var:minlength}')
+					<arg1 name="minlength" key="${key}" resource="false" />
+				#end
+				#if (${_template_variation.contains("maxlength")})
+					#set ($key = '${var:maxlength}')
+					<arg1 name="maxlength" key="${key}" resource="false" />
+				#end
+				#if (${_template_variation.contains("intRange")})
+					#set ($key = '${var:min}')
+					<arg1 name="intRange" key="${key}" resource="false" />
+					#set ($key = '${var:max}')
+					<arg2 name="intRange" key="${key}" resource="false" />
+				#end
+				#if (${_template_variation.contains("floatRange")})
+					#set ($key = '${var:min}')
+					<arg1 name="floatRange" key="${key}" resource="false" />
+					#set ($key = '${var:max}')
+					<arg2 name="floatRange" key="${key}" resource="false" />
+				#end
+				#if (${_template_variation.contains("doubleRange")})
+					#set ($key = '${var:min}')
+					<arg1 name="doubleRange" key="${key}" resource="false" />
+					#set ($key = '${var:max}')
+					<arg2 name="doubleRange" key="${key}" resource="false" />
+				#end
+				#if (${_template_variation.contains("mask")})
+					<var>
+						<var-name>mask</var-name>
+						<var-value></var-value>
+					</var>
+				#end
+				#if (${_template_variation.contains("minlength")})
+					<var>
+						<var-name>minlength</var-name>
+						<var-value>0</var-value>
+					</var>
+				#end
+				#if (${_template_variation.contains("maxlength")})
+					<var>
+						<var-name>maxlength</var-name>
+						<var-value>1</var-value>
+					</var>
+				#end
+				#if (${_template_variation.contains("validwhen")})
+					<var>
+						<var-name>test</var-name>
+						<var-value></var-value>
+					</var>
+				#end
+				#if (${_template_variation.contains("date")})
+					<var>
+						<var-name>datePattern</var-name>
+						<var-value>mm/dd/yyyy</var-value>
+					</var>
+				#end
+				#if (${_template_variation.contains("intRange")})
+					<var>
+						<var-name>min</var-name>
+						<var-value>10</var-value>
+					</var>
+					<var>
+						<var-name>max</var-name>
+						<var-value>20</var-value>
+					</var>
+				#end
+				#if (${_template_variation.contains("floatRange")})
+					<var>
+						<var-name>min</var-name>
+						<var-value>10.0</var-value>
+					</var>
+					<var>
+						<var-name>max</var-name>
+						<var-value>20.0</var-value>
+					</var>
+				#end
+				#if (${_template_variation.contains("doubleRange")})
+					<var>
+						<var-name>min</var-name>
+						<var-value>10.0</var-value>
+					</var>
+					<var>
+						<var-name>max</var-name>
+						<var-value>20.</var-value>
+					</var>
+				#end
+				#if (${_template_variation.contains("validwhen")})
+					<var>
+						<var-name>test</var-name>
+						<var-value></var-value>
+					</var>
+				#end
+					</field>
+				#end
+            	</form>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="STRUTS_VALIDATION_SINGLE">
+		<description>This is used to create a single struts validation.</description>
+		<variation>required integer date minlength maxlength mask email</variation>
+		<allowed-file-names>*.xml</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<allow-multiple-variation>true</allow-multiple-variation>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${fields})
+					#set ($dep = "")
+					#foreach ($validType in ${_template_variation})
+						#set ($dep = "${dep} ${validType}")
+						#if ($velocityCount < ${_template_variation.size()})
+							#set ($dep = "${dep} , ")
+					 	#end
+					 #end
+					<field property="${field.name}" depends="${dep}">
+					#if (${_template_variation.contains("minlength")})
+					#set ($key = '${var:minlength}')
+						<arg1 name="minlength" key="${key}" resource="false" />
+					#end
+					#if (${_template_variation.contains("maxlength")})
+					#set ($key = '${var:maxlength}')
+						<arg1 name="maxlength" key="${key}" resource="false" />
+					#end
+					#if (${_template_variation.contains("mask")})
+						<var>
+							<var-name>mask</var-name>
+							<var-value></var-value>
+						</var>
+					#end
+					#if (${_template_variation.contains("minlength")})
+						<var>
+							<var-name>minlength</var-name>
+							<var-value>0</var-value>
+						</var>
+					#end
+					#if (${_template_variation.contains("maxlength")})
+						<var>
+							<var-name>maxlength</var-name>
+							<var-value>1</var-value>
+						</var>
+					#end
+					#if (${_template_variation.contains("validwhen")})
+						<var>
+							<var-name>test</var-name>
+							<var-value></var-value>
+						</var>
+					#end
+					#if (${_template_variation.contains("date")})
+						<var>
+							<var-name>datePattern</var-name>
+							<var-value>mm/dd/yyyy</var-value>
+						</var>
+					#end
+					</field>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<!-- <template name="COMPARE_TO"> <description>Used to create compareTo
+		statement.</description> <getter-setter>getter</getter-setter> <allowed-file-names>*.java</allowed-file-names>
+		<number-required-classes>1</number-required-classes> <first-template-item>class</first-template-item>
+		<second-template-item>field</second-template-item> <template-body> <![CDATA[
+		//compare field in ${from_class.name} to ${to_class.name} #foreach ($field
+		in ${fields}) if (${from_instance}.${field.getter}().compareTo(${to_instance}.${field.getter}())
+		== 0) { //something } else if (${from_instance}.${field.getter}().compareTo(${to_instance}.${field.getter}())
+		< 0) { //something } else if (${from_instance}.${field.getter}().compareTo(${to_instance}.${field.getter}())
+		> 0) { //something } #end ]]> </template-body> </template> -->
+
+	<template name="METHOD_SNIPPET">
+		<description>Used to create method snippet.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>method</second-template-item>
+		<template-body>
+			<![CDATA[
+			//sample method snippet\n
+             Method name ${method.name}
+              #if(${method.returnType})
+           	 	Method returnType ${method.returnType.name}
+           	 #else
+           	 	Method returnType void
+           	 #end
+			#foreach($annot in ${method.annotations})
+				Annotations ${annot.type.name}
+				#foreach($param in ${annot.parameterList})
+					Param  ${param.left}
+					Value  ${param.right}
+				#end
+			#end
+           #foreach($exp in ${method.exceptions})
+	        Exceptions ${exp}
+          #end
+         #foreach($params in ${method.parameters})
+	          Type ${params.type.name}
+	          Name ${params.name}
+		 #end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="HASHCODE_AND_EQUALS_METHODS">
+		<description>Used to create hashcode() and equals() method snippet.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+			<fc:method name="hashcode">
+			/**
+                 * hashcode method for ${class.name}
+                 *
+                 * @see java.lang.Object#hashCode()
+                 */
+            @Override
+			public int hashCode(){
+			final int prime = 31;
+			int result = 1;
+			#foreach ($field in ${fields})
+				#if (${field.typeNative})
+				 	#if( ${field.type.name} == "long")
+				 		result = prime * result  + (int)(this.${field.name} ^ this.${field.name} >>> 32);
+				 	#elseif (${field.type.name} == "boolean")
+				 		result = prime * result + (this.${field.name} ? 1231 : 1237);
+				 	#elseif (${field.type.name} == "float")
+				 		result = prime * result + Float.floatToIntBits(this.${field.name});
+				 	#elseif (${field.type.name} == "double")
+				 		long temp;
+				 		temp = Double.doubleToLongBits(this.${field.name});
+				 		result = prime * result + (int)(temp ^ temp >>> 32);
+				 	#else
+						result = prime * result + this.${field.name};
+					#end
+				#else
+					result = prime * result + (this.${field.name} ==null ? 0 : this.${field.name}.hashCode());
+				#end
+			#end
+		    return result;
+			}
+			</fc:method>
+
+			<fc:method name="equals">
+			/**
+                 * equals method for ${class.name}
+                 *
+                 * @see java.lang.Object#equals()
+                 */
+            @Override
+			public boolean equals(Object obj){
+			if(obj==this){
+			return true;
+			}
+			if(obj==null){
+			return false;
+			}
+			if(getClass()!=obj.getClass()){
+			return false;
+			}
+			${class.name} ${class.defaultInstance} = (${class.name}) obj;
+			#foreach ($field in ${fields})
+				<fc:import>${field.type.fullyQualifiedName}</fc:import>
+				#if (${field.typeNative})
+					#if (${field.type.name} == "float")
+						if (Float.floatToIntBits(this.${field.name}) != Float.floatToIntBits(${class.defaultInstance}.${field.name})){
+					#elseif (${field.type.name} == "double")
+						if(Double.doubleToLongBits(this.${field.name}) != Double.doubleToLongBits(${class.defaultInstance}.${field.name})){
+					#else
+						if(this.${field.name} != ${class.defaultInstance}.${field.name}){
+					#end
+					return false;
+					}
+				#else
+					if (this.${field.name} == null){
+						if (${class.defaultInstance}.${field.name} != null){
+						return false;
+						}
+					}else if(!this.${field.name}.equals(${class.defaultInstance}.${field.name})){
+					return false;
+				}
+				#end
+			#end
+			return true;
+			}
+			</fc:method>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="JSON_FROM_CLASS">
+		<description>Used to Create json form a class.</description>
+		<allowed-file-names>*.json *.js</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#macro( makeJson $fields, $tabStr, $jsonOutput)
+				#set ($jsonOutput = "$jsonOutput {\n")
+				#set ($length = 0)
+				#set ($Qt = '"')
+				#foreach ($field in ${fields})
+					#set ($length = $length + 1)
+				#end
+				#set ($i = 0)
+				#foreach ($field in ${fields})
+					#if (${i} < $length - 1)
+						#set ($last = false)
+					#else
+						#set ($last = true)
+					#end
+					#set ($value = ${field.value})
+					#if (${field.array})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name.startsWith("List")})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name} == "String")
+						#set ($value = "${Qt}${Qt}")
+					#end
+					#if (${field.childFields.isEmpty()})
+						#set ($jsonOutput = "${jsonOutput} ${tabStr} ${Qt}${field.name}${Qt} :  ${value}") #if (!${last})#set ($jsonOutput = "${jsonOutput},\n")#end
+					#else
+						#set ($jsonOutput = "${jsonOutput} ${tabStr} ${Qt}${field.name}${Qt} : ") #makeJson (${field.childFields}, "${tabStr}\t", ${jsonOutput})#if (!${last})#set ($jsonOutput = "${jsonOutput},\n")#end
+					#end
+				#set ($i = $i + 1)
+				#end
+				#set ($jsonOutput = "$jsonOutput }\n")
+				#end
+				#set ($tabStr = "")
+				#set ($jsonOutput = "")
+				#makeJson ($fields, ${tabStr}, ${jsonOutput})
+				${jsonOutput}
+			]]>
+		</template-body>
+	</template>
+
+	<template name="JSON_FROM_CLASS_AS_FILE">
+		<description>Used to Create json form a class as a file.</description>
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<additional-parameters>folder:folder fileName</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${folder} && (${fileName} && !${fileName.trim().equals("")})) ##validation for additional parameters
+				<fc:file dir="${folder.fullPath}" name="${fileName}.js">
+				#macro( makeJson $fields, $tabStr, $jsonOutput)
+				#set ($jsonOutput = "$jsonOutput {\n")
+				#set ($length = 0)
+				#set ($Qt = '"')
+				#foreach ($field in ${fields})
+					#set ($length = $length + 1)
+				#end
+				#set ($i = 0)
+				#foreach ($field in ${fields})
+					#if (${i} < $length - 1)
+						#set ($last = false)
+					#else
+						#set ($last = true)
+					#end
+					#set ($value = ${field.value})
+					#if(${field.array})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name.startsWith("List")})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name.startsWith("Map")})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name} == "String")
+						#set ($value = "${Qt} ${Qt}")
+					#end
+					#if (${field.childFields.isEmpty()})
+						#set ($jsonOutput = "${jsonOutput} ${tabStr} ${Qt}${field.name}${Qt} :  ${value}") #if (!${last})#set ($jsonOutput = "${jsonOutput},\n")#end
+					#else
+						#set ($jsonOutput = "${jsonOutput} ${tabStr} ${Qt}${field.name}${Qt} : ") #makeJson (${field.childFields}, "${tabStr}\t", ${jsonOutput})#if (!${last})#set ($jsonOutput = "${jsonOutput},\n")#end
+					#end
+					#set ($i = $i + 1)
+				#end
+				#set ($jsonOutput = "$jsonOutput }\n")
+				#end
+				#set ($tabStr = "")
+				#set ($jsonOutput = "")
+				#makeJson ($fields, ${tabStr}, ${jsonOutput})
+				${jsonOutput}
+				</fc:file>
+			#else
+				<fc:exit message="Can not execute the template without values for additional parameters folder and fileName"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="XML_FROM_CLASS">
+		<description>Used to Create xml form a class.</description>
+		<allowed-file-names>*.xml</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#macro( makeXml $fields)
+				#set ($length = 0)
+				#set ($Qt = '"')
+				#foreach ($field in ${fields})
+					#set ($length = $length + 1)
+				#end
+				#set ($i = 0)
+				#foreach ($field in ${fields})
+					#if (${i} < $length - 1)
+						#set ($last = false)
+					#else
+						#set ($last = true)
+					#end
+					#set ($value = ${field.value})
+					#if (${field.array})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name.startsWith("List")})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name} == "String")
+						#set ($value = "${Qt}${Qt}")
+					#end
+					#if (${field.childFields.isEmpty()})
+						\t<${field.name}>${value}</${field.name}>#if (!${last})\n#end
+					#else
+						\t<${field.name}> \n #makeXml (${field.childFields})\n</${field.name}>#if (!${last})\n#end
+					#end
+					#set ($i = $i + 1)
+				#end
+				#end
+				<${class.defaultInstance}>
+				#makeXml ($fields)
+				</${class.defaultInstance}>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="XML_FROM_CLASS_AS_FILE">
+		<description>Used to Create xml form a class as a file.</description>
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="none">field</second-template-item>
+		<additional-parameters>folder:folder fileName</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${folder} && (${fileName} && !${fileName.trim().equals("")})) ##validation for additional parameters
+			<fc:file dir="${folder.fullPath}" name="${fileName}.xml">
+				#macro( makeXml $fields)
+				#set ($length = 0)
+				#set ($Qt = '"')
+				#foreach ($field in ${fields})
+					#set ($length = $length + 1)
+				#end
+				#set ($i = 0)
+				#foreach ($field in ${fields})
+					#if (${i} < $length - 1)
+						#set ($last = false)
+					#else
+						#set ($last = true)
+					#end
+					#set ($value = ${field.value})
+					#if (${field.array})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name.startsWith("List")})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name.startsWith("Map")})
+						#set ($value = "[{}]")
+					#end
+					#if (${field.type.name} == "String")
+						#set ($value = "${Qt}${Qt}")
+					#end
+					#if (${field.childFields.isEmpty()})
+						\t<${field.name}>${value}</${field.name}>#if (!${last})\n#end
+					#else
+						\t<${field.name}> \n #makeXml (${field.childFields})\n</${field.name}>#if (!${last})\n#end
+					#end
+					#set ($i = $i + 1)
+				#end
+				#end
+				<${class.defaultInstance}>
+				#makeXml ($fields)
+				</${class.defaultInstance}>
+				</fc:file>
+			#else
+				<fc:exit message="Can not execute the template without values for additional parameters folder and fileName"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="CREATE_STATIC_STRING_FIELD_AND_IMPORT">
+		<description>Used to create a static string field and import.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<additional-parameters>targetClass:class(label="Target Class") fieldName value staticImport:boolean(label="Do Static Import", value=true)</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${targetClass} && (${fieldName} && !${fieldName.trim().equals("")})) ##validation for additional parameters
+				<fc:field target="${targetClass.fullyQualifiedName}" name="${fieldName.toUpperCase()}">
+				 #if (${targetClass.isInterface()})
+				    String ${fieldName.toUpperCase()} = "${value}";
+				 #else
+					public static final String ${fieldName.toUpperCase()} = "${value}";
+				#end
+				</fc:field>
+				#if($staticImport)
+   					 <fc:import>${targetClass.fullyQualifiedName}#${fieldName.toUpperCase()} </fc:import>
+               			 ${fieldName.toUpperCase()}
+				#else
+    				<fc:import>${targetClass.fullyQualifiedName}</fc:import>
+               		 ${targetClass.name}.${fieldName.toUpperCase()}
+				#end
+			#else
+				<fc:exit message="Can not execute the template without values for additional parameters targetClass and fieldName "/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="DELEGATE_METHOD">
+		<description>Used to Create delegate method.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>method</second-template-item>
+		<template-body>
+			<![CDATA[
+			<fc:import>${class.fullyQualifiedName}</fc:import>
+			<fc:import>javax.annotation.Resource</fc:import>
+			<fc:field name="${class.defaultInstance}">
+				@Resource
+				private ${class.name} ${class.defaultInstance};
+			</fc:field>
+			#foreach ($method in ${methods})
+				<fc:method name="${method.name}">
+					#set ($arg = "")
+					#set ($assign = "")
+					#set ($return = "void")
+					#set ($excptn = "")
+					#if (${method.returnType})
+						#set ($assign = "${assign}  ${method.returnType.name} ${method.name} = ")
+						<fc:import>${method.returnType.fullyQualifiedName}</fc:import>
+						#set ($return = "${method.returnType.name}")
+					#end
+					#foreach($param in ${method.parameters})
+						#set ($arg = "${arg}${param.type.value}")
+						#if ($foreach.count < ${method.parameters.size()})
+							#set ($arg = "${arg},")
+						#end
+					#end
+					#foreach ($exp in ${method.exceptions})
+						#set ($excptn = "${excptn}${exp.name}")
+						#if ($foreach.count < ${method.exceptions.size()})
+							#set ($excptn = "${excptn},")
+						#end
+						<fc:import>${exp.fullyQualifiedName}</fc:import>
+					#end
+
+					/**
+					  *
+					  *@return
+					  */
+					@Override
+					public ${return} ${method.name} () ${excptn} {
+						${assign} ${class.defaultInstance}.${method.name}(${arg});
+						#if ($return != "void")
+							return ${method.name};
+						#end
+					}
+				</fc:method>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="INSTANCE_OF_CLASSES">
+		<description>Used to Create instance of classes.</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">package</first-template-item>
+		<second-template-item>class</second-template-item>
+		<template-body>
+			<![CDATA[
+				<fc:import>javax.annotation.Resource</fc:import>
+				#foreach ($class in ${classes})
+					<fc:import>${class.fullyQualifiedName}</fc:import>
+					<fc:field name="${class.defaultInstance}">
+						@Resource
+						private ${class.name} ${class.defaultInstance};
+					</fc:field>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="INCLUDE_FILES">
+		<description>Used to include jsp or js files.</description>
+		<allowed-file-names>*.jsp *.js </allowed-file-names>
+		<first-template-item number-required-items="1">folder</first-template-item>
+		<second-template-item>file</second-template-item>
+		<template-body>
+			<![CDATA[
+				#foreach($file in ${files})
+				#if (${file.extension} == "js")
+					<script language="JavaScript" type="text/JavaScript" src="${file.fullName}"></script>
+				#end
+				#if (${file.extension} == "jsp")
+					<jsp:include page="${file.fullName}" flush="true"/>
+				#end
+				#if (${file.extension} == "css")
+					<link rel="stylesheet" href="${file.fullName}" type="text/css"></link>
+				#end
+				#if (${file.extension} == "img" || ${file.extension} == "png" || ${file.extension} == "jpeg")
+					<img src = "${file.fullName}" />
+				#end
+								#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="CREATE_IMPL">
+		<description>Used to Create implementation of interfaces selected.</description>
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>class</second-template-item>
+		<additional-parameters>dependsOn:class</additional-parameters>
+		<template-body>
+			<![CDATA[
+
+					#foreach ($class in ${classes})
+					<fc:class name="${class.name}Impl" package="${class.package.name}.impl" project="${class.package.javaProject}">
+						import ${class.fullyQualifiedName};
+						import org.springframework.stereotype.Service;
+						#if (${dependsOn})
+							import org.springframework.beans.factory.annotation.Autowired;
+							import ${dependsOn.fullyQualifiedName};
+						#end
+						@Service
+						public class ${class.name}Impl implements ${class.name}{
+							#if (${dependsOn})
+								@Autowired
+								private ${dependsOn.name} ${dependsOn.defaultInstance};
+							#end
+						}
+					</fc:class>
+					#end
+
+			]]>
+		</template-body>
+	</template>
+
+	<template name="CREATE_FILE_AND_INCLUDE">
+		<description>Used to Create file and include.</description>
+		<allowed-file-names>*.jsp</allowed-file-names>
+		<first-template-item>folder</first-template-item>
+		<second-template-item>none</second-template-item>
+		<allow-multiple-variation></allow-multiple-variation>
+		<additional-parameters>fileName</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${fileName} && !${fileName.trim().equals("")})
+				<fc:file dir="${folder.fullPath}" name="${fileName}">
+				</fc:file>
+				##<jsp:include page="${folder.getName()}/${fileName}" flush="true"/>
+				<script type="text/javascript" src="${folder.name}/${fileName}"></script>
+			#else
+				<fc:exit message="Can not execute the template without value for additional parameter fileName"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="MULTIPLE_NEW_FILES">
+		<description>Used to Create multiple files in the selected folder.</description>
+		<allowed-file-names>*.jsp</allowed-file-names>
+		<first-template-item>folder</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>fileNames extension</additional-parameters>
+		<template-body>
+			<![CDATA[
+				#if ((${fileNames} && !${fileNames.trim().equals("")}) && (${extension} && !${extension.trim().equals("")}))
+					#foreach ($fileName in ${fileNames.split("\s+")})
+						<fc:file dir="${folder.fullPath}" name="${fileName}.${extension}">
+							test my first jsp
+						</fc:file>
+					#end
+				#else
+					<fc:exit message="Can not execute the template without values for additional parameters fileNames and extension"/>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="MULTIPLE_NEW_CLASSES">
+		<description>Used to Create classes of the given names in the specied package.</description>
+		<allowed-file-names>*.*</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>classNames suffix(allowed_values="DTO Vo DAO Pojo", value="Vo")</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${classNames} && !${classNames.trim().equals("")})
+				#foreach ($className in ${classNames.split("\s+")})
+					<fc:class type="class" name="${className}${suffix}" package="${package.name}" project="${package.javaProject}">
+						public class ${className}${suffix} {
+						}
+					</fc:class>
+				#end
+			#else
+			 <fc:exit message="Can not execute the template without value for additional parameter classNames"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="MULTIPLE_NEW_INTERFACES">
+		<description>Used to Create interfaces of the given names in the specied package.</description>
+		<allowed-file-names>*.*</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>interfaceNames suffix</additional-parameters>
+		<template-body>
+			<![CDATA[
+				#if (${interfaceNames} && !${interfaceNames.trim().equals("")})
+					#foreach ($interfaceName in ${interfaceNames.split("\s+")})
+						<fc:class type="interface" name="${interfaceName}${suffix}" package="${package.name}" project="${package.javaProject}">
+							public interface ${interfaceName}${suffix} {
+							}
+						</fc:class>
+					#end
+				#else
+					<fc:exit message="Can not execute the template without value for additional parameter interfaceNames"/>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="COPY_CLASSES">
+		<description>Used to Create copy classes from one package to another (and change suffix).</description>
+		<allowed-file-names>*.*</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>class</second-template-item>
+		<additional-parameters>targetPackage:package inputSuffix outputSuffix</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${targetPackage})
+				#foreach ($class in ${classes})
+					<fc:class type="class" name="${class.name.replace(${inputSuffix}, ${outputSuffix})}" package="${targetPackage.name}" project="${targetPackage.javaProject}">
+						public class ${class.name.replace(${inputSuffix}, ${outputSuffix})} {
+						}
+					</fc:class>
+				#end
+			#else
+				<fc:exit message="Can not execute the template without value for additional parameter targetPackage"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="MULTIPLE_ABSTRACT_CLASS">
+		<description>Used to Create abstract classes of the given names in the selected package.</description>
+		<allowed-file-names>*.*</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>classNames</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${classNames} && !${classNames.trim().equals("")})
+				#foreach ($className in ${classNames.split("\s+")})
+					<fc:class type="class" name="Abstract${className}" package="${package.name}" project="${package.javaProject}">
+						public abstract class Abstract${className} {
+						}
+					</fc:class>
+				#end
+			#else
+				<fc:exit message="Can not execute the template without value for additional parameter classNames"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SPRING_BEAN_FROM_CLASSES_AS_FILE">
+		<description>Used to Create Spring bean File in the selected folder,using the interfaces selected.</description>
+		<first-template-item>package</first-template-item>
+		<second-template-item>class</second-template-item>
+		<additional-parameters>XmlFolder:folder</additional-parameters>
+		<template-body>
+			<![CDATA[
+
+					#set($beanStr = "")
+					#set ($Qt = '"')
+					#foreach ($class in ${classes})
+						#set ($classVar = "")
+						#set ($idVar = "")
+						#if (${class.isInterface()})
+							#if (!${class.implementations.isEmpty()})
+								#if (${class.implementations.size()}==1)
+									#set ($classVar = "${class.implementations.get(0).fullyQualifiedName}")
+								#else
+									<fc:message title="warning" >More than one implementaion found for ${class.name}</fc:message>
+								#end
+							#else
+								<fc:message title="warning" >No implementaion found for ${class.name}</fc:message>
+							#end
+						#elseif (${class.isClass()})
+							#if (!${class.interfaces.isEmpty()})
+								#if (${class.interfaces.size()}==1)
+									#set ($idVar = "${class.interfaces.get(0).defaultInstance}")
+								#else
+									<fc:message title="warning" >More than one interface found for ${class.name}</fc:message>
+								#end
+							#else
+									<fc:message title="warning" >No interface found for ${class.name}</fc:message>
+							#end
+						#end
+						#if ((${class.isInterface()}&&$classVar!="") || (${class.isClass()}&&$idVar!=""))
+							#if (${class.isInterface()})
+								#set ($beanStr = "${beanStr}<bean id=${Qt}${class.defaultInstance}${Qt} class=${Qt}${classVar}${Qt}>")
+							#elseif (${class.isClass()})
+								#set ($beanStr = "${beanStr}<bean id=${Qt}${idVar}${Qt} class=${Qt}${class.fullyQualifiedName}${Qt}>")
+							#end
+							#set ($beanStr = "${beanStr}\n</bean>\n")
+						#end
+					#end
+					#if(${XmlFolder})
+						<fc:file dir="${XmlFolder.fullPath}" name="applicationContext-.xml">
+						<?xml version="1.0" encoding="UTF-8"?>
+						<beans xmlns="http://www.springframework.org/schema/beans"
+						xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+						${beanStr}
+						</beans>
+						</fc:file>
+					#else
+						<fc:exit message="Can not execute the template without value for additional parameter XmlFolder"/>
+					#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="EXCEPTION_CLASS">
+		<description>Used to Create classes which extend Exception in the specied package.</description>
+		<allowed-file-names>*.*</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>classNames</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${classNames} && !${classNames.trim().equals("")})
+				#foreach($className in ${classNames.split("\s+")})
+					<fc:class type="class" name="${className}Exception" package="${package.name}" project="${package.javaProject}">
+						public class ${className}Exception extends Exception {
+
+							/**
+							 *
+							 */
+							public ${className}Exception () {
+								super();
+							}
+
+							/**
+							 *
+							 * @param message
+							 */
+							public ${className}Exception (final String message) {
+								super(message);
+							}
+
+							/**
+							 *
+							 * @param message
+							 * @param throwable
+							 */
+							public ${className}Exception (final String message, final Throwable cause) {
+								super(message, cause);
+							}
+
+							/**
+							 *
+							 * @param throwable
+							 */
+							public ${className}Exception (final Throwable cause) {
+								super(cause);
+							}
+						}
+					</fc:class>
+				#end
+			#else
+				<fc:exit message="Can not execute the template without value for additional parameter classNames"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="RUNTIME_EXCEPTION_CLASS">
+		<description>Used to Create classes which extend RumtimeException in the specied package.</description>
+		<allowed-file-names>*.*</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>classNames</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${classNames} && !${classNames.trim().equals("")})
+				#foreach($className in ${classNames.split("\s+")})
+					<fc:class type="class" name="${className}Exception" package="${package.name}" project="${package.javaProject}">
+						public class ${className}Exception extends RuntimeException {
+
+							/**
+							 *
+							 */
+							public ${className}Exception () {
+								super();
+							}
+
+							/**
+							 *
+							 * @param message
+							 */
+							public ${className}Exception (final String message) {
+								super(message);
+							}
+
+							/**
+							 *
+							 * @param message
+							 * @param throwable
+							 */
+							public ${className}Exception (final String message, final Throwable cause) {
+								super(message, cause);
+							}
+
+							/**
+							 *
+							 * @param throwable
+							 */
+							public ${className}Exception (final Throwable cause) {
+								super(cause);
+							}
+						}
+					</fc:class>
+				#end
+			#else
+				<fc:exit message="Can not execute the template without value for additional parameter classNames"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="INSTANCE_OF_GENERIC_DAO">
+		<description>Used to Create instance parameterised class.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item>package</first-template-item>
+		<second-template-item>class</second-template-item>
+		<additional-parameters>applicationContext:file genericClass:class genereicClassImpl:class</additional-parameters>
+		<template-body>
+			<![CDATA[
+				<fc:import>javax.annotation.Resource</fc:import>
+				<fc:import>com.test.dao.GenericDao</fc:import>
+				#foreach ($class in ${classes})
+					<fc:import>${class.fullyQualifiedName}</fc:import>
+					#if (${common_class_suffix})
+						#set ($defInst = "${class.defaultInstance}")
+						#foreach ($suffix in ${common_class_suffix})
+							#if (${class.defaultInstance.toLowerCase().endsWith(${suffix.trim().toLowerCase()})})
+								#set ($defInst = "${class.defaultInstance.substring(0, ${class.defaultInstance.indexOf(${suffix.trim()})})}")
+							#end
+						#end
+					#end
+					#if (${genericClass})
+						<fc:field name="${defInst}">
+							@Resource
+							private ${genericClass.name}<${class.name}, Integer> ${defInst}DAO;
+						</fc:field>
+					#else
+						<fc:exit message="Can not execute the template without values for additional parameter genericClass"/>
+					#end
+					#if (${applicationContext}  && ${genereicClassImpl})
+						<fc:xml node="bean" parent="beans" target="${applicationContext.fullPath}">
+							<bean id="${defInst}DAO" class="${genereicClassImpl.fullyQualifiedName}">
+								<constructor-arg index="0" value="${class.fullyQualifiedName}"/>
+								<constructor-arg index="1" ref="sessionFactory"/>
+							</bean>
+						</fc:xml>
+					#else
+						<fc:exit message="Can not execute the template without values for additional parameters applicationContext and genereicClassImpl"/>
+					#end
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="J2EE_BASE">
+		<description>Used to Create J2EE Base.</description>
+		<allowed-file-names>*</allowed-file-names>
+		<additional-parameters>module scripts:folder webInf:folder</additional-parameters>
+		<template-body>
+            <![CDATA[
+            #if ((${module}&& !${module.trim().equals("")} ))
+
+             	<fc:class name="${module}Controller" package="com.test.${module.toLowerCase()}.controller" project="${project.name}">
+					import org.apache.commons.logging.Log;
+                    import org.springframework.stereotype.Controller;
+                    import org.apache.commons.logging.LogFactory;
+                    import org.springframework.web.bind.annotation.RequestMapping;
+                    import org.springframework.beans.factory.annotation.Autowired;
+                    import org.springframework.web.bind.annotation.RequestParam;
+                    import org.springframework.web.servlet.ModelAndView;
+                    import com.test.${module.toLowerCase()}.service.${module}Service;
+
+                    @Controller
+                    public class ${module}Controller {
+
+                        @Autowired
+                        private ${module}Service ${module.substring(0,1).toLowerCase()}${module.substring(1)}Service;
+                        static Log logger  = LogFactory.getLog(${module}Controller.class);
+
+
+                        @RequestMapping({ "/${module.toLowerCase()}.htm" })
+                        public String view${module}() {
+                            return "${module.toLowerCase()}/${module}";
+                        }
+
+                    	@RequestMapping({ "/${module.toLowerCase()}.htm" })
+                    	public String save${module}() {
+                    	return "${module.toLowerCase()}/${module}";
+                    	}
+                    }
+                </fc:class>
+
+                <fc:class type="interface" name="${module}Service" package="com.test.${module.toLowerCase()}.service" project="${project.name}">
+                    public interface ${module}Service {
+                    }
+                </fc:class>
+
+				<fc:class name="${module}ServiceTest" package="com.test.${module.toLowerCase()}.service" project="${project.name}" optional="true" type="test">
+                	import javax.annotation.Resource;
+                	import org.junit.Ignore;
+					import org.junit.Test;
+					import org.junit.runner.RunWith;
+					import org.springframework.test.context.ContextConfiguration;
+					import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+					@RunWith(SpringJUnit4ClassRunner.class)
+					@ContextConfiguration(locations = { "classpath:application-context.xml" })
+					public class ${module}ServiceTest {
+
+					@Resource
+					private ${module}Service ${module.substring(0,1).toLowerCase()}${module.substring(1)}Service;
+
+
+					}
+                </fc:class>
+
+                <fc:class name="${module}ServiceImpl" package="com.test.${module.toLowerCase()}.service" project="${project.name}">
+                    import org.apache.commons.logging.Log;
+                    import org.apache.commons.logging.LogFactory;
+                    import org.springframework.stereotype.Component;
+
+                    @Component
+                    public class ${module}ServiceImpl implements ${module}Service {
+                        static Log logger  = LogFactory.getLog(${module}ServiceImpl.class);
+                    }
+                </fc:class>
+
+                <fc:class name="${module}Dao" type="interface" package="com.test.${module.toLowerCase()}.dao" project="${project.name}">
+                    public interface ${module}Dao {
+                    }
+                </fc:class>
+
+                <fc:class name="${module}DaoImpl" package="com.test.${module.toLowerCase()}.dao" project="${project.name}">
+                    import org.apache.commons.logging.Log;
+                    import org.apache.commons.logging.LogFactory;
+                    import java.sql.ResultSet;
+                    import java.sql.SQLException;
+                    import java.util.List;
+
+                    import org.springframework.jdbc.core.RowMapper;
+                    import org.springframework.stereotype.Component;
+
+                    import com.test.common.database.BaseDao;
+
+                    @Component
+                    public class ${module}DaoImpl extends BaseDao implements ${module}Dao {
+                        private static final Log logger  = LogFactory.getLog(${module}DaoImpl.class);
+                    }
+                </fc:class>
+                 #if (${scripts})
+                	<fc:file dir="${scripts.fullPath}/${module.toLowerCase()}" name="${module}.js">
+                   	 Ext.onReady(function() {
+                        Ext.BLANK_IMAGE_URL = './resources/images/default/s.gif';
+                        Ext.QuickTips.init();
+
+                    });
+
+                	</fc:file>
+                 #else
+                 	<fc:exit message="Can not execute the template without values for additional parameter scripts "/>
+				#end
+				#if (${webInf})
+			 #set ($Ds = '$')	
+                	<fc:file dir="${webInf.fullPath}/${module.toLowerCase()}" name="${module}.jsp">
+                    	<html>
+                  	 	<head>
+                    	<title>${module}</title>
+
+                    	<link rel="stylesheet" type="text/css"  href="${Ds}{pageContext.request.contextPath}/resources/css/ext-all.css" />
+                    	<script type="text/javascript" src="${Ds}{pageContext.request.contextPath}/scripts/adapter/ext/ext-base.js"></script>
+                    	<script type="text/javascript" src="${Ds}{pageContext.request.contextPath}/scripts/ext-all.js"></script>
+
+                    	<script type="text/javascript" src="${Ds}{pageContext.request.contextPath}/scripts/keyboard/keyboard.js"></script>
+                    	<script type="text/javascript" src="${Ds}{pageContext.request.contextPath}/scripts/product/${module.toLowerCase()}.js"></script>
+                    	<style>
+
+                    	</style>
+                    	</head>
+                    	</html>
+               		</fc:file>
+                 //Further more classes/files can be created using fc:class or fc:file tags
+           		 #else
+                 <fc:exit message="Can not execute the template without values for additional parameter webInf "/>
+				#end
+			 #else
+                 <fc:exit message="Can not execute the template without values for additional parameter module "/>
+			#end
+            ]]>
+		</template-body>
+	</template>
+
+	<template name="SWITCH_WITH_ENUM">
+		<description>create switch case statment with the selected Enum</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item>enum</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#if (!${fields})
+					<fc:exit message="No fields selected." />
+				#end
+				switch (${instance}) {
+				#foreach($field in ${fields})
+					case ${field.name}:
+					break;
+				#end
+					default:
+					break;
+			}
+			]]>
+		</template-body>
+	</template>
+
+	<template name="IF_ELSEIF_WITH_ENUM">
+		<description>create if-else-if block with the selected Enum</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">enum</first-template-item>
+		<second-template-item>field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#set ($ifName = "if")
+				#foreach($field in ${fields})
+					${ifName} (${instance} == (${enum.name}.${field.name})) {
+					#if ($foreach.count > 0)
+						#set ($ifName = "} else if")
+					#end
+				#end
+				} else {
+				}
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SWITCH_WITH_CONSTANTS">
+		<description>create switch case statment with Constants</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<additional-parameters>localvar:localvar</additional-parameters>
+		<template-body>
+			<![CDATA[
+				#if(${localvar})
+				switch (${localvar.name}) {
+				#foreach ($field in ${fields})
+					case ${class.name}.${field.name}:
+					break;
+				#end
+				default:
+				break;
+				}
+								#else
+				<fc:exit message="Can not execute the template without value for additional parameter localvar"/>
+								#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="IF_ELSEIF_WITH_CONSTANTS">
+		<description>create if-else-if block with Constants</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>field</second-template-item>
+		<additional-parameters>localvar:localvar</additional-parameters>
+		<template-body>
+			<![CDATA[
+				#set ($ifName = "if")
+				#foreach($field in ${fields})
+					##if ($foreach.count == 1)
+						##${field.type.name} ${localvar.name} = ${field.value};
+					##end
+					#if(${localvar})
+						#if(${field.typeNative})
+							${ifName} (${localvar.name} == (${class.name}.${field.name})) {
+						#else
+							${ifName} (${localvar.name}.equals((${class.name}.${field.name}))) {
+						#end
+					#else
+						<fc:exit message="Can not execute the template without value for additional parameter localvar"/>
+					#end
+					#if ($foreach.count > 0)
+						#set ($ifName = "} else if")
+					#end
+				#end
+							} else { }
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SERVLET">
+		<description>create a servlet</description>
+		<allowed-file-names>web.xml </allowed-file-names>
+		<first-template-item number-required-items="1">package</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>servletname  url</additional-parameters>
+		<template-body>
+			<![CDATA[
+				#if ((${servletname} && !${servletname.trim().equals("")}))
+				<fc:class name="${servletname}Servlet" package="${package.name}" project="${project.name}">
+				import javax.servlet.http.HttpServlet;
+				import javax.servlet.*;
+				public class ${servletname}Servlet extends HttpServlet {
+				}
+				</fc:class>
+				<servlet>
+							   			 <servlet-name>${servletname.toLowerCase()}</servlet-name>
+							    		<servlet-class>${package.name}.${servletname}Servlet</servlet-class>
+				</servlet>
+				#if (${url} && !${url.trim().equals("")})
+					<servlet-mapping>
+							    			<servlet-name>${servletname.toLowerCase()}</servlet-name>
+							   		 		<url-pattern>/${url}</url-pattern>
+					</servlet-mapping>
+				#else
+					<fc:exit message="Can not execute the template without values for additional parameter url"/>
+				#end
+								#else
+				<fc:exit message="Can not execute the template without values for additional parameter servletname"/>
+								#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="COMPARATOR_AS_CLASS">
+		<description>Used to create comparator class</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="getter">field</second-template-item>
+		<template-body>
+			<![CDATA[
+				#if (${fields} && ${fields.size()} > 1)
+				<fc:message title="Warning">Ordering of fields cannot be guarenteed, you may have to do it yourself.</fc:message>
+							#end
+							<fc:import>java.util.Comparator</fc:import>
+							<fc:import>${class.fullyQualifiedName}</fc:import>
+							<fc:class name="${class.name}Comparator" package="${class.package.name}" project="${class.package.javaProject}"  type="innerclass">
+							public class ${class.name}Comparator implements Comparator<${class.name}>{
+				@Override
+				public int compare(${class.name} ${class.defaultInstance}1, ${class.name} ${class.defaultInstance}2) {
+					#foreach ($field in ${fields})
+					if (${class.defaultInstance}1.${field.getter}() != null) {
+						final int compareResult = ${class.defaultInstance}1.${field.getter}().compareTo(${class.defaultInstance}2.${field.getter}());
+						if (compareResult != 0) {
+							return compareResult;
+						}
+					} else if (${class.defaultInstance}2.${field.getter}() != null) {
+						return -1;
+					}
+					#end
+					return 0;
+				}
+							}
+							</fc:class>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="FIELD_WITH_VALUE">
+		<description>Used to create value annotation</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">file</first-template-item>
+		<second-template-item>property</second-template-item>
+		<additional-parameters>fieldName</additional-parameters>
+		<template-body>
+			<![CDATA[
+				<fc:import>org.springframework.beans.factory.annotation.Value</fc:import>
+				#set ($dollar = "$")
+				#if (${fieldName} && !${fieldName.trim().equals("")})
+					<fc:field name="${fieldName}">
+					@Value("$dollar{${property.name}}")
+					private String ${fieldName};
+				               		</fc:field>
+				               	#else
+				               		<fc:exit message="Can not execute the template without value for additional parameter fieldName"/>
+				               	#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="TEST_SUITES">
+		<description>Used to create Test Suites</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">package</first-template-item>
+		<second-template-item>class</second-template-item>
+		<additional-parameters>targetPackage:package</additional-parameters>
+		<template-body>
+			<![CDATA[
+				#if (${targetPackage})
+				<fc:class type="class" name="Testsuites" package="${targetPackage.name}" project="${targetPackage.javaProject}">
+				               		 import org.junit.runners.Suite;
+				               		 import org.junit.runner.RunWith;
+									#foreach ($class in ${classes})
+										import ${class.fullyQualifiedName};
+									#end
+				               		 @RunWith(Suite.class)
+				 @Suite.SuiteClasses({#foreach ($class in ${classes})${class.name}.class#if ($foreach.count < ${classes.size()}), #end#end})
+				               		 public class Testsuites {
+				}
+				</fc:class>
+				                #else
+				<fc:exit message="Can not execute the template without value for additional parameter targetPackage"/>
+				                #end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="CREATE_FILE_WITH_SELECTED_CONTENT">
+		<description>Used to Create a file with the selected content.</description>
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item>folder</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>fileName startLine-endLine</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${fileName} && !${fileName.trim().equals("")})
+				 <fc:file dir="${folder.fullPath}" name="${fileName}.${enclosing_file.extension}">
+					${SelectedText}
+			 	</fc:file>
+			 #else
+			 	<fc:exit message="Can not execute the template without value for additional parameter fileName"/>
+			 #end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="CONVERTER_CLASS">
+		<description>Used to create converter class</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item getter-setter="gettersetter">field</second-template-item>
+		<template-body>
+			<![CDATA[
+			<fc:class name="${class.name}Converter" package="${class.package.name}" project="${class.package.javaProject}">
+			import javax.faces.component.UIComponent;
+			import javax.faces.context.FacesContext;
+			import javax.faces.convert.Converter;
+
+			public class ${class.name}Converter implements Converter {
+				@Override
+				public Object getAsObject(FacesContext context, UIComponent component,
+						String value) {
+					${class.name} ${instance} = new ${class.name}();
+					#foreach ($field in ${fields})
+						${instance}.${field.setter}(${field.value});
+					#end
+				}
+				@Override
+				public String getAsString(FacesContext context, UIComponent component,
+						Object value) {
+					${class.name} ${instance} = new ${class.name}();
+					#foreach ($field in ${fields})
+						${field.type.name} ${field.name} = ${instance}.${field.getter}();
+					#end
+					return null;
+				}
+			}
+			</fc:class>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="OVERRIDE_METHODS">
+		<description>Used to create a class with override methods of the super class</description>
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>method</second-template-item>
+		<additional-parameters>ClassName package:package</additional-parameters>
+		<template-body>
+			<![CDATA[
+				#if ((${ClassName} && !${ClassName.trim().equals("")}) && ${package})
+					<fc:class name ="${ClassName}" package="${package.name}" project="${project.name}">
+					import ${class.fullyQualifiedName};
+
+					public class ${ClassName} extends ${class.name}{
+
+						#foreach ($method in ${methods})
+							#set ($arg = "")
+							#set ($return = "void")
+							#set ($excptn = "")
+							#set ($param_name = "")
+							#if (${method.returnType})
+								#set ($return = "${method.returnType.name}")
+							#end
+							#foreach($param in ${method.parameters})
+								#set ($arg = "${arg} ${param.type.name} ${param.name}")
+								#set ($param_name = "${param_name} ${param.name}" )
+								#if ($foreach.count < ${method.parameters.size()})
+									#set ($arg = "${arg},")
+									#set ($param_name = "${param_name},")
+								#end
+							#end
+							#foreach ($exp in ${method.exceptions})
+								#set ($excptn = "${excptn}${exp.name}")
+								#if ($foreach.count < ${method.exceptions.size()})
+									#set ($excptn = "${excptn},")
+								#end
+							#end
+
+							@Override
+							public ${return} ${method.name} (${arg}) ${excptn} {
+								super.${method.name}(${param_name});
+								#if (${return} != "void")
+								return ${method.returnType.value};
+							#end
+							}
+						#end
+						}
+					</fc:class>
+				#else
+					<fc:exit message="Can not execute the template without values for additional parameters ClassName and  package"/>
+				#end
+				]]>
+		</template-body>
+	</template>
+
+	<template name="CREATE_FIELD_AND_CONSTRUCTOR">
+		<description>Used to Create Field and Constructor.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<template-body>
+			<![CDATA[
+			<fc:field name="${class.defaultInstance}">
+					private ${class.name} ${class.defaultInstance};
+			</fc:field>
+			<fc:import>${class.fullyQualifiedName}</fc:import>
+			<fc:method name="${enclosing_class.name}">
+			public ${enclosing_class.name}(${class.name} ${class.defaultInstance}){
+				this.${class.defaultInstance} =${class.defaultInstance};
+			}
+			</fc:method>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="CREATE_PROPERTY_AND_INCLUDE">
+		<description>Used to add property in an existing property file and include.</description>
+		<allowed-file-names>*.java </allowed-file-names>
+		<first-template-item number-required-items="1">file</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>PropertyKey ProperValues</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if((${PropertyKey} && !${PropertyKey.trim().equals("")}) && (${ProperValues} && !${ProperValues.trim().equals("")}))
+			<fc:property target="${file.fullPath}">
+				${PropertyKey} = ${ProperValues}
+			</fc:property>
+			#else
+				<fc:exit message="Can not execute the template without values for additional parameters PropertyKey and ProperValues"/>
+			#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="CREATE_STATIC_METHOD_AND_IMPORT">
+		<description>Used to create a static string field and import.</description>
+		<allowed-file-names>*.java</allowed-file-names>
+		<first-template-item number-required-items="1">class</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>targetClass:class methodName returnvalue returntype parameter staticImport:boolean</additional-parameters>
+		<template-body>
+			<![CDATA[
+			#if (${targetClass}  && (${methodName} && !${methodName.trim().equals("")}) )
+				<fc:method name="create${class.name}" target="${targetClass.fullyQualifiedName}">
+					#if (${returntype} && !${returntype.trim().equals("")})
+				    public static ${returntype} ${methodName}($parameter) {
+					return ${returnvalue};
+					}
+					#else
+					public static void ${methodName}($parameter) {
+					}
+					#end
+				</fc:method>
+				#if($staticImport)
+					<fc:import>${targetClass.fullyQualifiedName}#${methodName}</fc:import>
+				#else
+					<fc:import>${targetClass.fullyQualifiedName}</fc:import>
+				#end
+			#else
+				<fc:exit message="Can not execute the template without value for additional parameter targetClass and methodName "/>
+			#end
+			]]>
+		</template-body>
+		</template>
+
+		<template name="Create_methods_in_classes">
+		<allowed-file-names>*</allowed-file-names>
+		<first-template-item>none</first-template-item>
+		<second-template-item>none</second-template-item>
+		<additional-parameters>Dao:class DaoImpl:class Service:class ServiceImpl:class Controller:class  methodName requireDaoImplTestMethod:boolean DaoImplTest:class requireServiceImplTestMethod:boolean ServiceImplTest:class requireControllerTestMethod:boolean ControllerTest:class </additional-parameters>
+		<template-body>
+			<![CDATA[
+				#if(${methodName} && ${Dao})
+					<fc:method name="${methodName}" target="${Dao.fullyQualifiedName}">
+						public Object ${methodName}() ;
+					</fc:method>
+				#else
+					<fc:exit message="Can not execute the template without value for additional parameter Dao and methodName "/>
+				#end
+				#if(${methodName} && ${DaoImpl})
+					<fc:method name="${methodName}" target="${DaoImpl.fullyQualifiedName}">
+						public Object ${methodName}() {
+						// TODO Auto-generated method block
+						}
+					</fc:method>
+				#else
+					<fc:exit message="Can not execute the template without value for additional parameter DaoImpl and methodName "/>
+				#end
+				#if(${methodName} && ${Service})
+					<fc:method name="${methodName}" target="${Service.fullyQualifiedName}">
+						public Object ${methodName}() ;
+					</fc:method>
+				#else
+					<fc:exit message="Can not execute the template without value for additional parameter Service and methodName "/>
+				#end
+				#if(${methodName} && ${ServiceImpl})
+					<fc:method name="${methodName}" target="${ServiceImpl.fullyQualifiedName}">
+								public Object ${methodName}() {
+						${Dao.name} ${Dao.defaultInstance} = new ${DaoImpl.name}();
+						${Dao.defaultInstance}.${methodName}();
+					}
+					</fc:method>
+				#else
+					<fc:exit message="Can not execute the template without value for additional parameter ServiceImpl and methodName "/>
+				#end
+				#if(${methodName} && ${Controller})
+					<fc:method name="${methodName}" target="${Controller.fullyQualifiedName}">
+						public Object ${methodName}() {
+						${Service.name} ${Service.defaultInstance} = new ${ServiceImpl.name};
+						${Service.defaultInstance}.${methodName}();
+						}
+					</fc:method>
+				#else
+					<fc:exit message="Can not execute the template without value for additional parameter Controller and methodName "/>
+				#end
+				#if(${requireDaoImplTestMethod})
+					#if(${methodName} && ${DaoImplTest})
+						<fc:method name="${methodName}Test" target="${DaoImplTest.fullyQualifiedName}" >
+							public Object ${methodName}Test() {
+							// TODO Auto-generated method block
+						}
+						</fc:method>
+					#else
+						<fc:exit message="Can not execute the template without value for additional parameter DaoImplTest and methodName "/>
+					#end
+				#end
+				#if(${requireServiceImplTestMethod})
+					#if(${methodName} && ${ServiceImplTest})
+						<fc:method name="${methodName}Test" target="${ServiceImplTest.fullyQualifiedName}" >
+							public Object ${methodName}Test() {
+							// TODO Auto-generated method block
+						}
+						</fc:method>
+					#else
+						<fc:exit message="Can not execute the template without value for additional parameter ServiceImplTest and methodName "/>
+					#end
+				#end
+				#if(${requireControllerTestMethod})
+					#if(${methodName} && ${ControllerTest})
+						<fc:method name="${methodName}Test" target="${ControllerTest.fullyQualifiedName}" >
+							public Object ${methodName}Test() {
+						// TODO Auto-generated method block
+						}
+						</fc:method>
+					#else
+						<fc:exit message="Can not execute the template without value for additional parameter ControllerTest and methodName "/>
+					#end
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="SAMPLE_FILE_TEMPLATE">
+		<description>Used to create sample file snippet</description>
+		<allowed-file-names>* </allowed-file-names>
+		<first-template-item number-required-items="1">file</first-template-item>
+		<second-template-item>data</second-template-item>
+		<template-body>
+			<![CDATA[
+				##This is a sample template which will work only with file containing tab delimited data
+				#foreach ($data in ${records})
+					<tr> ${data.Code} : ${data.Country} : ${data.EName} </tr>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+</templates>

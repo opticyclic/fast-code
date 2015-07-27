@@ -1,0 +1,1719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <requires>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.jface.text"/>
+   </requires>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="FastCode.contribution1"
+            objectClass="org.eclipse.jdt.core.ICompilationUnit">
+         <menu
+               id="FastCode.menu1"
+               label="FastCode"
+               path="additions">
+            <separator name="group1" />
+            <separator name="group2" />
+            <separator
+                  name="group3">
+            </separator>
+            <separator
+                  name="group4">
+            </separator>
+ 	    <separator name="group5" />
+         </menu>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarActionWithDifferentName"
+               enablesFor="1"
+               id="FastCode.CreateSimilarActionWithDifferentName"
+               label="Create Similar Class with Different Name"
+               menubarPath="FastCode.menu1/group1">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarAction"
+               enablesFor="1"
+               id="FastCode.CreateSimilarAction"
+               label="Create Similar Class"
+               menubarPath="FastCode.menu1/group1">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easyjump.JumpToHibernateMapping"
+               id="FastCode.easyjump.MoveHibMapping"
+               label="Jump to Hibernate mapping"
+               menubarPath="FastCode.menu1/group2">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easyjump.ServiceToDAO"
+               enablesFor="1"
+               id="FastCode.easyjump.ServiceToDAO"
+               label="Jump From Service To DAO"
+               menubarPath="FastCode.menu1/group2"
+               style="radio">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easyjump.DAOToService"
+               enablesFor="1"
+               id="fastcode.easyjump.DAOToService"
+               label="Jump From DAO To Service"
+               menubarPath="FastCode.menu1/group2">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.CreateImportAction"
+               id="FastCode.CreateImport"
+               label="Create Static Import"
+               menubarPath="FastCode.menu1/group3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.DepencyInjectAction"
+               id="fastcode.DepencyInjectAction"
+               label="Create Instance"
+               menubarPath="FastCode.menu1/group3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.SpringInjectAction"
+               id="FastCode.SpringInjection"
+               label="Add As Spring Dependency"
+               menubarPath="FastCode.menu1/group3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateJUnitTestAction"
+               enablesFor="1"
+               id="FastCode.JUnitTestAction"
+               label="Create Junit"
+               menubarPath="FastCode.menu1/group4">
+         </action>
+        <action
+                class="org.fastcode.popup.actions.easycreate.SimpleNewClassCreateAction"
+               definitionId="FastCode.createnewclassandfieldssimple.command"
+               id="FastCode.createnewclassandfieldssimple.command"
+               label="New Class With Fields"
+               menubarPath="FastCode.menu1/group5">
+         </action>
+      </objectContribution>
+
+      <viewerContribution
+            id="fastcode.viewerContribution1"
+            targetID="#CompilationUnitEditorContext">
+         <menu
+               id="fastcode.menu1"
+               label="Fast Code">
+            <groupMarker
+                  name="fastcode.group1">
+            </groupMarker>
+            <groupMarker
+                  name="fastcode.group2">
+            </groupMarker>
+            <groupMarker
+                  name="fastcode.group3">
+            </groupMarker>
+            <groupMarker
+                  name="fastcode.group4">
+            </groupMarker>
+         </menu>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateJUnitTestView"
+               id="FastCode.CreateJunitView"
+               label="Create Junit"
+               menubarPath="fastcode.menu1/group1">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.JumpToJUnitTestView"
+               definitionId="FastCode.jumptojunit.command"
+               id="fastcode.action.jumptotest"
+               label="Jump to Junit"
+               menubarPath="fastcode.menu1/group1">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.JumpToAltTestMethodView"
+               definitionId="FastCode.jumptoalttest.command"
+               id="fastcode.action.jumptoalttest"
+               label="Jump to Alternate Test"
+               menubarPath="fastcode.menu1/group1">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarWithDifferentNameView"
+               id="FastCode.CreateSimilarWithDifferentNameView"
+               label="Create Similar Class With Different Name"
+               menubarPath="fastcode.menu1/group1">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarViewAction"
+               id="FastCode.CreateSimilarView"
+               label="Create Similar Class"
+               menubarPath="fastcode.menu1/group1">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.CopyMemberMultipleAction"
+               enablesFor="+"
+               id="FastCode.CopyMemberMultiple"
+               label="Copy Member Multiple"
+               menubarPath="fastcode.menu1/group2">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.CopyMemberAction"
+               definitionId="FastCode.copymember.command"
+               enablesFor="+"
+               id="FastCode.CopyMember"
+               label="Copy Member"
+               menubarPath="fastcode.menu1/group2"
+               overrideActionId="FastCode.JUnitTestAction">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.NewListCreateAction"
+               id="fastcode.newlistcreateaction"
+               label="Create New List (ArrayList)"
+               menubarPath="fastcode.menu1/group3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.NewHashMapCreateAction"
+               id="fastcode.newmapcreateaction"
+               label="Create New Map (HashMap)"
+               menubarPath="fastcode.menu1/group3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.NewTreeMapCreateAction"
+               id="fastcode.NewTreeMapCreateAction"
+               label="Create New Map (TreeMap)"
+               menubarPath="fastcode.menu1/group3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easyjump.ServiceToDAOView"
+               id="FastCode.easyjump.ServiceToDAO"
+               label="Jump From Service To DAO"
+               menubarPath="fastcode.menu1/group4">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easyjump.JumpToHibernateMappingView"
+               id="FastCode.easyjump.MoveHibMapping1"
+               label="Jump To Hibernate Mapping"
+               menubarPath="fastcode.menu1/group4">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easyjump.DAOToServiceView"
+               id="FastCode.easyjump.DAOToService"
+               label="Jump From DAO To Service"
+               menubarPath="fastcode.menu1/group4">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.CreateImportView"
+               id="fastcode.newimportcreateaction"
+               label="Create Import"
+               menubarPath="fastcode.menu1/group3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.SynchronizedMemberView"
+               definitionId="FastCode.synchronizemethod.command"
+               id="fastcode.synchronizemethod"
+               label="Synchronize Member (Class - Interface)"
+               menubarPath="fastcode.menu1/group2">
+         </action>
+        <!-- <action
+               class="org.fastcode.popup.actions.CreateNewDatabaseSnippetAction"
+               id="FastCode.createNewDatabaseSnippetAction.command"
+               label="Create New Database Snippet"
+               menubarPath="fastcode.menu1/group2">
+         </action>
+         -->
+      </viewerContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+
+      <page
+            class="org.fastcode.preferences.FastCodePreferencePage"
+            id="FastCode.preferences.FastCodePreference"
+            name="Fast Code">
+      </page>
+       <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.CreateSimilarPreferencesPage"
+            id="FastCode.preferences.CreateSimilarPreference"
+            name="Create Similar">
+      </page>
+      <page
+            category="FastCode.preferences.CreateSimilarPreference"
+            class="org.fastcode.preferences.CreateSimilarDAOServicePreferencePage"
+            id="FastCode.preferences.CreateSimilarPreferenceDaoService"
+            name="Create Similar (DAO to Service)">
+      </page>
+      <page
+            category="FastCode.preferences.CreateSimilarPreference"
+            class="org.fastcode.preferences.CreateSimilarDAOServicePojoPreferencePage"
+            id="FastCode.preferences.CreateSimilarPreferencePojoDaoService"
+            name="Create Similar (Dao Service Pojo)">
+      </page>
+      <page
+            category="FastCode.preferences.CreateSimilarPreference"
+            class="org.fastcode.preferences.CreateSimilarServiceUIPreferencePage"
+            id="FastCode.preferences.CreateSimilarPreferenceServiceUI"
+            name="Create Similar (Service to UI)">
+      </page>
+      <page
+            category="FastCode.preferences.CreateSimilarPreference"
+            class="org.fastcode.preferences.CreateSimilarServiceUIPojoPreferencePage"
+            id="FastCode.preferences.CreateSimilarPreferencePojoServiceUI"
+            name="Create Similar (Service UI Pojo)">
+      </page>
+      <page
+            category="FastCode.preferences.CreateSimilarPreference"
+            class="org.fastcode.preferences.CreateSimilarDiffNamePreferencePage"
+            id="FastCode.preferences.CreateSimilarPreferenceDifferentName"
+            name="Create Similar Different Name">
+      </page>
+      <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.JUnitPreferencePage"
+            id="FastCode.preferences.JUnitPreferencePage"
+            name="Unit Test">
+      </page>
+      <!--<page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.MappingPreferencePage"
+            id="FastCode.preferences.FastMapping"
+            name="Mapping Between Similar Classes">
+      </page>-->
+      <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.CreateNewPreferencePage"
+            id="FastCode.preferences.CreateNewPreference"
+            name="Create New">
+      </page>
+      <page
+            category="FastCode.preferences.CreateNewPreference"
+            class="org.fastcode.preferences.CreateNewDAOPreferencePage"
+            id="FastCode.preferences.CreateNewPreferenceDAO"
+            name="Create New DAO">
+      </page>
+      <page
+            category="FastCode.preferences.CreateNewPreference"
+            class="org.fastcode.preferences.CreateNewServicePreferencePage"
+            id="FastCode.preferences.CreateNewPreferenceService"
+            name="Create New Service">
+      </page>
+      <page
+            category="FastCode.preferences.CreateNewPreference"
+            class="org.fastcode.preferences.CreateNewUIPreferencePage"
+            id="FastCode.preferences.CreateNewPreferenceUI"
+            name="Create New UI">
+      </page>
+      <page
+            category="FastCode.preferences.CreateNewPreference"
+            class="org.fastcode.preferences.CreateNewDAOPOJOPreferencePage"
+            id="FastCode.preferences.CreateNewPreferencePojoDAO"
+            name="Create New Dao Pojo">
+      </page>
+      <page
+            category="FastCode.preferences.CreateNewPreference"
+            class="org.fastcode.preferences.CreateNewServicePOJOPreferencePage"
+            id="FastCode.preferences.CreateNewPreferencePojoService"
+            name="Create New Service Pojo">
+      </page>
+      <page
+            category="FastCode.preferences.CreateNewPreference"
+            class="org.fastcode.preferences.CreateNewUIPOJOPreferencePage"
+            id="FastCode.preferences.CreateNewPreferencePojoUI"
+            name="Create New UI Pojo">
+      </page>
+      <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.TemplatePreferencePage"
+            id="FastCode.preferences.TemplatePreferencePage"
+            name="Templates">
+      </page>
+       <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.DatabaseConnectionPreferencePage"
+            id="FastCode.preferences.DatabaseConnectionPreferencePage"
+            name="Database">
+      </page>
+      <page
+            category="FastCode.preferences.TemplatePreferencePage"
+            class="org.fastcode.preferences.TemplatesPage"
+            id="FastCode.preferences.TemplatesPage"
+            name="Templates">
+      </page>
+      <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.CommonTemplatePreferencePage"
+            id="FastCode.preferences.CommonTemplatePreferencePage"
+            name="Common Templates">
+      </page>
+      <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.CommonVariablesPreferencePage"
+            id="FastCode.preferences.CommonVariablesPreferencePage"
+            name="Common Variables">
+      </page>
+     <!-- <page
+            category="FastCode.preferences.TemplatePreferencePage"
+            class="org.fastcode.preferences.FileTemplatePreferencePage"
+            id="FastCode.preferences.FileTemplatePreferencePage"
+            name="File Template">
+      </page>-->
+      <!--<page
+            category="FastCode.preferences.DatabaseConnectionPreferencePage"
+            class="org.fastcode.preferences.AdditionalDatabaseTemplatePreferencePage"
+            id="FastCode.preferences.AdditionalDatabaseTemplatePreferencePage"
+            name="Database Templates Additional">
+      </page>-->
+      <page
+            category="FastCode.preferences.DatabaseConnectionPreferencePage"
+            class="org.fastcode.preferences.DatabaseTemplatePreferencePage"
+            id="FastCode.preferences.DatabaseTemplatePreferencePage"
+            name="Templates">
+      </page>
+      <!-- <page
+            category="FastCode.preferences.DatabasePage"
+            class="org.fastcode.preferences.DatabaseConnectionPreferencePage"
+            id="FastCode.preferences.DatabaseConnectionPreferencePage"
+            name="Database Connection">
+      </page> -->
+      <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.CreateVariablePreferencePage"
+            id="FastCode.preferences.CreateVariablePreferencePage"
+            name="Variable">
+      </page>
+      <page
+            category="FastCode.preferences.DatabaseConnectionPreferencePage"
+            class="org.fastcode.preferences.PojoClassPreferencePage"
+            id="FastCode.preferences.PojoClassPreferencePage"
+            name="Pojo Class ">
+      </page>
+      <page
+            category="FastCode.preferences.FastCodePreference"
+            class="org.fastcode.preferences.VersionControlPreferencePage"
+            id="FastCode.preferences.VersionControlPreferencePage"
+            name="Version Control">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.fastcode.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+  <extension point="org.eclipse.ui.actionSets">
+
+      <actionSet
+            description="Fast Code"
+            id="FastCode.actionSet"
+            label="Fast Code"
+            visible="true">
+         <menu
+               id="fastcode.actionset.menu1"
+               label="Fast Code">
+            <groupMarker
+                  name="fastcode.groupCreatesimilar">
+            </groupMarker>
+            <separator
+                  name="fastcode.separator1">
+            </separator>
+            <groupMarker
+                  name="fastcode.groupCreatefield">
+            </groupMarker>
+              <separator
+                  name="fastcode.separator2">
+            </separator>
+            <groupMarker
+                  name="fastcode.groupCreateTable">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator3">
+            </separator>
+            <groupMarker
+                  name="fastcode.groupMarker2">
+            </groupMarker>
+            <separator
+                  name="fastcode.separator4">
+            </separator>
+            <groupMarker
+                  name="fastcode.groupMarker3">
+            </groupMarker>
+            <separator
+                  name="fastcode.separator5">
+            </separator>
+            <groupMarker
+                  name="fastcode.groupMarker4">
+            </groupMarker>
+            <separator
+                  name="fastcode.separator6">
+            </separator>
+            <groupMarker
+                  name="fastcode.grouptemplates">
+            </groupMarker>
+            <groupMarker
+                  name="fastcode.groupDatabaseTemplates">
+            </groupMarker>
+             <!--<groupMarker
+                  name="fastcode.groupFileTemplates">
+            </groupMarker>-->
+            <groupMarker
+                  name="fastcode.groupRulesBased">
+            </groupMarker>
+         </menu>
+         <action
+               class="org.fastcode.popup.actions.easycreate.CopyMemberMultipleAction"
+               id="FastCode.multiple.copymember.command"
+               label="Copy Member Multiple"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker2">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.CopyMemberAction"
+               definitionId="FastCode.copymember.command"
+               id="FastCode.copymember.command"
+               label="Copy Member"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker2">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.SynchronizedMemberView"
+               definitionId="FastCode.synchronizemethod.command"
+               id="FastCode.synchronizemethod.command"
+               label="Synchronize Method (Class - Interface)"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker2">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.CreateImportView"
+               definitionId="FastCode.createimport.command"
+               id="FastCode.createimport.command"
+               label="Create Static &amp;Import"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker2">
+         </action>
+         <action
+               class="org.fastcode.versioncontrol.ClearFilesFromCacheAction"
+               definitionId="FastCode.clearFilesFromCache.command"
+               id="FastCode.clearFilesFromCache.command"
+               label="Clear Files From Cache"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker2">
+         </action>
+         <action
+               class="org.fastcode.versioncontrol.CommitFileInEditorAction"
+               definitionId="FastCode.commitFileInEditor.command"
+               id="FastCode.commitFileInEditor.command"
+               label="Commit current File to Repository"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker2">
+         </action>
+         <action
+               class="org.fastcode.versioncontrol.CommitToRepositoryAction"
+               definitionId="FastCode.commitToRepository.command"
+               id="FastCode.commitToRepository.command"
+               label="Commit Files from cache to Repository"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker2">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarViewAction"
+               definitionId="FastCode.createsimilar.command"
+               id="FastCode.createsimilar.command"
+               label="Create &amp;Similar Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.createsimilar.menu/fastcode.groupCreatesimilar">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarWithDifferentNameView"
+               definitionId="FastCode.createsimilardifferentname.command"
+               id="FastCode.createsimilardifferentname.command"
+               label="Create Similar Class With &amp;Different Name"
+               menubarPath="fastcode.actionset.menu1/fastcode.createsimilar.menu/fastcode.groupCreatesimilar">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarNewUIViewAction"
+               definitionId="FastCode.createnewui.command"
+               id="FastCode.createnewui.command"
+               label="Create New &amp;UI Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.createsimilar.menu/fastcode.groupCreatesimilar">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.NewTreeMapCreateAction"
+               definitionId="FastCode.newtreemap.command"
+               id="FastCode.newtreemap.command"
+               label="New &amp;Map (TreeMap)"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefield">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.NewSetCreateAction"
+               definitionId="FastCode.newset.command"
+               id="FastCode.newset.command"
+               label="New &amp;Set (HashSet)"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefield">
+         </action>
+  		<action
+               class="org.fastcode.popup.actions.easycreate.NewHashMapCreateAction"
+               definitionId="FastCode.newhashmap.command"
+               id="FastCode.newhashmap.command"
+               label="New Map (HashMap)"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefield">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.NewListCreateAction"
+               definitionId="FastCode.newlist.command"
+               id="FastCode.newlist.command"
+               label="New &amp;List (ArrayList)"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefield">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.SimpleNewStringMemberCreateAction"
+               definitionId="FastCode.newmemberstring.command"
+               id="FastCode.newmemberstring.command"
+               label="New Simple String &amp;Field with getter/setter"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefield">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.SimpleNewMemberCreateAction"
+               definitionId="FastCode.newmember.command"
+               id="FastCode.newmember.command"
+               label="New Simple &amp;Field with getter/setter"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefield">
+		 </action>
+          <action
+               class="org.fastcode.popup.actions.easycreate.DetailedMemberModifyAction"
+               definitionId="FastCode.detailednewmembermodify.command"
+               id="FastCode.detailednewmembermodify.command"
+               label="Modify a Field"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefieldDetail">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.easycreate.DetailedNewMemberCreateAction"
+               definitionId="FastCode.detailednewmember.command"
+               id="FastCode.detailednewmember.command"
+               label="New Field in Current Class-Detailed"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefieldDetail">
+          </action>
+           <action
+               class="org.fastcode.popup.actions.easycreate.SimpleNewFieldCreateAction"
+               definitionId="FastCode.detailednewmember.command"
+               id="FastCode.detailednewmember.command"
+               label="New Field in Current Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefieldDetail">
+          </action>
+          <action
+               class="org.fastcode.popup.actions.easycreate.DetailedNewClassCreateAction"
+               definitionId="FastCode.createnewclassandfields.command"
+               id="FastCode.createnewclassandfields.command"
+               label="New Class With Fields - Detailed"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefieldDetail">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.easycreate.SimpleNewClassCreateAction"
+               definitionId="FastCode.createnewclassandfieldssimple.command"
+               id="FastCode.createnewclassandfieldssimple.command"
+               label="New Class With Fields"
+               menubarPath="fastcode.actionset.menu1/fastcode.createfield.menu/fastcode.groupCreatefieldDetail">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewDatabaseAlterTableSnippetAction"
+               definitionId="FastCode.createnewdatabasealtertablesnippetaction.command"
+               id="FastCode.createnewdatabasealtertablesnippetaction.command"
+               label="Add Columns To Existing Table"
+               menubarPath="fastcode.actionset.menu1/fastcode.createtable.menu/fastcode.groupCreateTable">
+         </action>
+ 			<action
+               class="org.fastcode.popup.actions.snippet.CreateNewDatabaseTableSnippetAction"
+               definitionId="FastCode.createnewdatabasetablesnippetaction.command"
+               id="FastCode.createnewdatabasetablesnippetaction.command"
+               label="Create Table With Columns"
+               menubarPath="fastcode.actionset.menu1/fastcode.createtable.menu/fastcode.groupCreateTable">
+         </action>
+
+
+<!--
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewInstanceBareViewAction"
+               definitionId="FastCode.createnewinstance.command"
+               id="FastCode.createnewinstancebare.command"
+               label="Create New Instance Bare Fields"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplate">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewInstanceJsonViewAction"
+               definitionId="FastCode.createnewinstance.command"
+               id="FastCode.createnewinstancebare.command"
+               label="Create New Instance (Json Format)"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplate">
+         </action>
+-->
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarNewServiceViewAction"
+               definitionId="FastCode.createnewservice.command"
+               id="FastCode.createnewservice.command"
+               label="Create New &amp;Service Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.createsimilar.menu/fastcode.groupCreatesimilar">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarNewDaoViewAction"
+               definitionId="FastCode.createnewdao.command"
+               id="FastCode.createnewdao.command"
+               label="Create New &amp;Dao Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.createsimilar.menu/fastcode.groupCreatesimilar">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarNewDAOPojoViewAction"
+               definitionId="FastCode.createnewdaopojo.command"
+               id="FastCode.createnewdaopojo.command"
+               label="Create New &amp;DAO POJO Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.createsimilar.menu/fastcode.groupCreatesimilar">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateSimilarNewServicePojoViewAction"
+               definitionId="FastCode.createnewservicepojo.command"
+               id="FastCode.createnewservicepojo.command"
+               label="Create New &amp;Service POJO Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.createsimilar.menu/fastcode.groupCreatesimilar">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.JumpToJUnitTestView"
+               definitionId="FastCode.jumptojunit.command"
+               id="FastCode.jumpjunit.command"
+               label="Jump To Unit &amp;Test"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.JumpToAltTestMethodView"
+               definitionId="FastCode.jumptoalttest.command"
+               id="FastCode.jumptoalttest.command"
+               label="Jump To Alternate &amp;Test Method"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.CreateJUnitTestView"
+               definitionId="FastCode.junit.command"
+               id="FastCode.junit.command"
+               label="Create &amp;Unit Test"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker3">
+         </action>
+          <!--action
+               class="org.fastcode.popup.actions.createsimilar.UnitTestResultFormatImportAction"
+               id="fastcode.action.unitTestResultFormatImportAction"
+               label="Import Unit Test Result Format"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker3">
+         </action-->
+         <action
+               class="org.fastcode.popup.actions.createsimilar.UnitTestResultFormatExportAction"
+               id="fastcode.action.unitTestResultFormatExportAction"
+               label="Export Unit Test Result Format"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker3">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.createsimilar.UnitTestImportView"
+               definitionId="FastCode.unitTestImport.command"
+               id="fastcode.action.unitTestImport"
+               label="Import Unit Test Preference"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.createsimilar.UnitTestExportView"
+               definitionId="FastCode.unitTestExport.command"
+               id="fastcode.action.unitTestExport"
+               label="Export Unit Test Preference"
+               menubarPath="fastcode.actionset.menu1/fastcode.groupMarker3">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewValidationViewAction"
+               definitionId="FastCode.createnewprintvalidation.command"
+               id="FastCode.createnewprintvalidation.command"
+               label="Create Struts &amp;Validation Fragment"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateFileBased">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewManagedBeanViewAction"
+               definitionId="FastCode.createnewprintmanagedbean.command"
+               id="FastCode.createnewprintmanagedbean.command"
+               label="Create JSF &amp;Managed Bean"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateFileBased">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewPrintResourceBundleViewAction"
+               definitionId="FastCode.createnewresourcebundle.command"
+               id="FastCode.createprintresourcebundle.command"
+               label="Print &amp;Resource Bundle Snippet"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateFileBased">
+         </action>
+        <action
+               class="org.fastcode.popup.actions.snippet.CreateNewPrintJspViewAction"
+               definitionId="FastCode.createnewprintjsp.command"
+               id="FastCode.createnewprintjsp.command"
+               label="Instance of Class &amp;Web"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateFileBased">
+         </action>
+        <!-- <action
+               class="org.fastcode.popup.actions.snippet.CreateNewCopyBeanSingleViewAction"
+               definitionId="FastCode.createnewcopybeansingle.command"
+               id="FastCode.createnewcopybeansingle.command"
+               label="&amp;Copy a Class Single"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplate">
+         </action>-->
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewSpringBeanViewAction"
+               definitionId="FastCode.createnewspringbeansnippet.command"
+               id="FastCode.createnewspringbeansnippet.command"
+               label="Create New Spring Bean"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateClassBased">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.snippet.CreateNewResourceBundleViewAction"
+               definitionId="FastCode.createnewresourcebundle.command"
+               id="FastCode.createnewresourcebundle.command"
+               label="Create New &amp;Resource Bundle  Snippet"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateClassBased">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.snippet.CreateNewHashCodeAndEqualsViewAction"
+               definitionId="FastCode.createnewhashcodeandequalssnippet.command"
+               id="FastCode.createnewhashcodeandequalssnippet.command"
+               label="Create &amp;HashCode and Equals Method"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateClassBased">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewMethodSnippetAction"
+               definitionId="FastCode.createnewmethodsnippet.command"
+               id="FastCode.createnewmethodsnippet.command"
+               label="Create snippet with Method"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateClassBased">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.snippet.CreateNewToStringViewAction"
+               definitionId="FastCode.createnewtostringsnippet.command"
+               id="FastCode.createnewtostringsnippet.command"
+               label="Create &amp;toString Method"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateClassBased">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateNewCopyBeanViewAction"
+               definitionId="FastCode.createnewcopybean.command"
+               id="FastCode.createnewcopybean.command"
+               label="&amp;Copy a Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateClassBased">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.snippet.CreateNewPrintViewAction"
+               definitionId="FastCode.createnewprint.command"
+               id="FastCode.createnewprint.command"
+               label="&amp;Print Fields of a Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateClassBased">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.snippet.CreateNewInstanceViewAction"
+               definitionId="FastCode.createnewinstance.command"
+               id="FastCode.createnewinstance.command"
+               label="Create New &amp;Instance"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateClassBased">
+         </action>
+
+		<action
+		       class="org.fastcode.popup.actions.snippet.CreateHqlDeleteNamedQueryWithAnnotationViewAction"
+		       definitionId="FastCode.createnewhqldeletenamedquerywithannotation.command"
+		       id="FastCode.createnewhqldeletenamedquerywithannotation.command"
+		       label="Create &amp;Hql Delete Named Query With Annotation"
+		       menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+		</action>
+		 <action
+		      class="org.fastcode.popup.actions.snippet.CreateHqlUpdateNamedQueryWithAnnotationViewAction"
+		      definitionId="FastCode.createnewhqlupdatenamedquerywithannotation.command"
+		      id="FastCode.createnewhqlupdatenamedquerywithannotation.command"
+		      label="Create &amp;Hql Update Named Query With Annotation"
+		      menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+		 </action>
+		<action
+		       class="org.fastcode.popup.actions.snippet.CreateHqlSelectNamedQueryWithAnnotationViewAction"
+		       definitionId="FastCode.createnewhqlselectnamedquerywithannotation.command"
+		       id="FastCode.createnewhqlselectnamedquerywithannotation.command"
+		       label="Create &amp;Hql Select Named Query With Annotation"
+		       menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+		 </action>
+		<action
+              class="org.fastcode.popup.actions.snippet.CreateHqlDeleteWithNamedQueryViewAction"
+              definitionId="FastCode.createnewhqldeletewithnamedquery.command"
+              id="FastCode.createnewhqldeletewithnamedquery.command"
+              label="Create &amp;Hql Delete With Named Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+          </action>
+		  <action
+               class="org.fastcode.popup.actions.snippet.CreateHqlUpdateWithNamedQueryViewAction"
+               definitionId="FastCode.createnewhqlupdatewithnamedquery.command"
+               id="FastCode.createnewhqlupdatewithnamedquery.command"
+               label="Create &amp;Hql Update With Named Query"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+          </action>
+		 <action
+               class="org.fastcode.popup.actions.snippet.CreateHqlSelectWithNamedQueryViewAction"
+               definitionId="FastCode.createnewhqlselectwithnamedquery.command"
+               id="FastCode.createnewhqlselectwithnamedquery.command"
+               label="Create &amp;Hql Select With Named Query"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+          </action>
+		 <action
+               class="org.fastcode.popup.actions.snippet.CreateHqlDeleteViewAction"
+               definitionId="FastCode.createnewhqldelete.command"
+               id="FastCode.createnewhqldelete.command"
+               label="Create &amp;Hql Delete"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+         </action>
+		  <action
+               class="org.fastcode.popup.actions.snippet.CreateHqlUpdateViewAction"
+               definitionId="FastCode.createnewhqlupdate.command"
+               id="FastCode.createnewhqlupdate.command"
+               label="Create &amp;Hql Update"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+         </action>
+		 <action
+               class="org.fastcode.popup.actions.snippet.CreateHqlSelectViewAction"
+               definitionId="FastCode.createnewhqlselect.command"
+               id="FastCode.createnewhqlselect.command"
+               label="Create &amp;Hql Select"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateHQL">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.snippet.CreateNewSimpleFileViewAction"
+               definitionId="FastCode.createnewsimplefile.command"
+               id="FastCode.createnewsimplefile.command"
+               label="Create New Simple Snippet With &amp;File"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateWithShortCuts">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.snippet.CreateNewSimpleBeanViewAction"
+               definitionId="FastCode.createnewsimple.command"
+               id="FastCode.createnewsimple.command"
+               label="Create New &amp;Simple Snippet With Class"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateWithShortCuts">
+         </action>
+          <action
+               class="org.fastcode.popup.actions.snippet.CreateLastSnippetViewAction"
+               definitionId="FastCode.createlast.command"
+               id="FastCode.createlast.command"
+               label="Last &amp;Snippet Action"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateWithShortCuts">
+         </action>
+        <action
+               class="org.fastcode.popup.actions.snippet.CreateNewSnippetAction"
+               definitionId="FastCode.createnewsnippet.command"
+               id="FastCode.createnewsnippet.command"
+               label="Create New &amp;Snippet"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateWithShortCuts">
+         </action>
+
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateExportSnippetViewAction"
+               definitionId="FastCode.createnewsnippetexport.command"
+               id="FastCode.createnewsnippetexport.command"
+               label="E&amp;xport fast-code.properties file"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateCommon">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.CreateImportSnippetViewAction"
+               id="FastCode.createnewsnippetimport.command"
+               label="&amp;Import fast-code.properties file"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateCommon">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.DeleteClassFromCacheAction"
+               definitionId="FastCode.deleteClassFromCacheAction.command"
+               id="FastCode.deleteClassFromCacheAction.command"
+               label="Delete Class/File From Cache"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateCommon">
+         </action>
+         <action
+               class="org.fastcode.popup.actions.snippet.AddClassToCacheAction"
+               definitionId="FastCode.addClassToCacheAction.command"
+               id="FastCode.addClassToCacheAction.command"
+               label="Add Class/File To Cache"
+               menubarPath="fastcode.actionset.menu1/fastcode.template/fastcode.grouptemplateCommon">
+         </action>
+          <!--<action
+              class="org.fastcode.popup.actions.snippet.CreateDatabaseExportSnippetAction"
+              definitionId="FastCode.createDatabaseExportSnippetAction.command"
+              id="FastCode.createDatabaseExportSnippetAction.command"
+              label="&amp;Export Database Template"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateCommon">
+          </action>
+            <action
+              class="org.fastcode.popup.actions.snippet.CreateDatabaseImportSnippetAction"
+              definitionId="FastCode.createDatabaseImportSnippetAction.command"
+              id="FastCode.createDatabaseImportSnippetAction.command"
+              label="&amp;Import Database Template"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateCommon">
+          </action>-->
+           <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSimpleSnippetAction"
+              definitionId="FastCode.createNewDatabaseSimpleSnippetAction.command"
+              id="FastCode.createNewDatabaseSimpleSnippetAction.command"
+              label="Create New Simple Table/Column Snippet"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateCommon">
+          </action>
+          <!--<action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSelectCountAction"
+              definitionId="FastCode.createNewDatabaseSelectCountAction.command"
+              id="FastCode.createNewDatabaseSelectCountAction.command"
+              label="Create Select Count of a Column"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplate">
+          </action>-->
+            <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabasePojoMethodAction"
+              definitionId="FastCode.createNewDatabasePojoMethodAction.command"
+              id="FastCode.createNewDatabasePojoMethodAction.command"
+              label="Add Fields to POJO Class"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplatePojoClassBased">
+          </action>
+           <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabasePojoClassWithoutAnnotationAction"
+              definitionId="FastCode.createNewDatabasePojoClassWithoutAnnotationAction.command"
+              id="FastCode.createNewDatabasePojoClassWithoutAnnotationAction.command"
+              label="Create Pojo Class without Annotation"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplatePojoClassBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabasePojoClassAction"
+              definitionId="FastCode.createNewDatabasePojoClassAction.command"
+              id="FastCode.createNewDatabasePojoClasstAction.command"
+              label="Create Pojo Class"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplatePojoClassBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewSqlDeleteNamedQueryWithAnnotationAction"
+              definitionId="FastCode.createNewSqlDeleteNamedQueryWithAnnotationAction.command"
+              id="FastCode.createNewSqlDeleteNamedQueryWithAnnotationAction.command"
+              label="Create Delete With Named Query Annotation"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateDeleteMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseDeleteWithNamedQueryAction"
+              definitionId="FastCode.createNewDatabaseDeleteWithNamedQueryAction.command"
+              id="FastCode.createNewDatabaseDeleteWithNamedQueryAction.command"
+              label="Create Delete With Named Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateDeleteMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseDeleteWithNamedParameterAction"
+              definitionId="FastCode.createNewDatabaseDeleteWithNamedParameterAction.command"
+              id="FastCode.createNewDatabaseDeleteWithNamedParameterAction.command"
+              label="Create Delete With Named Parameter"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateDeleteMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseDeleteSimpleAction"
+              definitionId="FastCode.createNewDatabaseDeleteSimpleAction.command"
+              id="FastCode.createNewDatabaseDeleteSimpleAction.command"
+              label="Create Delete Statement"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateDeleteMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseDeleteSqlQuerySnippetAction"
+              definitionId="FastCode.createNewDatabaseDeleteSqlQuerySnippetAction.command"
+              id="FastCode.createNewDatabaseDeleteSqlQuerySnippetAction.command"
+              label="Delete Sql Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateDeleteMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewSqlUpdateNamedQueryWithAnnotationAction"
+              definitionId="FastCode.createNewSqlUpdateNamedQueryWithAnnotationAction.command"
+              id="FastCode.createNewSqlUpdateNamedQueryWithAnnotationAction.command"
+              label="Create Update With Named Query Annotation"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateUpdateMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseUpdateWithNamedQueryAction"
+              definitionId="FastCode.createNewDatabaseUpdateWithNamedQueryAction.command"
+              id="FastCode.createNewDatabaseUpdateWithNamedQueryAction.command"
+              label="Create Update With Named Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateUpdateMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseUpdateWithNamedParameterAction"
+              definitionId="FastCode.createNewDatabaseUpdateWithNamedParameterAction.command"
+              id="FastCode.createNewDatabaseUpdateWithNamedParameterAction.command"
+              label="Create Update With Named Parameter"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateUpdateMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseUpdateSimpleAction"
+              definitionId="FastCode.createNewDatabaseUpdateSimpleAction.command"
+              id="FastCode.createNewDatabaseUpdateSimpleAction.command"
+              label="Create Update Statement"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateUpdateMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseUpdateSqlQuerySnippetAction"
+              definitionId="FastCode.createNewDatabaseUpdateSqlQuerySnippetAction.command"
+              id="FastCode.createNewDatabaseUpdateSqlQuerySnippetAction.command"
+              label="Update Sql Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateUpdateMenuBased">
+          </action>
+            <action
+              class="org.fastcode.popup.actions.snippet.CreateNewSqlInsertNamedQueryWithAnnotationAction"
+              definitionId="FastCode.createNewSqlInsertNamedQueryWithAnnotationAction.command"
+              id="FastCode.createNewSqlInsertNamedQueryWithAnnotationAction.command"
+              label="Create Insert With Named Query Annotation"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateInsertMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseInsertWithNamedQueryAction"
+              definitionId="FastCode.createNewDatabaseInsertWithNamedQueryAction.command"
+              id="FastCode.createNewDatabaseInsertWithNamedQueryAction.command"
+              label="Create Insert With Named Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateInsertMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseInsertWithNamedParameterAction"
+              definitionId="FastCode.createNewDatabaseInsertWithNamedParameterAction.command"
+              id="FastCode.createNewDatabaseInsertWithNamedParameterAction.command"
+              label="Create Insert With Named Parameter"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateInsertMenuBased">
+          </action>
+           <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseInsertSimpleAction"
+              definitionId="FastCode.createNewDatabaseInsertSimpleAction.command"
+              id="FastCode.createNewDatabaseInsertSimpleAction.command"
+              label="Create Insert Statement"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateInsertMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseInsertSqlQuerySnippetAction"
+              definitionId="FastCode.createNewDatabaseInsertSqlQuerySnippetAction.command"
+              id="FastCode.createNewDatabaseInsertSqlQuerySnippetAction.command"
+              label="Insert Sql Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateInsertMenuBased">
+          </action>
+           <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSelectWithJoinAndMapperAction"
+              definitionId="FastCode.createNewDatabaseSelectWithJoinAndMapperAction.command"
+              id="FastCode.createNewDatabaseSelectWithJoinAndMapperAction.command"
+              label="Create Select With Join and RowMapper"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateSelectMenuBased">
+          </action>
+           <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSelectWithJoinAction"
+              definitionId="FastCode.createNewDatabaseSelectWithJoinAction.command"
+              id="FastCode.createNewDatabaseSelectWithJoinAction.command"
+              label="Create Select With Join"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateSelectMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewSqlSelectNamedQueryWithAnnotationAction"
+              definitionId="FastCode.createNewSqlSelectNamedQueryWithAnnotationAction.command"
+              id="FastCode.createNewSqlSelectNamedQueryWithAnnotationAction.command"
+              label="Create Select With Named Query Annotation"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateSelectMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSelectWithNamedQueryAction"
+              definitionId="FastCode.createNewDatabaseSelectWithNamedQueryAction.command"
+              id="FastCode.createNewDatabaseSelectWithNamedQueryAction.command"
+              label="Create Select With Named Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateSelectMenuBased">
+          </action>
+           <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSelectWithNamedParameterAction"
+              definitionId="FastCode.createNewDatabaseSelectWithNamedParameterAction.command"
+              id="FastCode.createNewDatabaseSelectWithNamedParameterAction.command"
+              label="Create Select With Named Parameter"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateSelectMenuBased">
+          </action>
+         <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSelectSimpleAction"
+              definitionId="FastCode.createNewDatabaseSelectSimpleAction.command"
+              id="FastCode.createNewDatabaseSelectSimpleAction.command"
+              label="Create Select Statement"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateSelectMenuBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSelectSqlQuerySnippetAction"
+              definitionId="FastCode.createNewDatabaseSelectSqlQuerySnippetAction.command"
+              id="FastCode.createNewDatabaseSelectSqlQuerySnippetAction.command"
+              label="Select Sql Query"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateSelectMenuBased">
+          </action>
+           <action
+              class="org.fastcode.popup.actions.snippet.CreateNewDatabaseSnippetAction"
+              definitionId="FastCode.createNewDatabaseSnippetAction.command"
+              id="FastCode.createNewDatabaseSnippetAction.command"
+              label="Create New Database Snippet"
+              menubarPath="fastcode.actionset.menu1/fastcode.databasetemplate/fastcode.groupDatabaseTemplateWithShortCuts">
+          </action>
+          <!--<action
+              class="org.fastcode.popup.actions.snippet.CreateNewFileSnippetAction"
+              definitionId="FastCode.createNewFileSnippetAction.command"
+              id="FastCode.createNewFileSnippetAction.command"
+              label="Create File Snippet"
+              menubarPath="fastcode.actionset.menu1/fastcode.filetemplate/fastcode.groupFileTemplate">
+          </action>-->
+          <action
+              class="org.fastcode.popup.actions.processrules.FastCodeRuleExportAction"
+              definitionId="FastCode.fastCodeRuleExportAction.command"
+              id="FastCode.fastCodeRuleExportAction.command"
+              label="Export Fast Code Rules"
+              menubarPath="fastcode.actionset.menu1/fastcode.rulesBased/fastcode.groupRulesBased">
+          </action>
+          <action
+              class="org.fastcode.popup.actions.processrules.FastCodeRuleProcessorAction"
+              definitionId="FastCode.fastCodeRuleProcessorAction.command"
+              id="FastCode.fastCodeRuleProcessorAction.command"
+              label="Process Rules from XML"
+              menubarPath="fastcode.actionset.menu1/fastcode.rulesBased/fastcode.groupRulesBased">
+          </action>
+			<menu
+               id="fastcode.about"
+               label="&amp;About"
+               path="fastcode.actionset.menu1">
+            <separator
+                  name="fastcode.separator">
+            </separator>
+         </menu>
+         <action
+              class="org.fastcode.AboutFastCode"
+              definitionId="FastCode.aboutfastcode.command"
+              id="FastCode.aboutfastcode.command"
+              label="About"
+              menubarPath="fastcode.actionset.menu1/fastcode.about">
+          </action>
+		<menu
+               id="fastcode.rulesBased"
+               label="&amp;Rules Based"
+               path="fastcode.actionset.menu1/fastcode.groupRulesBased">
+            <separator
+                  name="fastcode.separator">
+            </separator>
+            <groupMarker
+                  name="fastcode.groupRulesBased">
+            </groupMarker>
+         </menu>
+		<!--<menu
+               id="fastcode.filetemplate"
+               label="&amp;File Templates"
+               path="fastcode.actionset.menu1/fastcode.groupFileTemplates">
+            <separator
+                  name="fastcode.separator">
+            </separator>
+            <groupMarker
+                  name="fastcode.groupFileTemplate">
+            </groupMarker>
+         </menu>-->
+
+		<menu
+               id="fastcode.databasetemplate"
+               label="&amp;Database Templates"
+               path="fastcode.actionset.menu1/fastcode.groupDatabaseTemplates">
+            <groupMarker
+                  name="fastcode.groupDatabaseTemplateWithShortCuts">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator">
+            </separator>
+             <groupMarker
+                  name="fastcode.groupDatabaseTemplateSelectMenuBased">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator1">
+            </separator>
+             <groupMarker
+                  name="fastcode.groupDatabaseTemplateInsertMenuBased">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator2">
+            </separator>
+             <groupMarker
+                  name="fastcode.groupDatabaseTemplateUpdateMenuBased">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator3">
+            </separator>
+             <groupMarker
+                  name="fastcode.groupDatabaseTemplateDeleteMenuBased">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator4">
+            </separator>
+             <groupMarker
+                  name="fastcode.groupDatabaseTemplatePojoClassBased">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator5">
+            </separator>
+             <groupMarker
+                  name="fastcode.groupDatabaseTemplateCommon">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator6">
+            </separator>
+         </menu>
+
+         <menu
+               id="fastcode.template"
+               label="&amp;Templates"
+               path="fastcode.actionset.menu1/fastcode.grouptemplates">
+            <groupMarker
+                  name="fastcode.grouptemplateWithShortCuts">
+            </groupMarker>
+            <separator
+                  name="fastcode.separator">
+            </separator>
+            <groupMarker
+                  name="fastcode.grouptemplateClassBased">
+            </groupMarker>
+             <separator
+                  name="fastcode.separator1">
+            </separator>
+            <groupMarker
+                  name="fastcode.grouptemplateFileBased">
+            </groupMarker>
+            <separator
+                  name="fastcode.separator2">
+            </separator>
+            <groupMarker
+                  name="fastcode.grouptemplateCommon">
+            </groupMarker>
+            <separator
+                  name="fastcode.separator3">
+            </separator>
+            <groupMarker
+                  name="fastcode.grouptemplateHQL">
+            </groupMarker>
+         </menu>
+         <menu
+               id="fastcode.createsimilar.menu"
+               label="Create Similar"
+               path="fastcode.actionset.menu1/fastcode.groupCreatesimilar">
+            <groupMarker
+                  name="fastcode.groupCreatesimilar">
+            </groupMarker>
+         </menu>
+         <menu
+               id="fastcode.createfield.menu"
+               label="Class/Field"
+               path="fastcode.actionset.menu1/fastcode.groupCreatefield">
+            <groupMarker
+                  name="fastcode.groupCreatefieldDetail">
+            </groupMarker>
+            <separator
+                  name="fastcode.separator">
+            </separator>
+            <groupMarker
+                  name="fastcode.groupCreatefield">
+            </groupMarker>
+         </menu>
+          <menu
+               id="fastcode.createtable.menu"
+               label="Table/Column"
+               path="fastcode.actionset.menu1/fastcode.groupCreateTable">
+                <groupMarker
+                  name="fastcode.groupCreateTable">
+            </groupMarker>
+         </menu>
+	</actionSet>
+  </extension>
+ <!-- <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="Fast Code"
+               id="fastcode.menu1">
+            <command
+                  commandId="FastCode.commitFileInEditor.command"
+                  mnemonic="S"
+                  id="FastCode.commitFileInEditor.command">
+            </command>
+         </menu>
+      </menuContribution>
+
+        </extension> -->
+
+    <extension point="org.eclipse.ui.bindings">
+     <key
+            commandId="FastCode.fastCodeRuleProcessorAction.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+R">
+    </key>
+    <key
+            commandId="FastCode.createNewDatabaseSnippetAction.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+B">
+      </key>
+      <key
+            commandId="FastCode.copymember.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+C">
+      </key>
+      <key
+            commandId="FastCode.createsimilar.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+S">
+      </key>
+      <key
+            commandId="FastCode.createsimilardifferentname.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+D">
+      </key>
+      <key
+            commandId="FastCode.createlast.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+L">
+      </key>
+      <key
+            commandId="FastCode.createnewsnippet.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+T">
+      </key>
+      <key
+            commandId="FastCode.junit.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+U">
+      </key>
+      <key
+            commandId="FastCode.jumptojunit.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+J">
+      </key>
+      <key
+            commandId="FastCode.createnewsimple.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+Y">
+      </key>
+      <key
+            commandId="FastCode.createnewsimplefile.command"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+Shift+Z">
+      </key>
+
+	</extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+
+      <category
+            name="FastCode.category"
+            description="FastCode.category"
+            id="FastCode.category"/>
+
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.copymember.command"
+            name="CopyMember">
+      </command>
+
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.junit.command"
+            name="Create JUnit">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createimport.command"
+            name="CreateImport">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.synchronizemethod.command"
+            name="Synchronizemethod">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.jumptojunit.command"
+            name="JumpJUnit">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.jumptoalttest.command"
+            name="JumpAltTest">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.newmember.command"
+            name="NewMember">
+      </command>
+
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.newmemberstring.command"
+            name="NewMemberString">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createsimilar.command"
+            name="CreateSimilar">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createsimilardifferentname.command"
+            name="CreateSimilarDifferentName">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewdao.command"
+            name="CreateNewDao">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewservice.command"
+            name="Create New Service">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewservicepojo.command"
+            name="Create New Service POJO">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewdaopojo.command"
+            name="Create New DAO POJO">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewui.command"
+            name="CreateNewUI">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewinstance.command"
+            name="CreateNewInstance">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewprint.command"
+            name="CreateNewPrint">
+      </command>
+      <!--
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewinstancebare.command"
+            name="CreateNewInstanceBare">
+      </command>
+
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewinstancejson.command"
+            name="CreateNewInstanceBareJson">
+      </command>
+      -->
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewprintjsp.command"
+            name="CreateNewPrintJsp">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewprintvalidation.command"
+            name="CreateNewPrintValidation">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewprintmanagedbean.command"
+            name="CreateNewPrintManagedBean">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewcopybean.command"
+            name="CreateNewCopyBean">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewcopybeansingle.command"
+            name="CreateNewCopyBeanSingle">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createlast.command"
+            name="CreateLast">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewsnippet.command"
+            name="CreateNewSnippet">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewtostringsnippet.command"
+            name="CreateNewToStringSnippet">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewspringbeansnippet.command"
+            name="CreateNewSpringBeanSnippet">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewhqlselect.command"
+            name="CreateNewHqlSelect">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewhqlselectwithnamedquery.command"
+            name="CreateNewHqlSelectWithNamedQuery">
+       </command>
+		<command
+		    categoryId="FastCode.category"
+		    id="FastCode.createnewhqlselectnamedquerywithannotation.command"
+		    name="CreateNewHqlSelectNamedQueryWithAnnotation">
+		</command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewhqlupdate.command"
+            name="CreateNewHqlUpdate">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.detailednewmember.command"
+            name="DetailNewMember">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.detailednewmembermodify.command"
+            name="DetailNewMemberModify">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.newlist.command"
+            name="NewList">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.newhashmap.command"
+            name="NewHashMap">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.newtreemap.command"
+            name="NewTreeMap">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.newset.command"
+            name="NewSet">
+      </command>
+      <command
+             categoryId="FastCode.category"
+             id="FastCode.createnewhqlupdatewithnamedquery.command"
+             name="CreateNewHqlUpdateWithNamedQuery">
+        </command>
+		<command
+		     categoryId="FastCode.category"
+		     id="FastCode.createnewhqlupdatenamedquerywithannotation.command"
+		     name="CreateNewHqlUpdateNamedQueryWithAnnotation">
+		</command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewhqldelete.command"
+            name="CreateNewHqlDelete">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewhqldeletewithnamedquery.command"
+            name="CreateNewHqlDeleteWithNamedQuery">
+       </command>
+	  <command
+	        categoryId="FastCode.category"
+	        id="FastCode.createnewhqldeletenamedquerywithannotation.command"
+	        name="CreateNewHqlDeleteNamedQueryWithAnnotation">
+	  </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewsnippetexport.command"
+            name="CreateNewSnippetExport">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewsimple.command"
+            name="CreateNewSimple">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewsimplefile.command"
+            name="CreateNewSimpleFile">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createnewresourcebundle.command"
+            name="CreateNewResourceBundle">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.createprintresourcebundle.command"
+            name="CreatePrintResourceBundle">
+      </command>
+	 <command
+            categoryId="FastCode.category"
+            id="FastCode.createNewDatabaseSnippetAction.command"
+            name="CreateNewDatabaseSnippetAction">
+      </command>
+      <command
+            categoryId="FastCode.category"
+            id="FastCode.fastCodeRuleProcessorAction.command"
+            name="FastCodeRuleProcessorAction">
+      </command>
+	<command
+            categoryId="FastCode.category"
+            id="FastCode.commitFileInEditor.command"
+            name="CommitFileInEditorAction">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+         <startup class="org.fastcode.FastCodeStartup">
+      </startup>
+   </extension>
+	<!--<extension point="org.eclipse.ui.handlers">
+         <handler class="org.fastcode.popup.actions.snippet.CommitFileInEditorAction"
+        commandId="FastCode.commitFileInEditor.command">
+
+	         <activeWhen>
+	     		<with variable="selection">
+	     			<test property="org.fastcode.menus.versioncontrol" forcePluginActivation="true"/>
+	     		</with>
+	     	</activeWhen>
+    	</handler>
+   </extension>-->
+
+   <extension  point="org.eclipse.ui.popupMenus">
+   <objectContribution
+            id="FastCode.contribution1"
+            objectClass="org.eclipse.jdt.core.IPackageFragment">
+         <menu
+               id="FastCode.menu1"
+               label="FastCode"
+               path="additions">
+            <separator name="group1" />
+       </menu>
+        	<action
+               class="org.fastcode.popup.actions.easycreate.DetailedNewClassCreateAction"
+               definitionId="FastCode.createnewclassandfields.command"
+               id="FastCode.createnewclassandfields.command"
+               label="New Class With Fields - Detailed"
+               menubarPath="FastCode.menu1/group1">
+        </action>
+        <action
+               class="org.fastcode.popup.actions.easycreate.SimpleNewClassCreateAction"
+               definitionId="FastCode.createnewclassandfieldssimple.command"
+               id="FastCode.createnewclassandfieldssimple.command"
+               label="New Class With Fields"
+               menubarPath="FastCode.menu1/group1">
+         </action>
+        <action
+               class="org.fastcode.versioncontrol.CommitMultipleFileAction"
+               definitionId="FastCode.commitmultiplefileaction.command"
+               id="FastCode.commitmultiplefileaction.command"
+               label="Check In"
+               menubarPath="FastCode.menu1/group1">
+         </action>
+      </objectContribution>
+      </extension>
+
+</plugin>

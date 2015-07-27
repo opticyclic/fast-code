@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://fast-code.sourceforge.net/xsd/fast-code-rules.xsd"> <!-- xsi:noNamespaceSchemaLocation="fast-code-rules.xsd" xmlns="http://fast-code.sourceforge.net"> xsi:noNamespaceSchemaLocation="fast-code-rules.xsd" 
+		> -->
+	<!-- xsi:schemaLocation="http://fast-code.sourceforge.net/xsd/fast-code-rules.xsd"> > -->
+	<action name="PROMPT" type="abstract">
+		<rules>
+			<rule>
+				<rule-actions name="Get Name from User">
+					<rule-action action-type="prompt" result="name"></rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<action name="SELECT_CLASS" type="abstract">
+		<rules>
+			<rule>
+				<rule-actions name="select a class">
+					<rule-action action-type="select" action-entity="class" result="class"></rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<action name="CREATE_CLASS" type="abstract">
+		<rules>
+			<rule>
+				<rule-actions name="create class">
+					<!-- <rule-action action-type="prompt" result="name">
+						<properties><property name="title" value="Enter Class Name"></property></properties>
+					</rule-action> -->
+					<rule-action action-type="create" action-entity="class" name="${name}${suffix}" project="TestFC" package="com.example" result="class">
+						<source>public class ${name}${suffix} {\n}</source>
+					</rule-action>
+					<rule-action ></rule-action>
+					
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<!-- <action name="COPY">  take the file in the editor - take the jsp pattern and create a new file with the pattern in the source , with the new name
+		<file-patter>*Impl.java</file-patter>
+		<source>public class ${name}${suffix} {\n}</source>
+		suffix = Impl
+	</action>
+	<action name="COPY">
+		<file-patter>*.jsp</file-patter>
+		<source>public class ${name}${suffix} {\n}</source>
+	</action> -->
+	<action name="CREATE_FIELD" type="abstract">
+		<!-- <action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Field Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="SELECT">
+			<parameters>
+				<parameter name="action-entity" value="class"></parameter>
+				<parameter name="result" value="fieldType"></parameter>
+			</parameters>
+		</action-ref> -->
+		<properties>
+			<property name="targetClass" value="com.example.common.Constants"></property>
+		</properties>
+		<rules>
+			<rule>
+				<rule-actions name="create field">
+					<!-- <rule-action action-type="prompt" result="name">
+						<properties><property name="title" value="Enter Field Name"></property></properties>
+					</rule-action> -->
+					<rule-action action-type="select" action-entity="class" result="fieldType"></rule-action>
+					<rule-action action-type="create" action-entity="field" target="${targetClass}" project="TestFC" input="${fieldType}" result="field">
+						<source>public ${fieldType.name} ${name}; </source> <!-- to do -->
+					</rule-action>
+					<rule-action action-type="import" input="${fieldType}" target="${targetClass}"></rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+
+	</action>
+	<action name="CREATE_FIELD_SNIPPET">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Field Name"></parameter> <!-- get method source add to it, delete and create method... ... -->
+			</parameters>
+		</action-ref>
+		<!-- <rules>
+			<rule>
+				<rule-actions name="">
+					<rule-action action-type="prompt" result="name">
+						<properties><property name="title" value="Enter Field Name"></property></properties>
+					</rule-action></rule-actions></rule>
+		</rules> -->
+		<action-ref action-name="CREATE_FIELD" name="Field">
+			<parameters>
+				<parameter name="targetClass" value="com.example.Student#meth1"></parameter>
+				<parameter name="snippet" value="true"></parameter>
+				<parameter name="source" value="${fieldType.name} ${name};"></parameter>
+			</parameters>
+		</action-ref>
+	</action>
+	<action name="CREATE_STATIC_FIELD">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Static Field Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Static Field Value"></parameter>
+				<parameter name="result" value="value"></parameter>
+			</parameters>
+		</action-ref>
+		<!-- <rules>
+			<rule>
+				<rule-actions name="">
+					<rule-action action-type="prompt" result="name">
+						<properties><property name="title" value="Enter Field Name"></property></properties>
+					</rule-action></rule-actions></rule>
+		</rules> -->
+		<action-ref action-name="CREATE_FIELD" name="Field">
+			<parameters>
+				<parameter name="targetClass" value="com.example.Student"></parameter>
+				<parameter name="source" value="public static ${fieldType.name} ${name} = ${value}; "></parameter>
+				
+			</parameters>
+		</action-ref>
+		<rules>
+			<rule>
+				<rule-actions>
+					<rule-action action-type="import"  input="${targetClass}" target="com.MyClass" >
+						<properties><property name="staticImport" value="true"></property></properties>
+					</rule-action>
+					<rule-action action-type="create" action-entity="snippet">
+						<source>${name}</source>
+					</rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<action name="CREATE_PREFERENCE_FIELD">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Field Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_FIELD" name="Field">
+			<parameters>
+				<parameter name="targetClass" value="com.example.RuleClass1"></parameter>
+				<parameter name="source" value="public ${fieldType.name} ${name}; "></parameter>
+				<!-- <parameter name="restriction" value="subClassOf"></parameter>
+				<parameter name="subClassOf" value="comm.Person"></parameter> -->
+			</parameters>
+		</action-ref>
+		<action-ref action-name="SELECT_CLASS" >
+			<parameters>
+				<parameter name="restriction" value="subClassOf"></parameter>
+				<parameter name="subClassOf" value="${fieldType.fullyQualifiedName}"></parameter>
+				
+			</parameters>
+		</action-ref>
+		<rules>
+			<rule>
+				<rule-actions name="">
+					<rule-action action-entity="snippet" action-type="create" input="${field}">
+						<source>this.${field.name} = new ${class.name} ();</source> 
+					</rule-action>
+					<rule-action action-type="import" input="${class}" target="${targetClass}"></rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+		
+	</action>
+<!-- 	<action name="Create Field and Instance IN ANOTHER CLASS"> to do
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Field Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="SELECT"><parameters><parameter name="result" value="fieldType"></parameter></parameters></action-ref>
+		<action-ref action-name="CREATE_FIELD" name="Field">
+			<parameters>
+				<parameter name="target" value="com.example.common.Constants"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_FIELD" name="Field">
+			<parameters>
+				<parameter name="target" value="com.example.Student#meth1"></parameter>
+				<parameter name="snippet" value="true"></parameter>
+				<parameter name="source" value="this.${field.name} = new ${field.type}();"></parameter>
+			</parameters>
+		</action-ref>
+		
+		<rules>
+			<rule>
+				<rule-actions name="import">
+					<rule-action action-type="import" input="${fieldType}" target="com.example.Student"></rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action> -->
+	<action name="CREATE_INTERFACE" type="abstract">
+		<!-- <action-ref  action-name="PROMPT" name="">
+			<parameters>
+				<parameter name="title" value="Enter Interface Name"></parameter>
+			</parameters>
+		</action-ref> -->
+		<rules>
+			<rule>
+				<rule-actions name="create interface">
+					<rule-action action-type="prompt" result="name">
+						<properties><property name="title" value="Enter Field Name"></property></properties>
+					</rule-action>
+					<rule-action action-type="create" action-entity="interface" input="${name}" result="interface" name="${name}${suffix}">
+						<source>public interface ${name}${suffix} {\n}</source>
+					</rule-action>
+				</rule-actions>
+			</rule> 
+		</rules>
+	</action>
+	<action name="CREATE_INTERFACE_AND_IMPLEMENTATION" type="abstract">
+		<!-- <action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Interface Name"></parameter>
+			</parameters>
+		</action-ref> -->
+		<rules>
+			<rule>
+				<rule-actions name="create interface and implementation">
+					<!-- <rule-action action-type="prompt" result="name">
+						<properties><property name="title" value="Enter Field Name"></property></properties>
+					</rule-action> -->
+					<rule-action action-type="create" action-entity="interface" input="${name}" result="interface" name="${name}${suffix}">
+						<source>public interface ${name}${suffix} {\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="${interface}" name="${interface.name}Impl" project="TestFC" result="class">
+						<properties>
+							<property name="implSubPckage" value="impl"></property>
+							
+						</properties>
+						<source>public class ${interface.name}Impl implements ${interface.name}	{\n}</source>  
+					</rule-action>
+					<rule-action action-type="import" input="${interface}" target="${class}"></rule-action>
+					<!-- <rule-action action-type="create" action-entity="field" target="${class}" result="field"><source>${interface.name} ${interface.name.toLowerCase()};</source></rule-action> -->
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<action name="CREATE_SIMILAR_CLASSES" > <!-- result="" -->
+		<properties>
+			<property name="basePackage" value="com.example"></property>
+		</properties>
+		<!-- <rules>
+			<rule>
+				<rule-actions name="">
+					<rule-action action-type="prompt" result="name">
+						<properties><property name="title" value="Enter Field Name"></property></properties>
+					</rule-action></rule-actions></rule>
+		</rules> -->
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Interface Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_INTERFACE_AND_IMPLEMENTATION" name="DAO">
+			<parameters>
+				<parameter name="suffix" value="DAO"></parameter>
+				<parameter name="package" value="${basePackage}.dao"></parameter>
+				<parameter name="implSubPckage" value="${basePackage}.dao.impl"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_INTERFACE_AND_IMPLEMENTATION" name="Service">
+			<parameters>
+				<parameter name="suffix" value="Service"></parameter>
+				<parameter name="package" value="${basePackage}.service"></parameter>
+				<parameter name="implSubPckage" value="${basePackage}.dao.impl"></parameter>
+				<parameter name="superInterface" value="com.KTest11_11"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS" name="Vo">
+			<parameters>
+				<parameter name="suffix" value="Vo"></parameter>
+				<parameter name="package" value="${basePackage}.dao.domain"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS" name="DTO">
+			<parameters>
+				<parameter name="suffix" value="DTO"></parameter>
+				<parameter name="package" value="${basePackage}.service.domain"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS" name="Bean">
+			<parameters>
+				<parameter name="suffix" value="Bean"></parameter>
+				<parameter name="package" value="${basePackage}.dao.model"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS" name="Action">
+			<parameters>
+				<parameter name="suffix" value="Action"></parameter>
+				<parameter name="package" value="${basePackage}.action"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS" name="PathTest">
+			<parameters>
+				<parameter name="suffix" value="PathTest"></parameter>
+				<parameter name="package" value="${basePackage}.dao.model.krish"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS" name="PathTest2">
+			<parameters>
+				<parameter name="suffix" value="PathTest2"></parameter>
+				<parameter name="package" value="${basePackage}.dao.model.krish1"></parameter>
+				<parameter name="src_path" value="/src"></parameter>
+			</parameters>
+		</action-ref>
+		<rules>
+			<rule>
+			 	<rule-actions name="create instance">
+			 		<!-- <rule-action action-type="import" input="com.example.dao.${name}DAO" target="com.example.service.impl.${name}ServiceImpl"></rule-action> -->
+			 		<rule-action action-type="import" input="${DAO.interface}" target="${Service.class}"></rule-action>
+					<rule-action action-type="create" action-entity="field" target="${Service.class}" result="field"><source>${name}DAO ${name.toLowerCase()}DAO;</source></rule-action>
+					<rule-action action-type="import" input="${Service.interface}" target="${Action.class}"></rule-action>
+					<rule-action action-type="create" action-entity="field" target="${Action.class}" result="field"><source>${name}Service ${name.toLowerCase()}Service;</source></rule-action>
+			 	</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<action name="CREATE_EXCEPTION_CLASS">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Class Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS">
+			<parameters>
+				<parameter name="project" value="TestFC"></parameter>
+				<parameter name="package" value="com.example.dao"></parameter>
+				<parameter name="baseClass" value="com.example.ExpClass2Exception"></parameter>
+				<parameter name="suffix" value="Exception"></parameter>
+				<!-- <parameter name="source" value="public class ${name}${suffix} extends ${extends.substring(${extends.lastIndexOf('.')} + 1)} {\n private static final long serialVersionUID = 1L;\n}"></parameter> -->
+				<parameter name="source" value="public class ${name}${suffix} extends ${baseClass.name} {\n private static final long serialVersionUID = 1L;\n}"></parameter>
+			</parameters>
+		</action-ref>
+		<rules><rule><rule-actions name="import"> <rule-action action-type="import" input="${baseClass}" target="${class}"></rule-action></rule-actions></rule></rules>
+		
+	</action>
+	<action name="CREATE_ABSTRACT_CLASS">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Class Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS">
+			<parameters>
+				<parameter name="project" value="TestFC"></parameter>
+				<parameter name="package" value="comp.exampleTest"></parameter>
+				<parameter name="abstract" value="true"></parameter>
+				<parameter name="source" value="public abstract class Abstract${name} {\n}"></parameter>
+			</parameters>
+		</action-ref>
+	</action>
+	<!-- <action name="Create Import">
+	</action> -->
+	<!-- <action name="CREATE_FIELD_AND_INSTANTIATE_WITH_CHILD_CLASS">  to do
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Class Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_FIELD"> 
+			<parameters>
+				<parameter name="targetClass" value="com.example.common.Constants"></parameter>
+				<parameter name="project" value="TestFC"></parameter>
+			</parameters>
+		</action-ref>
+
+		<rules>
+			<rule>
+				<rule-actions name="">
+					<rule-action action-entity="snippet" action-type="create" input="${field}">
+						<source>this.${field.name} = new ${type.name}</source> 
+					</rule-action>
+
+				</rule-actions>
+			</rule>
+		</rules>
+	</action> -->
+	<!-- <action name="SELECT">
+		<rules>
+			<rule>
+				<rule-actions name="Select">
+					<rule-action action-type="select" action-entity="class" result="class"></rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action> -->
+	<action name="CREATE_FIELD_AND_INSTANTIATE">
+	<properties>
+	<property name="targetClass" value="com.example.KTest1"></property>
+	</properties>
+		<rules>
+			<rule>
+				<rule-actions name="Create Preference field">
+					<rule-action action-type="prompt" result="fieldName"></rule-action>
+					<rule-action action-type="select" action-entity="class" result="class">
+						<select name="class" selection-message="Type of field to create" selection-count="single">
+							<value restriction="subclassOf">com.Person</value>
+						</select>
+					</rule-action>
+					<rule-action action-type="create" action-entity="field" input="${class}" target="${targetClass}">
+						<source>protected ${class.name} ${fieldName};</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="field" input="${class}" target="${targetClass}#test">
+					<properties><property name="snippet" value="true"></property></properties>
+						<source>this.${fieldName} = new ${class.name}();</source>
+					</rule-action>
+					<rule-action action-type="import"  input="${class}" target="${targetClass}">
+					</rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	
+	</action>
+	<!-- <action name="Create Method">
+		<rules>
+			<rule>
+				<rule-actions name="">
+					<rule-action action-type="create" action-entity="method" target="${class}" input="">
+						<properties>
+							<property name="return" value="void"></property>
+							<property name=""></property>
+							<property name="parmType" value="String"></property>
+							<property name="parmName" value="impl"></property>
+						</properties>
+		<parm name="" type=""></parm>
+					</rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action> -->
+	<action name="CREATE_CLASS_EXTEND_BASECLASS_AND_IMPLEMENT_INTERFACE">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Class Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS">
+			<parameters>
+				<parameter name="project" value="TestFC"></parameter>
+				<parameter name="package" value="com.example.common"></parameter>
+				<parameter name="baseClass" value="com.example.ExpClass2Exception"></parameter>
+				<parameter name="suffix" value="Exception"></parameter>
+				<!-- <parameter name="source" value="public class ${name}${suffix} extends ${extends.substring(${extends.lastIndexOf('.')} + 1)} {\n private static final long serialVersionUID = 1L;\n}"></parameter> -->
+				<parameter name="source" value="public class ${name}${suffix} extends ${baseClass.name} {\n private static final long serialVersionUID = 1L;\n}"></parameter>
+				<parameter name="superInterface" value="com.example.dao.KrishDao"></parameter>
+			</parameters>
+		</action-ref>
+		<rules>
+			<rule>
+				<rule-actions name="import">
+					<rule-action action-type="import" input="${baseClass}" target="${class}"></rule-action>
+					<!-- <rule-action action-type="import" input="${superInterface}" target="${class}"></rule-action> -->
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<action name="CREATE_CLASS_AND_IMPLEMENT_INTERFACE">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Class Name"></parameter>
+			</parameters>
+		</action-ref>
+		<action-ref action-name="CREATE_CLASS">
+			<parameters>
+				<parameter name="project" value="TestFC"></parameter>
+				<parameter name="package" value="com.example.common"></parameter>
+				<parameter name="source" value="public class ${name}${suffix} {\n }"></parameter>
+				<parameter name="superInterface" value="com.example.dao.KrishDao,com.KTest11_11"></parameter>
+			</parameters>
+		</action-ref>
+		<!-- <rules>
+			<rule>
+				<rule-actions name="import">
+					<rule-action action-type="import" input="${superInterface}" target="${class}"></rule-action>
+				</rule-actions>
+			</rule>
+		</rules> -->
+	</action>
+	<action name="CREATE_FILE"> 
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Class Name"></parameter>
+			</parameters>
+		</action-ref>
+		<rules>
+			<rule>
+				<rule-actions name="">
+					<rule-action action-entity="file" action-type="create">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="source" value="Testing...."></property>
+						</properties>
+					</rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<action name="CREATE_FOLDER">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Folder Name"></parameter>
+			</parameters>
+		</action-ref>
+		<rules>
+			<rule>
+				<rule-actions>
+					<rule-action action-type="create" action-entity="folder">
+						<properties>
+							<property name="SRC_PATH" value="/src"></property>
+						</properties>
+					</rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<action name="CREATE_PACKAGE">
+		<action-ref action-name="PROMPT">
+			<parameters>
+				<parameter name="title" value="Enter Package Name"></parameter>
+			</parameters>
+		</action-ref>
+		<rules>
+			<rule>
+				<rule-actions>
+					<rule-action action-type="create" action-entity="package">
+						<properties>
+							<property name="src_path" value="/src"></property>
+							<property name="project" value="TestFC"></property>
+						</properties>
+					</rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+	<!-- <action name="CREATE_METHOD"></action> -->
+	<action name="CREATE_ANNOTATION" type="abstract">
+		<rules>
+			<rule>
+				<rule-actions>
+					<rule-action action-type="create" action-entity="annotation">
+						<properties><property name="" value=""></property></properties>
+					</rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+	</action>
+
+<!-- 	<action name="preference">
+		<properties>
+			<property name=""></property>
+		</properties>
+		<rules>
+			<rule>
+				<rule-actions name="create constant" ref="">
+					<rule-action action-type="prompt" result="preference">
+					</rule-action>
+					<rule-action action-type="create" target="com.example.common.Constants" action-entity="field">
+						<properties>
+							<property name="project" value="TestFC">
+								<options choice="single">
+									<option></option>
+									<option></option>
+								</options>
+							</property>
+						</properties>
+						<source>public static final String ${preference.toUpperCase()} = "${preference}"; </source>
+					</rule-action>
+				</rule-actions>
+			</rule>
+			<rule>
+				<rule-actions name="Create Preference field">
+					<rule-action action-type="select" action-entity="class">
+						<select name="ofClass" selection-message="Type of field to create" selection-count="single">
+							<value restriction="subclassOf">com.Person</value>
+						</select>
+						<source></source>
+					</rule-action>
+					<rule-action action-type="prompt" result="fieldName"></rule-action>
+					<rule-action action-type="create" action-entity="field">
+						<source>protected ${ofClass.name} ${fieldName};</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="snippet">
+						<source>this.${fieldName} = new ${ofClass.name}();</source>
+					</rule-action>
+					<rule-action action-type="import">
+					</rule-action>
+				</rule-actions>
+			</rule>
+			<rule>
+				<rule-actions name="Create and import static field">
+					<rule-action action-type="prompt" result="staticField"></rule-action>
+					<rule-action action-type="create" action-entity="field" target="com.example.common.Constants">
+						<source>public static final String ${staticField.toUpperCase()} = "${staticField}";</source>
+					</rule-action>
+					<rule-action action-type="import" action-entity="field" input="${staticField}">
+						<properties>
+							<property name="static" value="true"></property>
+						</properties>
+					</rule-action>
+				</rule-actions>
+			</rule>
+			<rule>
+				<rule-actions name="Create Excpception Class">
+					<rule-action action-type="prompt" result="name"></rule-action>
+
+					<rule-action action-type="create" action-entity="class" input="name" name="${name}Exception">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example"></property>
+							<property name="extends" value="java.lang.Exception"></property>
+						</properties>
+						<source>public class ${name} extends ${parentClass} {\n private static final long serialVersionUID = 1L;\n}</source>
+					</rule-action>
+					<rule-action action-type="import" action-entity="class" input="${parentClass}"></rule-action>
+				</rule-actions>
+			</rule>
+			<rule>
+				<rule-actions name="Create Abstract class">
+					<rule-action action-type="prompt" result="className"></rule-action>
+					<rule-action action-type="create" action-entity="class">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.common"></property>
+							<property name="abstract" value="true"></property>
+						</properties>
+						<source>public abstract class Abstract${className} {\n}</source>
+					</rule-action>
+				</rule-actions>
+			</rule>
+			<rule>
+				<rule-actions name="create class">
+					<rule-action action-type="prompt" result="className"></rule-action>
+					<rule-action action-type="create" action-entity="class">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example"></property>
+						</properties>
+						<source>public class ${className}
+							{\n}
+						</source>
+					</rule-action>
+				</rule-actions>
+			</rule>
+
+			<rule> <rule-actions name="Create Method"> <rule-action action-type="prompt" result="methodName"></rule-action> <rule-action action-type="create" 
+				action-entity="method" target="com.example.common.Constants"> <properties> <property name="return" value="void"> <options> <option ></option> <option></option> 
+				</options> </property> <property name="parameter" value="String">firstName </property> </properties> </rule-action> </rule-actions> </rule>
+			<rule>
+				<rule-actions name="create interface">
+					<rule-action action-type="prompt" result="interfaceName"></rule-action>
+					<rule-action action-type="create" action-entity="interface" target="com.example">
+						<source>public interface ${interfaceName} {\n}</source>
+					</rule-action>
+				</rule-actions>
+			</rule>
+			<rule>
+				<rule-actions name="Create Similar">
+					<rule-action action-type="prompt" result="name"></rule-action>
+					<rule-action action-type="create" action-entity="interface" input="name" result="interface" name="${name}DAO">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.dao"></property>
+						</properties>
+						<source>public interface ${name}DAO
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="parentInterface" name="${parentInterface}Impl">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.dao.impl"></property>
+						</properties>
+						<source>public class ${parentInterface}Impl implements ${parentInterface}
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="interface" result="parentInterface" name="${name}Service">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.service"></property>
+						</properties>
+						<source>public interface ${name}Service
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="parentInterface" name="${parentInterface}Impl">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.service.impl"></property>
+						</properties>
+						<source>public class ${parentInterface}Impl implements ${parentInterface}
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="name" name="${name}Vo">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.dao.domain"></property>
+						</properties>
+						<source>public class ${name}Vo
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="name" name="${name}DTO">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.service.domain"></property>
+						</properties>
+						<source>public class ${name}DTO 
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="name" name="${name}Bean">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.dao.model"></property>
+						</properties>
+						<source>public class ${name}Bean 
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="name" name="${name}Action">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example"></property>
+						</properties>
+						<source>public class ${name}Action 
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="name" name="${name}ActionT1">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.testk"></property>
+							<property name="path" value="/src"></property>
+						</properties>
+						<source>public class ${name}Action 
+							{\n}</source>
+					</rule-action>
+					<rule-action action-type="create" action-entity="class" input="name" name="${name}ActionT2">
+						<properties>
+							<property name="project" value="TestFC"></property>
+							<property name="package" value="com.example.testb.vid"></property>
+						</properties>
+						<source>public class ${name}Action 
+							{\n}</source>
+					</rule-action>
+				</rule-actions>
+			</rule>
+		</rules>
+		<action-ref action-name="">
+			<parameters>
+				<parameter name="" value=""></parameter>
+			</parameters>
+		</action-ref>
+	</action> -->
+</actions>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Variable-Preferences>
+		<getter-setter-format>custom</getter-setter-format>
+		<getter-setter-position>getterfirst</getter-setter-position>
+		<setter-var-prefix>k</setter-var-prefix>
+		<getter-custom-format>
+			<![CDATA[
+				#set ($value = "")
+				#if (${field.name.length()} > 1)
+					#set ($value = ${field.name.substring(0,1).toUpperCase()} + ${field.name.substring(1)})
+				#else
+				#set ($value = ${field.name.toUpperCase()})
+				#end
+				#if (${field.type.name} == "boolean")
+				#set ($value = "is"+$value)
+				#else
+				#set ($value = "get"+$value)
+				#end
+				public ${field.type.name} $value()
+				{
+					return ${field.name};
+				}
+			]]>
+		</getter-custom-format>
+		<setter-custom-format>
+			<![CDATA[
+				#set ($value = "")
+				#if (${field.name.length()} > 1)
+					#set ($value = ${field.name.substring(0,1).toUpperCase()} + ${field.name.substring(1)})
+				#else
+					#set ($value = ${field.name.toUpperCase()})
+				#end
+				public void set$value(${field.type.name}   ${field.name})
+				{
+					this.${field.name}=${field.name};
+				}
+			]]>
+		</setter-custom-format>
+		<variable-annotations>
+				<variable-annotation>@SuppressWarnings()</variable-annotation>
+		</variable-annotations>
+</Variable-Preferences>

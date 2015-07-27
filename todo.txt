@@ -1,0 +1,13 @@
+Enhance create similar
+Create field on cursor position.
+Save map table.
+Create preference for List, Map, Set
+Copy methods Done
+Copy fields/methods with partial highlight. Done
+Automatic instnaceof and type cast.
+Create a working set
+Copy Fields with sub classes.
+Inject a spring dependency into a class
+Create a singleton
+Create a generic hibernate Dao
+Create custom create similar.

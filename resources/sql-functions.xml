@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+
+	<database name="mysql" >
+
+		<dataType type="varchar text"  >
+
+			<sql-function count="0" return-type="null"    used-as="null">select</sql-function>
+			<sql-function count="1" return-type="String"  used-as="prefix">lcase</sql-function>
+			<sql-function count="1" return-type="String"  used-as="prefix">ucase</sql-function>
+			<sql-function count="1" return-type="int"  used-as="suffix">len</sql-function>
+
+		</dataType> 
+		
+		
+		<dataType type="double int float">
+		
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">sum</sql-function>
+			<sql-function count="2" return-type="int"  used-as="prefix">round</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">avg</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">max</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">min</sql-function>
+
+		</dataType>
+
+
+		<dataType type="date timestamp time year datetime"  >
+
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="2" return-type="String"  used-as="suffix">format</sql-function>
+
+		</dataType>
+
+
+	</database>
+
+
+	<database name="oracle" >
+
+		<dataType type="varchar varchar2 char ncarchar nvarchar2 nchar">
+
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="1" return-type="String"  used-as="prefix">lower</sql-function>
+			<sql-function count="1" return-type="String"  used-as="prefix">upper</sql-function>
+			<sql-function count="2" return-type="String"    used-as="suffix">replace</sql-function>
+			<sql-function count="3" return-type="String"    used-as="suffix">substr</sql-function>
+			<sql-function count="1" return-type="int"    used-as="suffix">count</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">acsii</sql-function>
+			<sql-function count="1" return-type="String"    used-as="suffix">chr</sql-function>
+			<sql-function count="2" return-type="String"    used-as="suffix">concat</sql-function>
+			<sql-function count="3" return-type="double"  used-as="prefix">convert</sql-function>
+			<sql-function count="4" return-type="int"    used-as="suffix">instr</sql-function>
+			<sql-function count="1" return-type="String"    used-as="suffix">initcap</sql-function>
+			<sql-function count="1" return-type="int"    used-as="suffix">length</sql-function>
+			<sql-function count="3" return-type="String"    used-as="suffix">lpad</sql-function>
+			<sql-function count="2" return-type="String"    used-as="suffix">ltrim</sql-function>
+			<sql-function count="1" return-type="String"    used-as="suffix">reverse</sql-function>
+			<sql-function count="3" return-type="String"    used-as="suffix">rpad</sql-function>
+			<sql-function count="2" return-type="String"    used-as="suffix">rtrim</sql-function>
+			<sql-function count="3" return-type="String"    used-as="suffix">translate</sql-function>
+			<sql-function count="1" return-type="String"    used-as="suffix">trim</sql-function>
+			<sql-function count="1" return-type="byte"    used-as="suffix">vsize</sql-function>
+			<sql-function count="2" return-type="String"    used-as="suffix">||</sql-function>
+			<sql-function count="4" return-type="String"    used-as="suffix">dump</sql-function>
+			<sql-function count="3" return-type="String"    used-as="suffix">ora_hash</sql-function>
+			<sql-function count="4" return-type="String"  used-as="prefix">decode</sql-function>
+			
+		</dataType> 
+		
+		<dataType type="number numeric decimal real ">
+		
+			<sql-function count="0" return-type="null"    used-as="suffix">select</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">max</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">min</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">sum</sql-function>
+			<sql-function count="2" return-type="int"    used-as="suffix">round</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">avg</sql-function>
+			<sql-function count="1" return-type="int"    used-as="suffix">abs</sql-function>
+			<sql-function count="1" return-type="double"    used-as="suffix">cos</sql-function>
+			<sql-function count="1" return-type="int"    used-as="suffix">ceil</sql-function>
+			<sql-function count="1" return-type="int"    used-as="suffix">floor</sql-function>
+			<sql-function count="1" return-type="double"    used-as="suffix">log</sql-function>
+			<sql-function count="2" return-type="double"    used-as="suffix">trunc</sql-function>
+			<sql-function count="1" return-type="double"    used-as="suffix">sqrt</sql-function>
+			<sql-function count="2" return-type="double"    used-as="suffix">mod</sql-function>
+			<sql-function count="1" return-type="int"    used-as="suffix">sign</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">sin</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">tan</sql-function>
+			<sql-function count="2" return-type="int"    used-as="suffix">power</sql-function>
+			<sql-function count="4" return-type="int"    used-as="suffix">width_bucket</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">exp</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">asin</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">atan</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">atanh</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">sinh</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">tanh</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">cosh</sql-function>
+			<sql-function count="1" return-type="double"  used-as="prefix">ln</sql-function>
+			<sql-function count="2" return-type="int"    used-as="suffix">bitand</sql-function>
+			<sql-function count="3" return-type="String"    used-as="suffix">ora_hash</sql-function>
+			<sql-function count="4" return-type="String"  used-as="prefix">decode</sql-function>
+
+		</dataType>
+
+		<dataType type="long"    >
+
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="1" return-type="clob"  used-as="suffix">to_lob</sql-function>
+			<sql-function count="4" return-type="String"  used-as="prefix">decode</sql-function>
+
+		</dataType>
+
+		<dataType type="longraw"  >
+
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="1" return-type="blob"  used-as="suffix">to_lob</sql-function>
+			<sql-function count="4" return-type="String"  used-as="prefix">decode</sql-function>
+
+		</dataType>
+
+		<dataType type="raw" >
+
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="1" return-type="String"  used-as="prefix">cast</sql-function>
+			<sql-function count="4" return-type="String"  used-as="prefix">decode</sql-function>
+
+		</dataType>
+
+
+
+		<dataType type="date" >
+
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="2" return-type="String"  used-as="suffix">to_char</sql-function>
+			<sql-function count="1" return-type="String"  used-as="suffix">trunc</sql-function>
+			<sql-function count="2" return-type="int"  used-as="suffix">round</sql-function>
+
+		</dataType>
+
+	</database>
+
+
+	<database name="postgresql"  >
+
+		<dataType type="numeric decimal real integer numeric"  >
+
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">max</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">min</sql-function>
+			<sql-function count="1" return-type="int"  used-as="prefix">sum</sql-function>
+
+		</dataType>
+
+
+		<dataType type="character varying varchar char character"  >
+
+			<sql-function count="0" return-type="null"  used-as="null">select</sql-function>
+			<sql-function count="1" return-type="String"  used-as="prefix">lower</sql-function>
+			<sql-function count="1" return-type="String"  used-as="prefix">upper</sql-function>
+			<sql-function count="1" return-type="int"  used-as="suffix">len</sql-function>
+
+		</dataType>
+
+
+		<!-- <dataType type="date" >
+
+			<sql-function count="0" return-type="null"  used-as="null">select
+			</sql-function>
+
+		</dataType> -->
+
+
+	</database>
+</root>

@@ -1,0 +1,221 @@
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://fast-code.sourceforge.net/xsd/fast-code-rules.xsd" targetNamespace="http://fast-code.sourceforge.net/xsd/fast-code-rules.xsd"  elementFormDefault="qualified">
+<!-- xmlns="http://fast-code.sourceforge.net"
+    targetNamespace="http://fast-code.sourceforge.net" -->
+    <xs:element name="actions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="properties" name="properties" maxOccurs="1" minOccurs="0"/>
+                <!--
+				<xs:element name="rules">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="rule" name="rule" minOccurs="1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				 -->
+                <xs:element name="action" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="properties" name="properties" maxOccurs="1" minOccurs="0"/>
+                            <xs:element name="action-ref" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+			                            <xs:element name="parameters" minOccurs="0">
+			                                <xs:complexType>
+			                                    <xs:sequence>
+			                                        <xs:element name="parameter" minOccurs="1" maxOccurs="unbounded">
+			                                        	<xs:complexType>
+			                                        		<xs:sequence>
+																<xs:element name="options" type="options" maxOccurs="1" minOccurs="0"/>
+															</xs:sequence>
+			                                        		<xs:attribute name="name" type="xs:string" use="required"/>
+			                                        		<xs:attribute name="value" type="xs:string"/>
+			                                        	</xs:complexType>
+			                                        </xs:element>
+			                                    </xs:sequence>
+			                                </xs:complexType>
+			                            </xs:element>
+									</xs:sequence>
+									<xs:attribute name="name" type="xs:string"/>
+									<!--  Name of the previously defined action to be invoked-->
+									<xs:attribute name="action-name" type="xs:string"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="rules" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element type="rule" name="rule" minOccurs="1" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="xs:string"/>
+                        <xs:attribute name="type" type="xs:string"/>
+                	</xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="rule">
+        <xs:sequence>
+            <xs:element name="rule-actions">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="rule-action" minOccurs="1"  maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element type="properties" name="properties" maxOccurs="1" minOccurs="0"/>
+                                    <xs:element type="select" name="select" maxOccurs="unbounded" minOccurs="0"/>
+                                    <!-- source code to be used in the action-->
+                                    <xs:element name="source" type="xs:string" minOccurs="0"/>
+                                </xs:sequence>
+                                <!-- type is type of action, can be create update open snippet import etc-->
+                                <xs:attribute name="action-type" use="required">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:enumeration value="prompt"/>
+                                            <xs:enumeration value="create"/>
+                                            <xs:enumeration value="import"/>
+                                            <xs:enumeration value="select"/>
+                                            <xs:enumeration value="update"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                                <!-- entity can be class interface file folder method etc-->
+                                <xs:attribute name="action-entity">
+                                    <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                            <xs:enumeration value="class"/>
+                                            <xs:enumeration value="field"/>
+                                            <xs:enumeration value="interface"/>
+                                            <xs:enumeration value="snippet"/>
+                                            <xs:enumeration value="method"/>
+                                            <xs:enumeration value="file"/>
+                                            <xs:enumeration value="folder"/>
+                                            <xs:enumeration value="package"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                                <!-- target can be blank or name of another class, interface, file, folder,
+                                   field, method, etc.
+                                -->
+                                <xs:attribute name="target"/>
+                                <!-- result is the place holder for the entity that was created/updated
+                                    This can be used in subsequent actions as ${result}
+                                    //target shud be method name or FQ class name
+                                -->
+                                <xs:attribute name="result"/>
+                                <!-- Input is the item to use for the action. E.g for import action input
+                                    will be the field/class one has created earlier.
+                                -->
+                                <xs:attribute name="input"/>
+                                <!-- Name is the name of the entity to to be created in this action. E.g for create action name
+                                    will ${name}DAO, where {name} can be the result of a prompt action.
+                                -->
+                                <xs:attribute name="name"/>
+                                <!-- the working java project name.
+                                -->
+                                <xs:attribute name="project"/>
+                                <!-- package where class or interface or file or folder needs to be created.
+                                -->
+                                <xs:attribute name="package"/>
+                                <!-- project source path.
+                                -->
+                                <xs:attribute name="src_path"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="name" use="required"/>
+                    <xs:attribute name="ref"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="select">
+            <xs:sequence>
+                <xs:element name="value">
+                    <xs:complexType>
+                    	<xs:simpleContent>
+	                    	<xs:extension base="xs:string">
+	                    		<xs:attribute name="restriction">
+	                               <xs:simpleType>
+	                                   <xs:restriction base="xs:string">
+	                                       <xs:enumeration value="subclassOf"/>
+	                                       <xs:enumeration value="implementationOf"/>
+	                                       <xs:enumeration value="containedIn"/>
+	                                   </xs:restriction>
+	                               </xs:simpleType>
+	                           </xs:attribute>
+	                    	</xs:extension>
+                    	</xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" use="required"/>
+            <xs:attribute name="value"/>
+            <xs:attribute name="selection-message" use="required"/>
+            <xs:attribute name="selection-count" default="multiple">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="single"/>
+                        <xs:enumeration value="multiple"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="optional" default="false">
+                <xs:simpleType>
+                    <xs:restriction base="xs:boolean">
+                        <xs:pattern value="false"/>
+                        <xs:pattern value="true"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="type">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="class"/>
+                        <xs:enumeration value="interface"/>
+                        <xs:enumeration value="file"/>
+                        <xs:enumeration value="folder"/>
+                        <xs:enumeration value="field"/>
+                        <xs:enumeration value="method"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="properties">
+        <xs:sequence>
+            <xs:element name="property" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                	<xs:sequence>
+                		<xs:element name="options" type="options" maxOccurs="1" minOccurs="0"/>
+                	</xs:sequence>
+                    <xs:attribute name="name" use="required"/>
+                    <xs:attribute name="value"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+
+	<xs:complexType name="options">
+		<xs:sequence>
+			<xs:element name="option" minOccurs="2" maxOccurs="unbounded">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="choice" default="single">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="single"/>
+					<xs:enumeration value="multiple"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+</xs:schema>

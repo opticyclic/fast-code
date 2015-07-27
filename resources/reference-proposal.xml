@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+	<element-proposal proposal="class" prefix="class - "
+		description="" offset="0" basic="true">
+		<function-proposal proposal="name" description="name "
+			prefix="class - " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="type" description="type"
+			prefix="class - " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullyQualifiedName"
+			prefix="class - " description="fully qualified name " offset="0"
+			basic="false">
+		</function-proposal>
+		<function-proposal proposal="defaultConstructor"
+			prefix="class - " description="default constructor " offset="0"
+			basic="false">
+		</function-proposal>
+		<function-proposal proposal="defaultInstance"
+			prefix="class - " description="default instance" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="package" prefix="class - "
+			description="package " offset="0" basic="false">
+			<function-proposal proposal="name" prefix="class - "
+				description="package name " offset="0" basic="false">
+			</function-proposal>
+			<function-proposal proposal="javaProject" prefix="class - "
+				description="package java project" offset="0" basic="false">
+			</function-proposal>
+		</function-proposal>
+		<function-proposal proposal="instance" prefix="class - "
+			description="instance " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fields" prefix="class - "
+			description="fields " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="methods" prefix="class - "
+			description="methods " offset="0" basic="false">
+		</function-proposal>
+
+	</element-proposal>
+
+	<element-proposal proposal="field" prefix="field - "
+		description="  " offset="0" basic="true">
+		<function-proposal proposal="name" prefix="field - "
+			description="  name " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="type" prefix="field - "
+			description="  type " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="size()" prefix="field - "
+			description="  size " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="setter" prefix="field - "
+			description="  setter " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="getter" prefix="field - "
+			description="  getter " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="value" prefix="field - "
+			description="  value " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="array" prefix="field - "
+			description=" array " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="childFields" prefix="field - "
+			description=" child fields " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="isEmpty()" prefix="field - "
+			description=" is empty " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullName" prefix="field - "
+			description=" full name " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="nameAsWord" prefix="field - "
+			description=" name as word " offset="0" basic="false">
+		</function-proposal>
+	</element-proposal>
+
+	<element-proposal proposal="fields" prefix="fields - "
+		description=" list " offset="0" basic="true">
+
+		<function-proposal proposal="size()" prefix="fields - "
+			description="  size of the list " offset="0" basic="false">
+		</function-proposal>
+	</element-proposal>
+
+
+
+	<element-proposal proposal="method" prefix="method - "
+		description="" offset="0" basic="true">
+
+		<function-proposal proposal="name" prefix="method - "
+			description="name " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="returnType" prefix="method - "
+			description="return type " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="parameters" prefix="method - "
+			description="parameters " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="exceptions" prefix="method - "
+			description="exceptions " offset="0" basic="false">
+		</function-proposal>
+
+	</element-proposal>
+	<element-proposal proposal="methods" prefix="methods - "
+		description="list" offset="0" basic="true">
+		<function-proposal proposal="size()" prefix="methods - "
+			description="size of the list" offset="0" basic="false">
+		</function-proposal>
+
+	</element-proposal>
+
+	<element-proposal proposal="file" prefix="file - "
+		description=" " offset="0" basic="true">
+		<function-proposal proposal="name" prefix="file - "
+			description="name" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullName" prefix="file - "
+			description="full name " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="extension" prefix="file - "
+			description="extension" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullPath" prefix="file - "
+			description=" full path" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="project" prefix="file - "
+			description="project" offset="0" basic="false">
+		</function-proposal>
+	</element-proposal>
+	<element-proposal proposal="property" prefix="property"
+			description=" " offset="0" basic="true">
+		<function-proposal proposal="name" prefix="property - "
+			description="property name" offset="0" basic="false">
+		</function-proposal>
+	</element-proposal>
+
+	<element-proposal proposal="package" prefix="package - "
+		description="" offset="0" basic="true">
+		<function-proposal proposal="name" prefix="package - "
+			description="  name" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="javaProject" prefix="package - "
+			description="  java project " offset="0" basic="false">
+		</function-proposal>
+		<!--  <function-proposal proposal="classes" prefix="classes - "
+			description="list" offset="0" basic="true">
+		</function-proposal>-->
+	</element-proposal>
+
+	<element-proposal proposal="folder" prefix="folder - "
+		description=" " offset="0" basic="true">
+		<function-proposal proposal="name" prefix="folder - "
+			description=" name" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullPath" prefix="folder - "
+			description="full path " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="projectRelativePath" prefix="folder - "
+			description="project relative path " offset="0" basic="false">
+		</function-proposal>
+	</element-proposal>
+
+	<element-proposal proposal="enumeration" prefix="enumeration - "
+		description="" offset="0" basic="true">
+		<function-proposal proposal="name" description="name "
+			prefix="enumeration - " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="type" description="type"
+			prefix="enumeration - " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullyQualifiedName"
+			prefix="enumeration - " description="fully qualified name " offset="0"
+			basic="false">
+		</function-proposal>
+		<function-proposal proposal="package" prefix="enumeration - "
+			description="package " offset="0" basic="false">
+			<function-proposal proposal="name" prefix="enumeration - "
+				description="package name " offset="0" basic="false">
+			</function-proposal>
+			<function-proposal proposal="javaProject" prefix="enumeration - "
+				description="package java project" offset="0" basic="false">
+			</function-proposal>
+		</function-proposal>
+
+	</element-proposal>
+
+	<element-proposal proposal="interface" prefix="interface - "
+		description="" offset="0" basic="true">
+		<function-proposal proposal="name" description="name "
+			prefix="interface - " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="type" description="type"
+			prefix="interface - " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullyQualifiedName"
+			prefix="interface - " description="fully qualified name " offset="0"
+			basic="false">
+		</function-proposal>
+		<function-proposal proposal="defaultInstance"
+			prefix="class - " description="default instance" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="package" prefix="interface - "
+			description="package " offset="0" basic="false">
+			<function-proposal proposal="name" prefix="interface - "
+				description="package name " offset="0" basic="false">
+			</function-proposal>
+			<function-proposal proposal="javaProject" prefix="interface - "
+				description="package java project" offset="0" basic="false">
+			</function-proposal>
+		</function-proposal>
+		<function-proposal proposal="instance" prefix="interface - "
+			description="instance " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fields" prefix="interface - "
+			description="fields " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="methods" prefix="interface - "
+			description="methods " offset="0" basic="false">
+		</function-proposal>
+
+	</element-proposal>
+
+	<element-proposal proposal="intRange" prefix="intRange - "
+		description=" " offset="0" basic="true">
+		<function-proposal proposal="start" prefix="intRange - "
+			description=" start" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="end" prefix="intRange - "
+			description="end" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="step" prefix="intRange - "
+			description="step" offset="0" basic="false">
+		</function-proposal>
+	</element-proposal>
+
+	<element-proposal proposal="localvar" prefix="localvar - "
+		description=" " offset="0" basic="true">
+		<function-proposal proposal="name" prefix="localvar - "
+			description="  name " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="type.name" prefix="localvar - "
+			description="  type.name " offset="0" basic="false">
+		</function-proposal>
+	</element-proposal>
+</root>

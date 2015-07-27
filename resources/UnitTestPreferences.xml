@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UnitTest-Preferences>
+	<unitTest profile="default">
+		<junitType></junitType>
+		<baseTest></baseTest>
+		<testProject></testProject>
+		<testClassName></testClassName>
+		<testMethodName></testMethodName>
+		<insideBody></insideBody>
+		<createMethodBody></createMethodBody>
+		<junitTestLocation></junitTestLocation>
+		<classImports></classImports>
+		<alwaysCreateTryCatch></alwaysCreateTryCatch>
+		<createInstance></createInstance>
+		<exceptionBody></exceptionBody>
+		<negativeBody></negativeBody>
+		<methodAnnotations>
+			<methodAnnotation></methodAnnotation>
+			<methodAnnotation></methodAnnotation>
+		</methodAnnotations>
+		<classAnnotations>
+			<classAnnotation></classAnnotation>
+			<classAnnotation></classAnnotation>
+		</classAnnotations>
+	</unitTest>
+	<unitTest profile="Impl">
+		<junitType></junitType>
+		<baseTest></baseTest>
+		<testProject></testProject>
+		<testClassName></testClassName>
+		<testMethodName></testMethodName>
+		<insideBody></insideBody>
+		<createMethodBody></createMethodBody>
+		<junitTestLocation></junitTestLocation>
+		<classImports></classImports>
+		<alwaysCreateTryCatch></alwaysCreateTryCatch>
+		<createInstance></createInstance>
+		<exceptionBody></exceptionBody>
+		<negativeBody></negativeBody>
+		<methodAnnotations></methodAnnotations>
+		<classAnnotations></classAnnotations>
+	</unitTest>
+
+</UnitTest-Preferences>

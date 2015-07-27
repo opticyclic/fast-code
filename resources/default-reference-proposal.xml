@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+
+		<element-proposal proposal="enclosing_class"
+		description="" prefix="enclosing_class - " offset="0" basic="true">
+		<function-proposal proposal="name" description="name "
+			prefix="enclosing_class - " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="type" description="type"
+			prefix="enclosing_class - " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullyQualifiedName"
+			prefix="enclosing_class - " description="fully qualified name "
+			offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="defaultConstructor"
+			prefix="enclosing_class - " description="default constructor "
+			offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="defaultInstance"
+			prefix="enclosing_class - " description="default instance" offset="0"
+			basic="false">
+		</function-proposal>
+		<function-proposal proposal="package" prefix="enclosing_class - "
+			description="package " offset="0" basic="false">
+			<function-proposal proposal="name" prefix="enclosing_class -  "
+				description="package name " offset="0" basic="false">
+			</function-proposal>
+			<function-proposal proposal="javaProject" prefix="enclosing_class - "
+				description="package java project" offset="0" basic="false">
+			</function-proposal>
+		</function-proposal>
+		<function-proposal proposal="instance" prefix="enclosing_class - "
+			description="instance " offset="0" basic="false">
+		</function-proposal>
+
+	</element-proposal>
+
+	<element-proposal proposal="enclosing_file" prefix="enclosing_file - "
+		description=" " offset="0" basic="true">
+
+		<function-proposal proposal="name" prefix="enclosing_file - "
+			description="name" offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="fullName" prefix="enclosing_file - "
+			description="full name " offset="0" basic="false">
+		</function-proposal>
+		<function-proposal proposal="extension" prefix="enclosing_file - "
+			description="extension" offset="0" basic="false">
+		</function-proposal>
+	</element-proposal>
+
+
+
+	<element-proposal proposal="foreach.count" prefix="foreach count"
+		description="" offset="0" basic="true"></element-proposal>
+	<element-proposal proposal="velocityCount" prefix="velocity count"
+		description="" offset="0" basic="true"></element-proposal>
+
+	<element-proposal proposal="selected_text" prefix="selected text"
+		description="" offset="0" basic="true"></element-proposal>
+
+</root>

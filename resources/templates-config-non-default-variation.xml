@@ -1,0 +1,929 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE templates PUBLIC "//UNKNOWN/" "http://fast-code.sourceforge.net/template.dtd">
+<templates>
+	<template type="INSTANCE_OF_CLASS">
+		<description>Used to Create instance of class</description>
+		<variation></variation>
+		<variation-field></variation-field>
+		<allow-multiple-variation></allow-multiple-variation>
+		<class-pattern></class-pattern>
+		<getter-setter>setter</getter-setter>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				// Creating new instance of ${class_name}
+				final ${class_name} ${instance} = new ${class_name}();
+				#foreach ($field in ${fields})
+					${instance}.${field.setter}(${field.value});
+				#end
+			]]>
+		</template-body>
+	</template>
+	<template type="INSTANCE_OF_CLASS_WEB">
+		<description>Used to Create instance of class in web tier e.g. jsp, xthtml etc</description>
+		<variation>default jsp:useBean bean:define Json ExtJs</variation>
+		<variation-field>beanType</variation-field>
+		<allow-multiple-variation></allow-multiple-variation>
+		<class-pattern></class-pattern>
+		<getter-setter>setter</getter-setter>
+		<allowed-file-extensions>jsp js</allowed-file-extensions>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#if (${beanType} == "default")
+				var ${instance} = new Object();
+				#foreach ($field in ${fields})
+					${instance}.${field.name} = ${field.value};
+				#end
+				#end
+				#if (${beanType} == "jsp:useBean")
+				<jsp:useBean id="${instance}" scope="page" class="${full_class_name}">
+				#foreach ($field in ${fields})
+				<jsp:setProperty name="${instance}" property="${field}" value="${field.value}" />
+				#end
+				</jsp:useBean>
+				#end
+				#if (${beanType} == "bean:define")
+				<bean:define id="${instance}" class="${full_class_name}">
+				#end
+				#if (${beanType} == "json")
+				var ${instance} = {
+				#foreach ($field in ${fields})
+					${instance}.${field.name} : ${field.value}#if (${velocityCount} < ${fields.size()}), #end
+            	#end
+            	}
+				#end
+				#if (${beanType} == "ExtJs")
+				#foreach ($field in ${fields})
+					#if (${field.type.endsWith("String")})
+						#set (${field_type} = "textfield")
+					#elseif (${field.type.endsWith("Date")})
+						#set (${field_type} = "datefield")
+					#elseif (${field.type.endsWith("Boolean")} || ${field.type.endsWith("boolean")})
+						#set (${field_type} = "checkbox")
+					#end
+					{
+					xtype : '${field_type}',
+					fieldLabel : '${field.makeWord()}',
+					name : '${field.name}'
+					}#if (${velocityCount} < ${fields.size()}), #end
+            	#end
+				#end
+			]]>
+		</template-body>
+	</template>
+	<!--
+	<template type="INSTANCE_OF_CLASS_JSON">
+		<variation></variation>
+		<variation-field></variation-field>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>setter</getter-setter>
+		<class-pattern></class-pattern>
+		<allowed-file-extensions>jsp js</allowed-file-extensions>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				var ${instance} = {
+				#foreach ($field in ${fields})
+					${instance}.${field.name} : ${field.value},
+            	#end
+            	}
+			]]>
+		</template-body>
+	</template>
+	 -->
+	<template type="PRINT_FIELDS_OF_CLASS">
+		<description>Used to print fields of a class java files</description>
+		<variation>logger.debug logger.trace logger.info logger.error System.out.println System.err.println</variation>
+		<variation-field>printType</variation-field>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter</getter-setter>
+		<class-pattern></class-pattern>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#set ($snippet = "")
+				#set ($Qt = '"')
+				#if (${printType} == "logger.debug")
+					#set ($snippet = "if (logger.isDebugEnabled()) {")
+				#end
+				#if (${printType} == "logger.trace")
+					#set ($snippet = "if (logger.isTraceEnabled()) {")
+				#end
+				#foreach ($field in ${fields})
+					#set ($snippet = "${snippet}\n ${printType}(${Qt}${field.makeWord()} ${Qt} + ${instance}.${field.getter}());")
+            	#end
+				#if (${printType} == "logger.debug" || ${printType} == "logger.trace")
+					#set ($snippet = "${snippet} \n }")
+				#end
+				${snippet}
+			]]>
+		</template-body>
+	</template>
+
+	<template type="EXTRACT_FIELDS_FROM_CLASS">
+		<description>Used to extract fields from class in java class.</description>
+		<variation>final simple</variation>
+		<variation-field>varType</variation-field>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter</getter-setter>
+		<class-pattern></class-pattern>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#set ($modifier = "")
+				#if (${varType} == "final")
+					#set ($modifier = "final ")
+				#end
+				#foreach ($field in ${fields})
+					${modifier}${field.type} ${field.name} = ${instance}.${field.getter}();
+            	#end
+			]]>
+		</template-body>
+	</template>
+
+	<template type="PRINT_FIELDS_OF_CLASS_WEB">
+		<description>Used to print fields of class Jsp</description>
+		<variation>html:text html:textarea html:select html:checkbox html:radio h:inputText h:inputText-validation h:selectSingleMenu h:selectManyMenu</variation>
+		<variation-field>display</variation-field>
+		<class-pattern></class-pattern>
+		<allowed-file-extensions>jsp xhtml js</allowed-file-extensions>
+		<getter-setter>getter</getter-setter>
+		<allow-multiple-variation></allow-multiple-variation>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				<table align="center" >
+				#foreach ($field in ${fields})
+					<tr>
+					<!--<td align="right" valign="top">${field.makeWord()} : </td>-->
+					#if (${display} == "html:text" || ${display} == "html:textarea" || ${display} == "html:radio" || ${display} == "html:checkbox")
+					<td align="right" valign="top"><bean:message bundle="${instance}" key="${field.name}"/> : </td>
+					<td align="right" valign="top"><${display} name="${instance}" property="${field.name}" size="10"/> </td>
+					#end
+					#if (${display} == "html:select")
+						<html:select name="${instance}" property="${field.name}">
+						<html:option value=""><bean:message bundle="${instance}" key="" /></html:option>
+						<html:options collection="" property="" labelProperty="" />
+						</html:select>
+					#end
+					#if (${display} == "h:inputText")
+						<h:outputText value="\#${field.makeWord()}"/>
+						<h:message for="${field.name}"/>
+						<${display} id="${field.name}" value="\#\{${instance}.${field.name}\}" />
+					#end
+					#if (${display} == "h:inputText-validation")
+						<h:outputText value="\#${field.makeWord()}"/>
+						<h:message for="${field.name}"/>
+						<${display} id="${field.name}" value="\#\{${instance}.${field.name}\}" >
+							<f:validateLength minimum="1" maximum="2"/>
+						</${display}>
+					#end
+					#if (${display} == "h:selectSingleMenu")
+						<${display} value="\#{${instance}.${field.name}}">
+						<f:selectItem value = "\#{}" />
+						</<${display}>
+					#end
+					#if (${display} == "h:selectManyMenu")
+						<${display} value="${instance}.${field.name}">
+						<f:selectItems value = "\#{}" />
+						</<${display}>
+					#end
+					</tr>
+            	#end
+            	</table>
+			]]>
+		</template-body>
+	</template>
+	<template type="PRINT_FIELDS_OF_CLASS_WEB_SINGLE">
+		<!-- <variation>html:text html:textarea html:checkbox html:radio</variation>  -->
+		<description>Used to print a single field of a class in Jsp</description>
+		<variation>h:inputText h:inputSecret h:inputHidden h:inputTextarea h:selectBooleanCheckbox h:selectOneRadio h:selectOneMenu h:inputText-validation h:selectSingleMenu h:selectManyMenu</variation>
+		<variation-field>display</variation-field>
+		<class-pattern></class-pattern>
+		<allowed-file-extensions>jsp xhtml</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter</getter-setter>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				<tr>
+					#if (${display} == "html:text" || ${display} == "html:textarea" || ${display} == "html:radio" || ${display} == "html:checkbox")
+					<td align="right" valign="top"><bean:message bundle="${instance}" key="${field.name}"/> : </td>
+					<td align="right" valign="top"><${display} name="${instance}" property="${field.name}" size="10"/> </td>
+					#end
+					#if (${display} == "html:select")
+						<html:select name="${instance}" property="${field.name}">
+						<html:option value=""><bean:message bundle="${instance}" key="" /></html:option>
+						<html:options collection="" property="" labelProperty="" />
+						</html:select>
+					#end
+					#if (${display} == "h:inputText")
+						<h:outputText value="\#${field.makeWord()}"/>
+						<h:message for="${field.name}"/>
+						<${display} id="name" value="\#\{${instance}.${field.name}\}" />
+					#end
+					#if (${display} == "h:inputText-validation")
+						<h:outputText value="\#${field.makeWord()}"/>
+						<h:message for="${field.name}"/>
+						<${display} id="${field.name}" value="\#\{${instance}.${field.name}\}" >
+							<f:validateLength minimum="1" maximum="2"/>
+						</${display}>
+					#end
+					#if (${display} == "h:selectSingleMenu")
+						<${display} value="\#{${instance}.${field.name}}">
+						<f:selectItem value = "\#{}" />
+						</<${display}>
+					#end
+					#if (${display} == "h:selectManyMenu")
+						<${display} value="${instance}.${field.name}">
+						<f:selectItems value = "\#{}" />
+						</<${display}>
+					#end
+				</tr>
+			]]>
+		</template-body>
+	</template>
+	<template type="SPRING_BEAN">
+		<description>Used to spring bean of a class</description>
+		<variation>setter constructor embedded-setter embedded-constructor</variation>
+		<variation-field>beanType</variation-field>
+		<class-pattern></class-pattern>
+		<allowed-file-extensions>xml</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter</getter-setter>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#if (${beanType} == "setter")
+					<bean id="${instance}" class="${full_class_name}">
+						#foreach (${field} in ${fields})
+							<property name="${field.name}" ref="${field.name}"/>
+						#end
+					</bean>
+				#end
+				#if (${beanType} == "constructor")
+					<bean id="${instance}" class="${full_class_name}">
+						#foreach (${field} in ${fields})
+							#set ($index = ${velocityCount} - 1);
+							<constructor-arg index="${index}"><ref bean="${field.name}"/></constructor-arg>
+						#end
+					</bean>
+				#end
+				#if (${beanType} == "embedded-setter")
+					<bean id="${instance}" parent="parent">
+						<property name="target">
+						<bean class="${full_class_name}">
+							#foreach (${field} in ${fields})
+								<property name="${field.name}" ref="${field.name}"/>
+							#end
+						</bean>
+						</property>
+					</bean>
+				#end
+				#if (${beanType} == "embedded-constructor")
+					<bean id="${instance}" parent="parent">
+						<property name="target">
+						<bean class="${full_class_name}">
+							#foreach (${field} in ${fields})
+								#set ($index = ${velocityCount} - 1)
+								<constructor-arg index="${index}"><ref bean="${field.name}"/></constructor-arg>
+								#end
+						</bean>
+						</property>
+					</bean>
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template type="COPY_CLASS">
+		<description>Used to create a method copy one class to another</description>
+		<variation></variation>
+		<variation-field></variation-field>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<class-pattern></class-pattern>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter</getter-setter>
+		<number-required-classes>2</number-required-classes>
+		<template-body>
+			<![CDATA[
+				/**
+				 * This method copies fields from ${from_class} to ${to_class}
+				 * @param ${from_instance}
+				 * @param ${to_instance}
+				 *
+				 */
+				public void copy${from_class}To${to_class}(final ${from_class} ${from_instance}, final ${to_class} ${to_instance}) {
+					#foreach ($field in ${fields})
+						${to_instance}.${field.setter}(${from_instance}.${field.getter}());
+					#end
+				}
+			]]>
+		</template-body>
+	</template>
+	<template type="COPY_CLASS_SINGLE">
+		<description>Used to create a method copy one field of a class into another</description>
+		<variation></variation>
+		<variation-field></variation-field>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<class-pattern></class-pattern>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter-setter</getter-setter>
+		<number-required-classes>2</number-required-classes>
+		<template-body>
+			<![CDATA[
+				${to_instance}.${from_field.setter}(${from_instance}.${to_field.getter}());
+			]]>
+		</template-body>
+	</template>
+	<template type="TOSTRING_METHOD">
+		<description>Used to create a toString method</description>
+		<variation>StringBuilder String String-format</variation>
+		<variation-field>toStringType</variation-field>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<class-pattern></class-pattern>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter></getter-setter>
+		<number-required-classes>0</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#set($Qt = '"')
+				#if (${toStringType} == "StringBuilder")
+					#set($toStringBody = "final StringBuilder sb = new StringBuilder();")
+					#set($toStringBody = "${toStringBody} sb")
+					#foreach ($field in ${fields})
+						#if (${field.type} == "boolean" || ${field.type} == "int" || ${field.type} == "long" || ${field.type} == "float") || ${field.type} == "double" || ${field.type} == "char")
+							#set($toStringBody = "${toStringBody}.append(${Qt}${field.makeWord()} :  ${Qt} + this.${field.name})")
+						#else
+							#set($toStringBody = "${toStringBody}.append(${Qt}${field.makeWord()} :  ${Qt} + this.${field.name} == null ? ${Qt}${Qt} : this.${field.name})")
+						#end
+					#end
+					#set($toStringBody = "${toStringBody}; \n return ${Qt}${class_name} [${Qt} + sb.toString() + ${Qt}]${Qt};")
+				#end
+				#if (${toStringType} == "String")
+					#set($toStringBody = "")
+					#foreach ($field in ${fields})
+						#if (${field.type} == "boolean" || ${field.type} == "int" || ${field.type} == "long" || ${field.type} == "float") || ${field.type} == "double" || ${field.type} == "char")
+							#set($toStringBody = "${toStringBody} \n + (${Qt}${field.makeWord()} :  ${Qt} + this.${field.name})")
+						#else
+							#set ($toStringBody = "${toStringBody} \n + ${Qt}${field.makeWord()} :  ${Qt} + this.${field.name} == null ? ${Qt}${Qt} : this.${field.name}")
+						#end
+					#end
+					#set ($toStringBody = "return ${Qt}${class_name} [${Qt} ${toStringBody} +  ${Qt}]${Qt};")
+				#end
+				#if (${toStringType} == "String-format")
+					#set ($toStringBody = "")
+					#foreach (${field} in ${fields})
+						#set ($toStringBody = "${toStringBody} ${field.name}=%s")
+						#if (${velocityCount} < ${fields.size()})
+							#set ($toStringBody = "${toStringBody},")
+						#end
+					#end
+					#set ($toStringBody = "${Qt}${class_name} [${toStringBody}]${Qt}, \n")
+					#foreach (${field} in ${fields})
+						#set ($toStringBody = "${toStringBody} ${field.name}")
+						#if (${velocityCount} < ${fields.size()})
+							#set ($toStringBody = "${toStringBody} ,")
+						#end
+					#end
+					#set ($toStringBody = "return String.format(\n${toStringBody});")
+				#end
+				/**
+				 * toString method for ${class_name}
+				 *
+				 * @see java.lang.Object#toString()
+				 */
+				@Override
+				public String toString() {
+					${toStringBody}
+				}
+			]]>
+		</template-body>
+	</template>
+	<template type="JSF_MANAGED_BEAN">
+		<description>Used to create a Jsf managed bean</description>
+		<variation>managed-bean managed-bean-list managed-bean-map</variation>
+		<variation-field>managedBeanType</variation-field>
+		<allowed-file-extensions>xml</allowed-file-extensions>
+		<class-pattern></class-pattern>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter</getter-setter>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#if (${managedBeanType} == "managed-bean")
+				<managed-bean>
+				<managed-bean-name>${class_name}</managed-bean-name>
+				<managed-bean-class>${full_class_name}</managed-bean-class>
+				#foreach ($field in ${fields})
+					<managed-property>
+						<property-name>${field.name}</property-name>
+						#if (${field.type} == "String")
+							<property-class>${field.type}</property-class>
+							<value>value</value>
+						#end
+						#if (${field.type} == "List")
+							<list-entries>
+								<value>value</value>
+							</list-entries>
+						#end
+						#if (${field.type} == "Map")
+							<map-entries>
+								<map-entrie>
+									<key>key</key>
+									<value>value</value>
+								</map-entrie>
+							</map-entries>
+						#end
+						#if (${field.type.endsWith("Bean")})
+							<value>#{${field.type}}</value>
+						#end
+					</managed-property>
+            	#end
+            	</managed-bean>
+            	#end
+            	#if (${managedBeanType} == "managed-bean-list")
+            		<managed-bean>
+            			<managed-bean-class>bean</managed-bean-class>
+            			<managed-bean-class>java.util.ArrayList</managed-bean-class>
+            			<list-entries>
+            				<value>value</value>
+            			</list-entries>
+            		</managed-bean>
+            	#end
+            	#if (${managedBeanType} == "managed-bean-map")
+            		<managed-bean>
+            			<managed-bean-class>bean</managed-bean-class>
+            			<managed-bean-class>java.util.HashMap</managed-bean-class>
+						<map-entries>
+							<map-entrie>
+								<key>key</key>
+								<value>value</value>
+							</map-entrie>
+						</map-entries>
+            		</managed-bean>
+            	#end
+			]]>
+		</template-body>
+	</template>
+
+	<template type="HQL_SELECT">
+		<description>Used to create a HQL select statement</description>
+		<variation>named-query simple</variation>
+		<variation-field>hql_type</variation-field>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter></getter-setter>
+		<class-pattern></class-pattern>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#if (${hql_type} == "simple")
+					#set($select_part = "")
+					#if (!${selected_fields} || ${selected_fields.size()} == 0)
+						#set($select_part = "${instance}")
+					#end
+					#foreach ($field in ${selected_fields})
+						#set($select_part = "${select_part} ${instance}.${field.fullName}")
+						#if (${velocityCount} < ${selected_fields.size()})
+							#set($select_part = "${select_part}, ")
+						#end
+					#end
+
+					#set($join_part = "")
+					#foreach ($field in ${join_fields})
+						#set($join_part = "${join_part} join ${instance}.${field.fullName}")
+					#end
+
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "$where_part ${field.fullName} ${where_qualifier} :${field.name}")
+						#if (${velocityCount} < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+					final String hqlQuery = "select ${select_part} from ${class_name} ${instance} ${where_part}";
+					final Query query = session.createQuery(hqlQuery);
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+				#end
+				## Named Query
+				#if (${hql_type} == "named-query")
+					final Query query = session.createNamedQuery("${queryName}");
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template type="HQL_UPDATE">
+		<description>Used to create a HQL select statement</description>
+		<variation>named-query simple</variation>
+		<variation-field>hql_type</variation-field>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter></getter-setter>
+		<class-pattern></class-pattern>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#if (${hql_type} == "simple")
+					#set($update_part = "")
+					#foreach ($field in ${update_fields})
+						#set($update_part = "${update_part} ${field.fullName} = :${field.name}")
+						#if (${velocityCount} < ${update_fields.size()})
+							#set($update_part = "${update_part}, ")
+						#end
+					#end
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+						#if (${velocityCount} < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+
+					final String hqlQuery = "update ${class_name} set ${update_part} ${where_part}";
+					final Query query = session.createQuery(hqlQuery);
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+				#end
+
+				## Named Query
+				#if (${hql_type} == "named-query")
+					final Query query = em.createNamedQuery("${queryName}");
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template type="HQL_DELETE">
+		<description>This is used to create HQL delete statement.</description>
+		<variation>named-query simple</variation>
+		<variation-field>hql_type</variation-field>
+		<allowed-file-extensions>java</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter></getter-setter>
+		<class-pattern></class-pattern>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#if (${hql_type} == "named-query")
+					#set ($where_part = "")
+					#if (${where_fields} && ${where_fields.size()} > 0)
+						#set ($where_part = "where ")
+					#end
+					#foreach ($field in ${where_fields})
+						#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+						#if (${velocityCount} < ${where_fields.size()})
+							#set ($where_part = "${where_part} ${where_separator} ")
+						#end
+					#end
+					final String hqlQuery = "delete from ${class_name} ${where_part}";
+					final Query query = session.createQuery(hqlQuery);
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+				#end
+				## Named Query
+				#if (${hql_type} == "named-query")
+					final Query query = session.createNamedQuery("${queryName}");
+					#foreach ($field in ${where_fields})
+						query.setParameter("${field.name}", null);
+					#end
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template type="DOZER_MAPPING">
+		<description>This is used to create dozer mapping between two classes.</description>
+		<variation></variation>
+		<variation-field></variation-field>
+		<allowed-file-extensions>xml</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter-setter</getter-setter>
+		<class-pattern></class-pattern>
+		<number-required-classes>2</number-required-classes>
+		<template-body>
+			<![CDATA[
+				<mapping wildcard="false">
+				<class-a>${from_full_class}</class-a>
+				<class-b>${to_full_class}</class-b>
+				#foreach ($field in ${fields})
+					<field>
+						<a>${field.fullname}</a>
+						<b>${field.fullname}</b>
+					</field>
+            	#end
+            	</mapping>
+			]]>
+		</template-body>
+	</template>
+	<template type="DOZER_MAPPING_SINGLE">
+		<description>This is used to create a single dozer mapping between two classes.</description>
+		<variation></variation>
+		<variation-field></variation-field>
+		<allowed-file-extensions>xml</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>getter-setter</getter-setter>
+		<class-pattern></class-pattern>
+		<number-required-classes>2</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${from_fields})
+					#set ($from_field = $field)
+				#end
+				#foreach ($field in ${to_fields})
+					#set ($to_field = $field)
+				#end
+				<mapping>
+					<field>
+						<a>${from_field.fullName}</a>
+						<b>${to_field.fullName}</b>
+					</field>
+            	</mapping>
+			]]>
+		</template-body>
+	</template>
+
+	<template type="SIMPLE_CLASS_SNIPPET">
+		<description>This is used to create a simple snippet with classes.</description>
+		<variation>class full-class field method</variation>
+		<variation-field>type</variation-field>
+		<allowed-file-extensions>java xml jsp js</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>none</getter-setter>
+		<class-pattern></class-pattern>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+		<![CDATA[
+			#if (${type} == "class")
+				${class_name}
+			#end
+			#if (${type} == "full-class")
+				${full_class_name}
+			#end
+			#if (${type} == "field")
+				#set ($field = "")
+				#foreach ($fld in ${fields})
+					#set ($field = $fld)
+				#end
+				${field.name}
+			#end
+			#if (${type} == "method")
+				#set ($method = "")
+				#foreach ($m in ${methods})
+					#set ($method = $m)
+				#end
+				${method.name}
+			#end
+
+		]]>
+		</template-body>
+	</template>
+	<template type="SIMPLE_FILE_SNIPPET">
+		<description>This is used to create a simple snippet with files.</description>
+		<variation>file full-file</variation>
+		<variation-field>type</variation-field>
+		<allowed-file-extensions>java xml jsp js</allowed-file-extensions>
+		<allow-multiple-variation></allow-multiple-variation>
+		<getter-setter>none</getter-setter>
+		<class-pattern></class-pattern>
+		<number-required-classes>0</number-required-classes>
+		<template-body>
+		<![CDATA[
+			#if (${type} == "file")
+				#foreach ($file in ${files})
+					${file.name}
+				#end
+			#end
+			#if (${type} == "full-file")
+					${file.fullNname}
+				${class}
+			#end
+		]]>
+		</template-body>
+	</template>
+
+<!--
+	<template type="STRUTS_VALIDATION">
+		<variation>required requiredstring int intRange regex date floatRange minlength maxlength email creditCard</variation>
+		<variation-field>validTypes</variation-field>
+		<allowed-file-extensions>xml</allowed-file-extensions>
+		<getter-setter>getter</getter-setter>
+		<allow-multiple-variation>true</allow-multiple-variation>
+		<description>This is used to create struts2 validation.</description>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${fields})
+					 <field name="${field.name}">
+					 #foreach ($validType in ${validTypes})
+					 	#set ($param_names = [])
+					 	#set ($message =  "")
+					 	#if ($validType == "required")
+					 		#set ($message = "Value of ${field.name} must not be null.).
+					 	#elseif ($validType == "int")
+					 		#set ($param_names = ["min", "max"])
+					 		#set ($message = "Value of ${field.name} must be between between ${min} and ${max}, current value is '${'${field.name}'}').
+					 	#elseif ($validType == "regex")
+					 		#set ($param_names = ["regex"])
+					 	#elseif ($validType == "requiredstring")
+					 		#set ($message = "The value of ${field.name} must be of the format ${regex}")
+					 	#end
+					 	#foreach ($param_name in ${param_names})
+					 		<param name="${param_name}"></param>
+					 	#end
+					 	<message key="key.${validType}">${message}</message>
+					 #end
+					 <field>
+				#end
+			]]>
+		</template-body>
+	</template>
+ -->
+	<template type="STRUTS_VALIDATION">
+		<description>This is used to create struts validation.</description>
+		<variation>required integer intRange date floatRange minlength maxlength mask email creditCard validwhen</variation>
+		<variation-field>validTypes</variation-field>
+		<allowed-file-extensions>xml</allowed-file-extensions>
+		<getter-setter>getter</getter-setter>
+		<allow-multiple-variation>true</allow-multiple-variation>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				<!-- validation for ${full_class_name}-->
+				<form name="${instance}">
+				#foreach ($field in ${fields})
+					<field property="${field.name}" depends="#foreach (${validType} in ${validTypes})${validType}#if (${velocityCount} < ${validTypes.size()}),#end#end">
+				#if (${validTypes.contains("minlength")})
+					#set ($key = '${var:minlength}')
+					<arg1 name="minlength" key="${key}" resource="false" />
+				#end
+				#if (${validTypes.contains("maxlength")})
+					#set ($key = '${var:maxlength}')
+					<arg1 name="maxlength" key="${key}" resource="false" />
+				#end
+				#if (${validTypes.contains("intRange")})
+					#set ($key = '${var:min}')
+					<arg1 name="intRange" key="${key}" resource="false" />
+					#set ($key = '${var:max}')
+					<arg2 name="intRange" key="${key}" resource="false" />
+				#end
+				#if (${validTypes.contains("floatRange")})
+					#set ($key = '${var:min}')
+					<arg1 name="floatRange" key="${key}" resource="false" />
+					#set ($key = '${var:max}')
+					<arg2 name="floatRange" key="${key}" resource="false" />
+				#end
+				#if (${validTypes.contains("doubleRange")})
+					#set ($key = '${var:min}')
+					<arg1 name="doubleRange" key="${key}" resource="false" />
+					#set ($key = '${var:max}')
+					<arg2 name="doubleRange" key="${key}" resource="false" />
+				#end
+				#if (${validTypes.contains("mask")})
+					<var>
+						<var-name>mask</var-name>
+						<var-value></var-value>
+					</var>
+				#end
+				#if (${validTypes.contains("minlength")})
+					<var>
+						<var-name>minlength</var-name>
+						<var-value>0</var-value>
+					</var>
+				#end
+				#if (${validTypes.contains("maxlength")})
+					<var>
+						<var-name>maxlength</var-name>
+						<var-value>1</var-value>
+					</var>
+				#end
+				#if (${validTypes.contains("validwhen")})
+					<var>
+						<var-name>test</var-name>
+						<var-value></var-value>
+					</var>
+				#end
+				#if (${validTypes.contains("date")})
+					<var>
+						<var-name>datePattern</var-name>
+						<var-value>mm/dd/yyyy</var-value>
+					</var>
+				#end
+				#if (${validTypes.contains("intRange")})
+					<var>
+						<var-name>min</var-name>
+						<var-value>10</var-value>
+					</var>
+					<var>
+						<var-name>max</var-name>
+						<var-value>20</var-value>
+					</var>
+				#end
+				#if (${validTypes.contains("floatRange")})
+					<var>
+						<var-name>min</var-name>
+						<var-value>10.0</var-value>
+					</var>
+					<var>
+						<var-name>max</var-name>
+						<var-value>20.0</var-value>
+					</var>
+				#end
+				#if (${validTypes.contains("doubleRange")})
+					<var>
+						<var-name>min</var-name>
+						<var-value>10.0</var-value>
+					</var>
+					<var>
+						<var-name>max</var-name>
+						<var-value>20.</var-value>
+					</var>
+				#end
+				#if (${validTypes.contains("validwhen")})
+					<var>
+						<var-name>test</var-name>
+						<var-value></var-value>
+					</var>
+				#end
+					</field>
+				#end
+            	</form>
+			]]>
+		</template-body>
+	</template>
+	<template type="STRUTS_VALIDATION_SINGLE">
+		<description>This is used to create a single struts validation.</description>
+		<variation>required integer date minlength maxlength mask email</variation>
+		<variation-field>validTypes</variation-field>
+		<allowed-file-extensions>xml</allowed-file-extensions>
+		<getter-setter>getter</getter-setter>
+		<class-pattern></class-pattern>
+		<allow-multiple-variation>true</allow-multiple-variation>
+		<number-required-classes>1</number-required-classes>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${fields})
+					<field property="${field.name}" depends="#foreach (${validType} in ${validTypes})${validType} #if (${velocityCount} < ${validTypes}.size());#end #end">
+					#if (${validTypes}.contains("minlength"))
+						<arg1 name="minlength" key="${var:minlength}" resource="false" />
+					#end
+					#if (${validTypes}.contains("maxlength"))
+						<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+					#end
+					#if (${validTypes}.contains("mask"))
+						<var>
+							<var-name>mask</var-name>
+							<var-value></var-value>
+						</var>
+					#end
+					#if (${validTypes}.contains("minlength"))
+						<var>
+							<var-name>minlength</var-name>
+							<var-value>0</var-value>
+						</var>
+					#end
+					#if (${validTypes}.contains("maxlength"))
+						<var>
+							<var-name>maxlength</var-name>
+							<var-value>1</var-value>
+						</var>
+					#end
+					#if (${validTypes}.contains("validwhen"))
+						<var>
+							<var-name>test</var-name>
+							<var-value></var-value>
+						</var>
+					#end
+					#if (${validTypes}.contains("date"))
+						<var>
+							<var-name>datePattern</var-name>
+							<var-value>mm/dd/yyyy</var-value>
+						</var>
+					#end
+					</field>
+				#end
+			]]>
+		</template-body>
+	</template>
+</templates>

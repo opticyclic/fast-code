@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE templates PUBLIC "//UNKNOWN/" "http://fast-code.sourceforge.net/dtd/template.dtd">
+<templates>
+	<template name="hql.select.format">
+		<description>Used to create a HQL select statement with named query</description>
+		<template-body>
+			<![CDATA[
+				#set($select_part = "")
+				#if (!${selected_fields} || ${selected_fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${selected_fields})
+					#set($select_part = "${select_part} ${instance}.${field.fullName}")
+					#if (${velocityCount} < ${selected_fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+
+				#set($join_part = "")
+				#foreach ($field in ${join_fields})
+					#set($join_part = "${join_part} join ${instance}.${field.fullName}")
+				#end
+
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "$where_part ${field.fullName} ${where_qualifier} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+   			<named-query name="${queryName}">
+      		<query>
+      			&lt;![CDATA[
+					select ${select_part} from ${class.name} ${instance} ${join_part} ${where_part}
+				]]&gt;
+      		</query>
+   			</named-query>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="hql.update.format">
+		<description>Used to create a HQL update statement with named query</description>
+		<template-body>
+			<![CDATA[
+				#set($update_part = "")
+				#foreach ($field in ${update_fields})
+					#set($update_part = "${update_part} ${field.fullName} = :${field.name}")
+					#if (${velocityCount} < ${update_fields.size()})
+						#set($update_part = "${update_part}, ")
+					#end
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+
+   				<named-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+      					update ${class.name} set ${update_part} ${where_part}
+					]]&gt;
+      			</query>
+   				</named-query>
+			]]>
+		</template-body>
+	</template>
+	<template name="hql.delete.format">
+		<description>Used to create a HQL delete statement with named query</description>
+		<template-body>
+			<![CDATA[
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.fullName} ${where_qualifier} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+
+   				<named-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+						delete from ${class.name} ${where_part}
+					]]&gt;
+      			</query>
+   				</named-query>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.setUpBeforeClass">
+		<description>Used to create method body of setUpBeforeClass</description>
+		<template-body>
+			<![CDATA[
+				// TODO add setup code.
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.setUp">
+		<description>Used to create method body of setUp</description>
+		<template-body>
+			<![CDATA[
+				// TODO add setup code.
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.tearDown">
+		<description>Used to create method body of tearDown</description>
+		<template-body>
+			<![CDATA[
+				// TODO add tear down code.
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.tearDownAfterClass">
+		<description>Used to create method body of tearDownAfterClass</description>
+		<template-body>
+			<![CDATA[
+				// TODO add tear down code.
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.org.springframework.beans.factory.InitializingBean.afterPropertiesSet">
+		<description>Used to create method body of afterPropertiesSet</description>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${fields})
+					#if (${field.name} != "logger")
+					    assert(${field.name} != null);
+					#end
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	<template name="method.body.Constructor">
+		<description>Used to create body of Constructor</description>
+		<template-body>
+			<![CDATA[
+				#foreach ($field in ${fields})
+					this.${field.name} = ${field.name};
+				#end
+			]]>
+		</template-body>
+	</template>
+
+	
+	<template name="test.method.pattern.negative">
+		<description>Pattern for Negative Test Method</description>
+		<template-body>
+			<![CDATA[
+				try\s*\{.*\}\s*catch\s*\(\s*[a-zA-Z]*Exception\s*[a-zA-Z]*\)\s*\{.*\}.*fail\(.*\)\s*;
+			]]>
+		</template-body>
+	</template>
+
+</templates>

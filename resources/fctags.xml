@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<tag name="class" required="name" optional="package,optional,type,project,override_methods" endtag="true">
+	<![CDATA[
+	public class classname {
+		// TODO Auto-generated class
+
+	}
+	]]>
+	</tag>
+	<tag name="file" required="name" optional="folder,optional,project" endtag="true"></tag>
+	<tag name="package" required="name" optional="type" endtag="false"></tag>
+	<tag name="folder" required="name" optional="project" endtag="false"></tag>
+	<tag name="project" required="name,type" optional="srcPath" endtag="false"></tag>
+	<tag name="field" required="name" optional="class,optional,fieldClass,fieldType,modifier,import" endtag="true"></tag>
+	<tag name="method" required="name" optional="class,optional,test,returnType,parameters,modifier,import" endtag="true">
+	<![CDATA[
+	public void methodname(){
+		// TODO Auto-generated method block
+
+	}
+	]]>
+	</tag>
+	<tag name="message" required="title" optional="optional" endtag="true"></tag>
+	<tag name="exit" required="message" optional="" endtag="false"></tag>
+	<tag name="import" required="" optional="optional" endtag="true"></tag>
+	<tag name="xml" required="node,parent" optional="file,optional" endtag="true"></tag>
+	<tag name="classes" required="names" optional="package,delimiter,project,type" endtag="false"></tag>
+	<tag name="files" required="names" optional="folder,delimiter,project" endtag="false"></tag>
+	<tag name="property" required="file" optional="" endtag="true"></tag>
+	<tag name="info" required="" optional="" endtag="true"></tag>
+	<tag name="snippet" required="" optional="class,file" endtag="true"></tag>
+</root>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	<template name="sql.select.format">
+		<description>Used to create a SQL select statement with named query</description>
+		<template-body>
+			<![CDATA[
+				#set($select_part = "")
+				#if (!${selected_fields} || ${selected_fields.size()} == 0)
+					#set($select_part = "${instance}")
+				#end
+				#foreach ($field in ${selected_fields})
+					#set($select_part = "${select_part} ${instance}.${field.name}")
+					#if (${velocityCount} < ${selected_fields.size()})
+						#set($select_part = "${select_part}, ")
+					#end
+				#end
+
+				#set($join_part = "")
+				#foreach ($field in ${join_fields})
+					#set($join_part = "${join_part} join ${instance}.${field.name}")
+				#end
+
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "$where_part ${field.name} ${field.whereQualifier} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+   			<sql-query name="${queryName}">
+      		<query>
+      			&lt;![CDATA[
+					select ${select_part} from ${table} ${instance} ${join_part} ${where_part}
+				]]&gt;
+      		</query>
+   			</sql-query>
+			]]>
+		</template-body>
+	</template>
+
+	<template name="sql.update.format">
+		<description>Used to create a SQL update statement with named query</description>
+		<template-body>
+			<![CDATA[
+				#set($update_part = "")
+				#foreach ($field in ${update_fields})
+					#set($update_part = "${update_part} ${field.name} = :${field.name}")
+					#if (${velocityCount} < ${update_fields.size()})
+						#set($update_part = "${update_part}, ")
+					#end
+				#end
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+      					update ${table} set ${update_part} ${where_part}
+					]]&gt;
+      			</query>
+   				</sql-query>
+			]]>
+		</template-body>
+	</template>
+	<template name="sql.delete.format">
+		<description>Used to create a SQL delete statement with named query</description>
+		<template-body>
+			<![CDATA[
+				#set ($where_part = "")
+				#if (${where_fields} && ${where_fields.size()} > 0)
+					#set ($where_part = "where ")
+				#end
+				#foreach ($field in ${where_fields})
+					#set ($where_part = "${where_part} ${field.name} ${field.whereQualifier} :${field.name}")
+					#if (${velocityCount} < ${where_fields.size()})
+						#set ($where_part = "${where_part} ${where_separator} ")
+					#end
+				#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+						delete from ${table} ${where_part}
+					]]&gt;
+      			</query>
+   				</sql-query>
+			]]>
+		</template-body>
+		</template>
+		<template name="sql.insert.format">
+		<description>Used to create a SQL insert statement with named query</description>
+		<template-body>
+			<![CDATA[
+				#set($vsnpt = "")
+				#foreach ($field in ${insert_fields})
+					#if ($vsnpt == "")
+						#set ($vsnpt = "${field.name}")
+					#else
+						#set ($vsnpt = "${vsnpt}, ${field.name}")
+					#end
+				#end
+				#set($snpt = "")
+				#foreach ($field in ${insert_fields})
+					#if ($snpt == "")
+						#set ($snpt = "?")
+					#else
+						#set ($snpt = "${snpt}, ?")
+					#end
+				#end
+
+   				<sql-query name="${queryName}">
+      			<query>
+      				&lt;![CDATA[
+						insert into ${table} (${vsnpt}) values (${snpt})
+					]]&gt;
+      			</query>
+   				</sql-query>
+			]]>
+		</template-body>
+	</template>
+</templates>

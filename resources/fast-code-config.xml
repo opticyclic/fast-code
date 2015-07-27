@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurations>
+	<configuration type="spring">
+		<header>
+			<![CDATA[
+				<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+					"http://www.springframework.org/dtd/spring-beans.dtd">
+			]]>
+		</header>
+		<start>
+			<![CDATA[<beans>]]>
+		</start>
+		<end>
+			<![CDATA[
+				</beans>
+			]]>
+		</end>
+		<location>/src/main/resources</location>
+		<file>application-context-${to_instance}.xml</file>
+		<body>
+			<![CDATA[
+				<bean id="${to_instance}" class="${to_full_impl_class}">
+           			#foreach (${field} in ${fields})
+              			<property name="${field.name}" ref="${field.name}"/>
+            		#end
+				</bean>
+			]]>
+		</body>
+	</configuration>
+	<configuration type="spring-component">
+		<header>
+			<![CDATA[<?xml version="1.0" encoding="UTF-8"?>]]>
+		</header>
+		<start>
+			<![CDATA[
+			<beans xmlns="http://www.springframework.org/schema/beans"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xmlns:context="http://www.springframework.org/schema/context"
+					xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+					http://www.springframework.org/schema/context
+					http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+			]]>
+		</start>
+		<end>
+			<![CDATA[
+				</beans>
+			]]>
+		</end>
+		<location>/src/main/resources</location>
+		<file>application-context-spring-component.xml</file>
+		<body>
+			<![CDATA[
+				    <context:component-scan base-package="${to_package}" />
+			]]>
+		</body>
+	</configuration>
+	<configuration type="tiles">
+		<header>
+			<![CDATA[
+			<!DOCTYPE tiles-definitions PUBLIC
+					"-//Apache Software Foundation//DTD Tiles Configuration//EN"
+					"http://jakarta.apache.org/struts/dtds/tiles-config.dtd">
+			]]>
+		</header>
+		<start>
+			<![CDATA[<tiles-definitions>]]>
+		</start>
+		<location>/src/main/resources</location>
+		<file>tiles-def-${to_instance}.xml</file>
+		<end>
+			<![CDATA[
+				</tiles-definitions>
+			]]>
+		</end>
+		<body>
+			<![CDATA[
+				<definition name="tile.${from_instance}" path="/tiles/${from_instance}.jsp">
+					<put name="content" value="/jsp/${from_instance}.jsp" />
+				</definition>
+			]]>
+		</body>
+	</configuration>
+	<configuration type="resources">
+		<header>
+		</header>
+		<start>
+		</start>
+		<end>
+		</end>
+		<location>/src/main/resources</location>
+		<file>Application_Resources.properties Application_Resources_${locale}.properties</file>
+		<locale>es_SP</locale>
+		<body>
+		<![CDATA[
+			#foreach ($field in ${fields})
+				com.abc.${field.name} = ${field.name}
+			#end
+		]]>
+		</body>
+	</configuration>
+	<configuration type="dozer">
+		<header>
+			<![CDATA[
+				<!DOCTYPE mappings PUBLIC "-//DOZER//DTD MAPPINGS//EN"
+				"http://dozer.sourceforge.net/dtd/dozerbeanmapping.dtd">
+			]]>
+		</header>
+		<start>
+			<![CDATA[<mappings>]]>
+		</start>
+		<end>
+			<![CDATA[
+				</mappings>
+			]]>
+		</end>
+		<location>/src/main/resources</location>
+		<file>dozer-mapping-${to_instance}.xml</file>
+		<body>
+			<![CDATA[
+				<mapping">
+					<class-a>${to_full_class}</class-a>
+					<class-b>${from_full_class}</class-b>
+				<field>
+					<a>${to_class}</a>
+					<b>${from_class}</b>
+				</field>
+				</mapping>
+			]]>
+		</body>
+	</configuration>
+	<configuration type="struts-action">
+		<header>
+			<![CDATA[
+				<!DOCTYPE struts-config PUBLIC
+			"-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+			"http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+			]]>
+		</header>
+		<start>
+			<![CDATA[
+				<struts-config>
+				<action-mappings>
+			]]>
+		</start>
+		<location>/src/main/resources</location>
+		<file>struts-config-${to_instance}.xml</file>
+		<end>
+			<![CDATA[
+				</action-mappings>
+				</struts-config>
+			]]>
+		</end>
+		<body>
+			<![CDATA[
+				<action path="/path/${to_class}" type="${to_full_class}" name="${to_full_class}" parameter="" scope="request" validate="false">
+					<forward name="success" path="tile.next" />
+				</action>
+			]]>
+		</body>
+	</configuration>
+	<configuration type="struts2-action">
+		<header>
+			<![CDATA[
+				<!DOCTYPE struts-config PUBLIC
+			"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+			"http://struts.apache.org/dtds/struts-2.0.dtd">
+			]]>
+		</header>
+		<start>
+			<![CDATA[
+				<struts>
+				<package>
+			]]>
+		</start>
+		<location>/src/main/resources</location>
+		<file>struts-${to_instance}.xml</file>
+		<end>
+			<![CDATA[
+				</struts>
+				</package>
+			]]>
+		</end>
+		<body>
+			<![CDATA[
+				<action class="${to_full_class}" name="${to_class}">
+					<result name="success" path="tile.next" />
+				</action>
+			]]>
+		</body>
+	</configuration>
+
+	<configuration type="struts-form">
+		<header>
+			<![CDATA[
+				<!DOCTYPE struts-config PUBLIC
+			"-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+			"http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+			]]>
+		</header>
+		<start>
+			<![CDATA[
+				<struts-config>
+				<form-beans>
+			]]>
+		</start>
+		<location>/src/main/resources</location>
+		<file>struts-config-${to_instance}.xml</file>
+		<end>
+			<![CDATA[
+				</action-mappings>
+				</form-beans>
+			]]>
+		</end>
+		<body>
+			<![CDATA[
+				<form-bean name="${to_instance}" type="${to_full_class}">
+				</form-bean>
+			]]>
+		</body>
+	</configuration>
+	<configuration type="jsf-managed-bean">
+		<header>
+			<![CDATA[
+					<!DOCTYPE faces-config PUBLIC
+     				"-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
+     				"http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+			]]>
+		</header>
+		<start>
+			<![CDATA[
+				<faces-config>
+			]]>
+		</start>
+		<location>/src/main/resources</location>
+		<file>faces-config-${to_instance}.xml</file>
+		<end>
+			<![CDATA[
+				</faces-config>
+			]]>
+		</end>
+		<body>
+			<![CDATA[
+				<managed-bean>
+					<managed-bean-name>${to_instance}</managed-bean-name>
+					<managed-bean-class>${full_class_name}</managed-bean-class>
+					<managed-bean-scope>request</managed-bean-scope>
+					#foreach ($field in ${fields})
+						<managed-property>
+						<property-name>${field.name}</property-name>
+						<property-class>${field.type}</property-class>
+						<value></value>
+						</managed-property>
+					#end
+				</managed-bean>
+			]]>
+		</body>
+	</configuration>
+	<configuration type="validation">
+		<header>
+			<![CDATA[
+				<!DOCTYPE form-validation PUBLIC
+				"-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+			"http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+		  ]]>
+		</header>
+		<start>
+			<![CDATA[
+				<form-validation>
+				<formset>
+			]]>
+		</start>
+		<end>
+			<![CDATA[
+				</formset>
+				</form-validation>
+			]]>
+		</end>
+		<location>/src/main/resources</location>
+		<file>validation.xml</file>
+		<body>
+			<![CDATA[
+				<form  name="someForm">
+				#foreach ($field in ${to_class.fields})
+					<field property="someForm.${field.name}" depends="${field.type}">
+					</field>
+				#end
+			]]>
+		</body>
+	</configuration>
+	<configuration type="jsp">
+		<header>
+			<![CDATA[
+			<%@ taglib uri="/WEB-INF/taglibs/struts-html.tld" prefix="html"%>
+			<%@ taglib uri="/WEB-INF/taglibs/struts-bean.tld" prefix="bean"%>
+			<%@ taglib uri="/WEB-INF/taglibs/struts-logic.tld" prefix="logic"%>
+			<%@ taglib uri="/WEB-INF/taglibs/struts-nested.tld" prefix="nested"%>
+			<%@ taglib uri="http://displaytag.sf.net/el" prefix="display"%>
+
+			<link rel="stylesheet" href="<%=request.getContextPath()%>/styles/displaytag.css" type="text/css"/>
+		  ]]>
+		</header>
+		<start>
+			<![CDATA[
+				<html>
+			]]>
+		</start>
+		<end>
+		<![CDATA[
+		</html>
+		]]>
+		</end>
+		<location>/src/main/resources</location>
+		<file>${to_instance}.jsp</file>
+		<body>
+			<![CDATA[
+			<body>
+				<!-- This is js body -->
+			<body>
+			]]>
+		</body>
+	</configuration>
+
+	<configuration type="custom">
+		<header>header</header>
+		<start>start</start>
+		<location>/src/main/resources</location>
+		<file>${to_instance}.txt</file>
+		<end>end</end>
+		<body>body</body>
+	</configuration>
+
+	<configuration-preference>
+		<!-- Dao to Service -->
+		<preference name="FastCode.preferences.CreateSimilarPreferenceDaoService" type="spring spring-component"/>
+		<!-- Service to UI -->
+		<preference name="FastCode.preferences.CreateSimilarPreferenceServiceUI" type="spring spring-component"/>
+
+		<!-- New DAO -->
+		<preference name="FastCode.preferences.CreateNewPreferenceDAO" type="spring spring-component"/>
+		<!-- New Service -->
+		<preference name="FastCode.preferences.CreateNewPreferenceService" type="spring spring-component"/>
+		<!-- New UI -->
+		<preference name="FastCode.preferences.CreateNewPreferenceUI" type="struts-action jsf-managed-bean"/>
+
+		<!-- New POJO for DAO -->
+		<preference name="FastCode.preferences.CreateNewPreferencePojoDAO" type=""/>
+		<!-- New POJO for Service -->
+		<preference name="FastCode.preferences.CreateNewPreferencePojoService" type=""/>
+		<!-- New POJO for UI -->
+		<preference name="FastCode.preferences.CreateNewPreferencePojoUI" type="struts-form tiles jsp validation"/>
+	</configuration-preference>
+
+</configurations>
